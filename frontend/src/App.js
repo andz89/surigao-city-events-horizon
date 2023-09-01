@@ -5,6 +5,10 @@ import Register from "./pages/Register";
 import Header from "./component/Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import Profile from "./pages/Profile";
+import Private from "./component/Private";
+
 function App() {
   return (
     <>
@@ -15,6 +19,10 @@ function App() {
             <Route path="/" element={<Dashboard />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
+
+            <Route path="" element={<Private />}>
+              <Route path="/profile" element={<Profile />} />
+            </Route>
           </Routes>
         </div>
         ;

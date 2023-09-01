@@ -28,14 +28,22 @@ const Header = () => {
           Events Manager
         </Link>
       </div>
-      <ul className="flex gap-2 mx-3">
+      <ul className="flex gap-2 mx-3 items-center font-semibold">
         {userInfo ? (
-          <li>
-            <button className="flex items-center gap-2" onClick={logoutHanler}>
-              <FaSignOutAlt />
-              Logout
-            </button>
-          </li>
+          <>
+            <li>
+              <Link to={"/profile"}> Profile </Link>{" "}
+            </li>
+            <li>
+              <button
+                className="flex items-center gap-2 bg-dark px-2 py-1 text-white rounded"
+                onClick={logoutHanler}
+              >
+                <FaSignOutAlt />
+                Logout
+              </button>
+            </li>
+          </>
         ) : (
           <>
             <li>

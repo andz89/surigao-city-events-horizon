@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { FaSignInAlt } from "react-icons/fa";
-
+import Cookies from "js-cookie"; // Import js-cookie library
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -42,9 +42,10 @@ const Login = () => {
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
-      navigate("/");
+      // Set the token in cookies
+      toast.success("Hello" + " " + res.name + ", Welcome back!");
     } catch (err) {
-      toast.error(err.data.message);
+      toast.error(err.data.message || err.error);
     }
   };
 
