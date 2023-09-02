@@ -4,8 +4,8 @@ import { FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useRegisterMutation } from "../features/auth/usersApiSlice";
-import { setCredentials } from "../features/auth/authSlice";
+import { useRegisterMutation } from "../features/authUser/usersApiSlice";
+import { setCredentials } from "../features/authUser/authSlice";
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -54,7 +54,10 @@ const Register = () => {
 
   return (
     <>
-      <form onSubmit={onSubmit} className="w-[400px] mx-auto mt-12 text-white">
+      <form
+        onSubmit={onSubmit}
+        className="w-[400px] mx-auto mt-12 text-white bg-dark p-5"
+      >
         <div className="flex items-center gap-2 my-5 justify-center">
           <FaUser size={"2em"} />{" "}
           <span className="font-semibold text-2xl">Register </span>

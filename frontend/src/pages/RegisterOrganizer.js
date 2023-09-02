@@ -4,10 +4,9 @@ import { FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
-import { setCredentials } from "../features/authUser/authSlice";
-import { useUpdateProfileMutation } from "../features/authUser/usersApiSlice";
-const Profile = () => {
+import { useRegisterMutation } from "../features/authOrganizer/usersApiSlice";
+import { setCredentials } from "../features/authOrganizer/authSlice";
+const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,17 +16,14 @@ const Profile = () => {
   const { name, email, password, password2 } = formData;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   useEffect(() => {
-    // Set name and email in the formData state
-    setFormData((prevState) => ({
-      ...prevState,
-      name: userInfo.name,
-      email: userInfo.email,
-    }));
-  }, [userInfo]);
+    if (userInfo) {
+      navigate("/dashboard");
+    }
+    // dispatch(reset());
+  }, [userInfo, navigate]);
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -39,7 +35,6 @@ const Profile = () => {
     if (password !== password2) {
       toast.error("Passwords do not match");
     } else {
-      console.log("submitted");
       let role = "admin";
       const userData = {
         name,
@@ -48,17 +43,11 @@ const Profile = () => {
         role,
       };
       try {
-        const res = await updateProfile({
-          _id: userInfo._id,
-          name,
-          email,
-          password,
-        }).unwrap();
+        const res = await register({ name, email, password }).unwrap();
         dispatch(setCredentials({ ...res }));
-        navigate("/profile");
-        toast.success("Profile Updated");
+        navigate("/");
       } catch (err) {
-        toast.error(err?.data?.message);
+        toast.error(err.data.message);
       }
     }
   };
@@ -67,11 +56,11 @@ const Profile = () => {
     <>
       <form
         onSubmit={onSubmit}
-        className="w-[400px] bg-dark py-3 px-5 mx-auto mt-3 text-white"
+        className="w-[400px] mx-auto mt-12 text-white bg-teal-900 p-5"
       >
         <div className="flex items-center gap-2 my-5 justify-center">
           <FaUser size={"2em"} />{" "}
-          <span className="font-semibold text-2xl">Update Profile </span>
+          <span className="font-semibold text-2xl">Register as Organizer</span>
         </div>
         <div className="mb-6">
           <label htmlFor="text" className="block mb-2 text-sm font-medium  ">
@@ -140,13 +129,13 @@ const Profile = () => {
 
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
         >
-          {isLoading ? "Updating......" : "Update"}
+          {isLoading ? "sending......" : "Register new account"}
         </button>
       </form>
     </>
   );
 };
 
-export default Profile;
+export default Register;

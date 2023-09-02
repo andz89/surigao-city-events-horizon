@@ -1,8 +1,8 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useLogoutMutation } from "../features/auth/usersApiSlice";
-import { logout } from "../features/auth/authSlice";
+import { useLogoutMutation } from "../features/authUser/usersApiSlice";
+import { logout } from "../features/authUser/authSlice";
 
 const Header = () => {
   const navigage = useNavigate();
@@ -24,13 +24,16 @@ const Header = () => {
   return (
     <header className="bg-slate-300 flex justify-between items-center p-2">
       <div>
-        <Link to="/" className="font-semibold text-xl">
-          Events Manager
-        </Link>
+        <span className="font-semibold text-xl">
+          Surigao City Event Horizons
+        </span>
       </div>
       <ul className="flex gap-2 mx-3 items-center font-semibold">
         {userInfo ? (
           <>
+            <li>
+              <Link to={"/posts"}> Post</Link>{" "}
+            </li>
             <li>
               <Link to={"/profile"}> Profile </Link>{" "}
             </li>
@@ -56,6 +59,11 @@ const Header = () => {
               <Link to="/register" className="flex items-center gap-2">
                 <FaUser />
                 Register
+              </Link>
+            </li>
+            <li className="bg-teal-700 p-2 rounded text-white">
+              <Link to={"/login-organizer"} className="font-semibold">
+                Organizer
               </Link>
             </li>
           </>
