@@ -20,14 +20,15 @@ const Profile = () => {
 
   const { userInfo } = useSelector((state) => state.auth);
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+
   useEffect(() => {
     // Set name and email in the formData state
     setFormData((prevState) => ({
       ...prevState,
-      name: userInfo.name,
-      email: userInfo.email,
+      name: userInfo.data.user.name,
+      email: userInfo.data.user.email,
     }));
-  }, [userInfo]);
+  }, [userInfo.data.user.name, userInfo.data.user.email]);
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -39,23 +40,23 @@ const Profile = () => {
     if (password !== password2) {
       toast.error("Passwords do not match");
     } else {
-      console.log("submitted");
-      let role = "admin";
-      const userData = {
-        name,
-        email,
-        password,
-        role,
-      };
       try {
         const res = await updateProfile({
-          _id: userInfo._id,
           name,
           email,
           password,
         }).unwrap();
-        dispatch(setCredentials({ ...res }));
-        navigate("/profile");
+
+        dispatch(
+          setCredentials({
+            ...userInfo,
+            user: {
+              name: res.name,
+              email: res.email,
+            },
+          })
+        );
+
         toast.success("Profile Updated");
       } catch (err) {
         toast.error(err?.data?.message);

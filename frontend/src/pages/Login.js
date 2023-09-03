@@ -34,16 +34,20 @@ const Login = () => {
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-    const userData = {
-      email,
-      password,
-    };
 
     try {
       const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
+      // console.log(JSON.stringify(res));
+      const data = {
+        token: res.accessToken,
+        user: res.data,
+      };
+
+      dispatch(setCredentials({ data }));
       // Set the token in cookies
-      toast.success("Hello" + " " + res.name + ", Welcome back!");
+      toast.success("Hello" + " " + res.data.name + ", Welcome back!", {
+        position: "top-left",
+      });
     } catch (err) {
       toast.error(err.data.message || err.error);
     }

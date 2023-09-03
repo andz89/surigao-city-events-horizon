@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useLoginMutation } from "../features/authOrganizer/usersApiSlice";
 import { setCredentials } from "../features/authOrganizer/authSlice";
 
-const Login = () => {
+const LoginOrganizer = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -34,16 +34,20 @@ const Login = () => {
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-    const userData = {
-      email,
-      password,
-    };
 
     try {
       const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
+      // console.log(JSON.stringify(res));
+      const data = {
+        token: res.accessToken,
+        user: res.data,
+      };
+
+      dispatch(setCredentials({ data }));
       // Set the token in cookies
-      toast.success("Hello" + " " + res.name + ", Welcome back!");
+      toast.success("Hello" + " " + res.data.name + ", Welcome back!", {
+        position: "top-left",
+      });
     } catch (err) {
       toast.error(err.data.message || err.error);
     }
@@ -53,11 +57,11 @@ const Login = () => {
     <>
       <form
         onSubmit={onSubmit}
-        className="w-[400px] mx-auto mt-12 text-white bg-teal-900 p-5"
+        className="w-[400px] mx-auto mt-12 text-white bg-teal-700 p-5"
       >
         <div className="flex items-center gap-2 my-5 justify-center">
           <FaSignInAlt size={"2em"} />{" "}
-          <span className="font-semibold text-2xl">Login as Organizer</span>
+          <span className="font-semibold text-2xl">Login as Organizer </span>
         </div>
         <div className="mb-6">
           <label htmlFor="email" className="block mb-2 text-sm font-medium  ">
@@ -93,11 +97,11 @@ const Login = () => {
         </div>
         <button
           type="submit"
-          className="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+          className="text-white bg-teal-900 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
         >
           Login account
-        </button>{" "}
-        <span className="text-sm">
+        </button>
+        <span className="text-sm ml-2">
           No accout yet?{" "}
           <Link to={"/register-organizer"} className="underline">
             Click here to signup
@@ -108,4 +112,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginOrganizer;

@@ -1,6 +1,9 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
-import generateToken from "../utils/generateToken.js";
+import {
+  generateRefreshToken,
+  generateAccessToken,
+} from "../utils/generateToken.js";
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
@@ -11,13 +14,16 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    generateToken(res, user._id);
-
-    res.json({
-      _id: user._id,
+    const data = {
       name: user.name,
       email: user.email,
-    });
+      roles: user.roles,
+    };
+    // create JWTs
+    const accessToken = generateAccessToken(res, user.name, user.roles);
+    generateRefreshToken(res, user._id);
+
+    res.json({ data, accessToken });
   } else {
     res.status(401);
     throw new Error("Invalid email or password");
@@ -37,19 +43,27 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new Error("User already exists");
   }
 
+  const roles = ["user"];
   const user = await User.create({
     name,
     email,
     password,
+    roles,
   });
 
   if (user) {
-    generateToken(res, user._id);
-
-    res.status(201).json({
-      _id: user._id,
+    generateRefreshToken(res, user._id);
+    const roles = user.roles;
+    const data = {
       name: user.name,
       email: user.email,
+      roles: user.roles,
+    };
+    const accessToken = generateAccessToken(res, user.name, roles);
+
+    res.status(201).json({
+      data,
+      accessToken,
     });
   } else {
     res.status(400);

@@ -1,6 +1,9 @@
 import asyncHandler from "express-async-handler";
-import Organizer from "../models/organizerModel.js";
-import generateToken from "../utils/generateToken.js";
+import User from "../models/organizerModel.js";
+import {
+  generateRefreshToken,
+  generateAccessToken,
+} from "../utils/generateToken.js";
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
@@ -8,16 +11,19 @@ import generateToken from "../utils/generateToken.js";
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await Organizer.findOne({ email });
+  const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    generateToken(res, user._id);
-
-    res.json({
-      _id: user._id,
+    const data = {
       name: user.name,
       email: user.email,
-    });
+      roles: user.roles,
+    };
+    // create JWTs
+    const accessToken = generateAccessToken(res, user.name, user.roles);
+    generateRefreshToken(res, user._id);
+
+    res.json({ data, accessToken });
   } else {
     res.status(401);
     throw new Error("Invalid email or password");
@@ -30,26 +36,34 @@ const authUser = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
-  const userExists = await Organizer.findOne({ email });
+  const userExists = await User.findOne({ email });
 
   if (userExists) {
     res.status(400);
     throw new Error("User already exists");
   }
 
-  const user = await Organizer.create({
+  const roles = ["organizer"];
+  const user = await User.create({
     name,
     email,
     password,
+    roles,
   });
 
   if (user) {
-    generateToken(res, user._id);
-
-    res.status(201).json({
-      _id: user._id,
+    generateRefreshToken(res, user._id);
+    const roles = user.roles;
+    const data = {
       name: user.name,
       email: user.email,
+      roles: user.roles,
+    };
+    const accessToken = generateAccessToken(res, user.name, roles);
+
+    res.status(201).json({
+      data,
+      accessToken,
     });
   } else {
     res.status(400);
@@ -72,7 +86,7 @@ const logoutUser = (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  const user = await Organizer.findById(req.user._id);
+  const user = await User.findById(req.user._id);
 
   if (user) {
     res.json({
@@ -90,7 +104,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await Organizer.findById(req.user._id);
+  const user = await User.findById(req.user._id);
 
   if (user) {
     user.name = req.body.name || user.name;

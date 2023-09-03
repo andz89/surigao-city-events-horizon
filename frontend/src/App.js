@@ -31,12 +31,20 @@ function App() {
               element={<RegisterOrganizer />}
             ></Route>
             {/*users view */}
-            <Route path="" element={<Private />}>
-              <Route path="/profile" element={<Profile />} />
+            <Route path="" element={<Private allowedRoles={["user"]} />}>
               <Route path="/posts" element={<Posts />} />
             </Route>
 
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="" element={<Private allowedRoles={["organizer"]} />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+            </Route>
+
+            <Route
+              path=""
+              element={<Private allowedRoles={["user", "organizer"]} />}
+            >
+              <Route path="/profile" element={<Profile />} />
+            </Route>
           </Routes>
         </div>
         ;

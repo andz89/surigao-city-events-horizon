@@ -35,16 +35,14 @@ const Register = () => {
     if (password !== password2) {
       toast.error("Passwords do not match");
     } else {
-      let role = "admin";
-      const userData = {
-        name,
-        email,
-        password,
-        role,
-      };
       try {
         const res = await register({ name, email, password }).unwrap();
-        dispatch(setCredentials({ ...res }));
+
+        const data = {
+          token: res.accessToken,
+          user: res.data,
+        };
+        dispatch(setCredentials(data));
         navigate("/");
       } catch (err) {
         toast.error(err.data.message);
