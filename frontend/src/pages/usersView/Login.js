@@ -1,14 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { FaSignInAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import Header from "../../component/Header";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useLoginMutation } from "../features/authOrganizer/usersApiSlice";
-import { setCredentials } from "../features/authOrganizer/authSlice";
+import { useLoginMutation } from "../../features/authUser/usersApiSlice";
+import { setCredentials } from "../../features/authUser/authSlice";
 
-const LoginOrganizer = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -22,7 +22,7 @@ const LoginOrganizer = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/dashboard");
+      navigate("/posts");
     }
   }, [userInfo, navigate]);
 
@@ -55,14 +55,16 @@ const LoginOrganizer = () => {
 
   return (
     <>
+      <Header />
       <form
         onSubmit={onSubmit}
-        className="w-[400px] mx-auto mt-12 text-white bg-teal-700 p-5"
+        className="w-[400px] mx-auto mt-12 text-white bg-dark p-5"
       >
         <div className="flex items-center gap-2 my-5 justify-center">
           <FaSignInAlt size={"2em"} />{" "}
-          <span className="font-semibold text-2xl">Login as Organizer </span>
+          <span className="font-semibold text-2xl">Login </span>
         </div>
+
         <div className="mb-6">
           <label htmlFor="email" className="block mb-2 text-sm font-medium  ">
             Your email
@@ -95,21 +97,16 @@ const LoginOrganizer = () => {
             required
           />
         </div>
+
         <button
           type="submit"
-          className="text-white bg-teal-900 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Login account
         </button>
-        <span className="text-sm ml-2">
-          No accout yet?{" "}
-          <Link to={"/register-organizer"} className="underline">
-            Click here to signup
-          </Link>{" "}
-        </span>{" "}
       </form>
     </>
   );
 };
 
-export default LoginOrganizer;
+export default Login;

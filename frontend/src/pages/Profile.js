@@ -4,7 +4,7 @@ import { FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import Header from "../component/Header";
 import { setCredentials } from "../features/authUser/authSlice";
 import { useUpdateProfileMutation } from "../features/authUser/usersApiSlice";
 const Profile = () => {
@@ -66,6 +66,7 @@ const Profile = () => {
 
   return (
     <>
+      <Header />
       <form
         onSubmit={onSubmit}
         className="w-[400px] bg-dark py-3 px-5 mx-auto mt-3 text-white"

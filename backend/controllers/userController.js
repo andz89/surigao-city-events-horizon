@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
+import jwt from "jsonwebtoken";
 import {
   generateRefreshToken,
   generateAccessToken,
@@ -126,10 +127,43 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
+
+const handleRefreshToken = asyncHandler(async (req, res) => {
+  let token;
+
+  token = req.cookies.jwt;
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      const user = await User.findById(decoded.userId).select("-password");
+      const data = {
+        name: user.name,
+        email: user.email,
+        roles: user.roles,
+      };
+
+      // create JWTs
+      const accessToken = generateAccessToken(res, user.name, user.roles);
+
+      res.json({ data, accessToken });
+    } catch (error) {
+      console.error(error);
+      res.status(401);
+      throw new Error("Not authorized, token failed");
+    }
+  } else {
+    res.status(401);
+    throw new Error("Not authorized, no token");
+  }
+});
+
 export {
   authUser,
   registerUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  handleRefreshToken,
 };

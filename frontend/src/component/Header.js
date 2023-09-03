@@ -11,9 +11,8 @@ const Header = () => {
   const [logoutApiCall] = useLogoutMutation();
   const logoutHanler = async () => {
     try {
-      console.log("1");
       await logoutApiCall().unwrap();
-      console.log("2");
+
       dispatch(logout());
       navigage("/");
     } catch (error) {
@@ -31,12 +30,16 @@ const Header = () => {
       <ul className="flex gap-2 mx-3 items-center font-semibold">
         {userInfo ? (
           <>
-            <li>
-              <Link to={"/dashboard"}> Dashboard</Link>{" "}
-            </li>
-            <li>
-              <Link to={"/posts"}> Post</Link>{" "}
-            </li>
+            {userInfo.data?.user.roles[0] === "user" ? (
+              <li>
+                <Link to={"/posts"}> Post</Link>{" "}
+              </li>
+            ) : (
+              <li>
+                <Link to={"/dashboard"}> Dashboard</Link>{" "}
+              </li>
+            )}
+
             <li>
               <Link to={"/profile"}> Profile </Link>{" "}
             </li>
