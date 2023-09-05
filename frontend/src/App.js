@@ -32,6 +32,8 @@ function App() {
                   element={<LoginOrganizer />}
                 ></Route>
                 <Route path="unauthorized" element={<Unauthorized />} />
+                <Route path="*" element={<Unauthorized />} />
+
                 <Route
                   path="/register-organizer"
                   element={<RegisterOrganizer />}

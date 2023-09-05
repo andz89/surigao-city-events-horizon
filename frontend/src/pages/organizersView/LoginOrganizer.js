@@ -20,13 +20,13 @@ const LoginOrganizer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();
-  const { userInfo } = useSelector((state) => state.auth);
+  // const { userInfo } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/dashboard");
-    }
-  }, [userInfo, navigate]);
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     navigate("/dashboard");
+  //   }
+  // }, [userInfo, navigate]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({

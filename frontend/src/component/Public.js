@@ -4,9 +4,8 @@ import { useSelector } from "react-redux";
 const PublicRoute = () => {
   const location = useLocation();
   const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo);
+
   if (userInfo) {
-    console.log("running  ");
     if (userInfo?.data?.user.roles[0] === "user") {
       console.log("running user");
       return <Navigate to="/posts" state={{ from: location }} replace />;

@@ -1,5 +1,9 @@
-import { useRefreshMutation } from "../features/authUser/usersApiSlice";
-import { setCredentials } from "../features/authUser/authSlice";
+// import { useRefreshMutation } from "../features/authUser/usersApiSlice";
+// import { setCredentials } from "../features/authUser/authSlice";
+// import { useDispatch } from "react-redux";
+
+import { useRefreshMutation } from "../features/authToken/usersApiSlice";
+import { setCredentials } from "../features/authToken/authSlice";
 import { useDispatch } from "react-redux";
 
 const useRefreshToken = () => {

@@ -19,13 +19,13 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [register, { isLoading }] = useRegisterMutation();
-  const { userInfo } = useSelector((state) => state.auth);
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/dashboard");
-    }
-    // dispatch(reset());
-  }, [userInfo, navigate]);
+  // const { userInfo } = useSelector((state) => state.auth);
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     navigate("/dashboard");
+  //   }
+  //   // dispatch(reset());
+  // }, [userInfo, navigate]);
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
