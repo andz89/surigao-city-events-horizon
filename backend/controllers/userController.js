@@ -1,5 +1,7 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
+import Organizer from "../models/organizerModel.js";
+
 import jwt from "jsonwebtoken";
 import {
   generateRefreshToken,
@@ -22,7 +24,7 @@ const authUser = asyncHandler(async (req, res) => {
     };
     // create JWTs
     const accessToken = generateAccessToken(res, user.name, user.roles);
-    generateRefreshToken(res, user._id);
+    generateRefreshToken(res, user);
 
     res.json({ data, accessToken });
   } else {
@@ -137,7 +139,15 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      const user = await User.findById(decoded.userId).select("-password");
+      let user;
+      if (decoded.userId.roles[0] === "user") {
+        user = await User.findById(decoded.userId).select("-password");
+      } else if (decoded.userId.roles) {
+        user = await Organizer.findById(decoded.userId).select("-password");
+      } else {
+        res.status(401);
+        throw new Error("Not authorized, token failed");
+      }
       const data = {
         name: user.name,
         email: user.email,
@@ -154,8 +164,12 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
       throw new Error("Not authorized, token failed");
     }
   } else {
-    res.status(401);
-    throw new Error("Not authorized, no token");
+    const data = null;
+    const accessToken = null;
+    res.json({ data, accessToken });
+
+    // res.status(401);
+    // throw new Error("Not authorized, no token");
   }
 });
 

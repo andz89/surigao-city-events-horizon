@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useRegisterMutation } from "../../features/authOrganizer/usersApiSlice";
 import { setCredentials } from "../../features/authOrganizer/authSlice";
-
+import LoadingSpinner from "../../component/LoadingSpinner";
+import Header from "../../component/Header";
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -21,7 +22,7 @@ const Register = () => {
   const { userInfo } = useSelector((state) => state.auth);
   useEffect(() => {
     if (userInfo) {
-      navigate("/");
+      navigate("/dashboard");
     }
     // dispatch(reset());
   }, [userInfo, navigate]);
@@ -43,8 +44,7 @@ const Register = () => {
           token: res.accessToken,
           user: res.data,
         };
-        dispatch(setCredentials(data));
-        navigate("/");
+        dispatch(setCredentials({ data }));
       } catch (err) {
         toast.error(err.data.message);
       }
@@ -53,6 +53,8 @@ const Register = () => {
 
   return (
     <>
+      {isLoading && <LoadingSpinner />}
+      <Header />
       <form
         onSubmit={onSubmit}
         className="w-[400px] mx-auto mt-12 text-white bg-teal-700 p-5"

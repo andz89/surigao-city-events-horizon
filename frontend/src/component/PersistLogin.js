@@ -1,20 +1,22 @@
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useRefreshToken from "../hooks/useRefreshToken";
+
 import { useSelector } from "react-redux";
+import LoadingSpinner from "./LoadingSpinner";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const getRefreshToken = useRefreshToken();
+  const getUserRefreshToken = useRefreshToken();
 
-  const { userInfo, isLoading: load } = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
     let isMounted = true;
 
     const verifyRefreshToken = async () => {
       try {
-        await getRefreshToken();
+        await getUserRefreshToken();
       } catch (err) {
         console.error(err);
       } finally {
@@ -24,14 +26,14 @@ const PersistLogin = () => {
 
     // persist added here AFTER tutorial video
     // Avoids unwanted call to verifyRefreshToken
-    console.log(userInfo);
+
     !userInfo?.data ? verifyRefreshToken() : setIsLoading(false);
 
     return () => {
       isMounted = false;
     };
   }, []);
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <LoadingSpinner />;
   return <>{<Outlet />}</>;
 };
 

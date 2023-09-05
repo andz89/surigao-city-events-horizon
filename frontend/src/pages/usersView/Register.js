@@ -20,12 +20,11 @@ const Register = () => {
   const dispatch = useDispatch();
   const [register, { isLoading }] = useRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/posts");
-    }
-    // dispatch(reset());
-  }, [userInfo, navigate]);
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     navigate("/posts");
+  //   }
+  // }, [userInfo, navigate]);
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -44,8 +43,7 @@ const Register = () => {
           token: res.accessToken,
           user: res.data,
         };
-        dispatch(setCredentials(data));
-        navigate("/");
+        dispatch(setCredentials({ data }));
       } catch (err) {
         toast.error(err.data.message);
       }

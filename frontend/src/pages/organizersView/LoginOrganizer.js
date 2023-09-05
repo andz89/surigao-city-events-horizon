@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoginMutation } from "../../features/authOrganizer/usersApiSlice";
 import { setCredentials } from "../../features/authOrganizer/authSlice";
+import LoadingSpinner from "../../component/LoadingSpinner";
+import Header from "../../component/Header";
 
 const LoginOrganizer = () => {
   const [formData, setFormData] = useState({
@@ -49,12 +51,16 @@ const LoginOrganizer = () => {
         position: "top-left",
       });
     } catch (err) {
-      toast.error(err.data.message || err.error);
+      toast.error(err.data.message || err.error, {
+        position: "top-left",
+      });
     }
   };
 
   return (
     <>
+      {isLoading && <LoadingSpinner />}
+      <Header />
       <form
         onSubmit={onSubmit}
         className="w-[400px] mx-auto mt-12 text-white bg-teal-700 p-5"

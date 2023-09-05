@@ -9,15 +9,18 @@ const useRefreshToken = () => {
   const getRefreshToken = async () => {
     try {
       const res = await refresh().unwrap();
-      console.log(res);
-      const data = {
-        token: res.accessToken,
-        user: res.data,
-      };
 
-      dispatch(setCredentials({ data }));
+      if (res.data !== null) {
+        const data = {
+          token: res.accessToken,
+          user: res.data,
+        };
+
+        dispatch(setCredentials({ data }));
+      }
     } catch (err) {
-      console.error(err);
+      console.error(err.status);
+
       // Handle error as needed, e.g., toast.error(err.data.message || err.error);
     }
   };

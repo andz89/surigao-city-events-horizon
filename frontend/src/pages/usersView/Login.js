@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useLoginMutation } from "../../features/authUser/usersApiSlice";
 import { setCredentials } from "../../features/authUser/authSlice";
+import LoadingSpinner from "../../component/LoadingSpinner";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -20,11 +21,11 @@ const Login = () => {
   const [login, { isLoading }] = useLoginMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/posts");
-    }
-  }, [userInfo, navigate]);
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     navigate("/posts");
+  //   }
+  // }, [userInfo, navigate]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -55,6 +56,7 @@ const Login = () => {
 
   return (
     <>
+      {isLoading && <LoadingSpinner />}
       <Header />
       <form
         onSubmit={onSubmit}

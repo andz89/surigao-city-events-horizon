@@ -21,7 +21,7 @@ const authUser = asyncHandler(async (req, res) => {
     };
     // create JWTs
     const accessToken = generateAccessToken(res, user.name, user.roles);
-    generateRefreshToken(res, user._id);
+    generateRefreshToken(res, user);
 
     res.json({ data, accessToken });
   } else {
@@ -52,7 +52,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    generateRefreshToken(res, user._id);
+    generateRefreshToken(res, user);
     const roles = user.roles;
     const data = {
       name: user.name,
@@ -126,6 +126,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
+
 export {
   authUser,
   registerUser,
