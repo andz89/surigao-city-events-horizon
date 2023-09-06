@@ -70,7 +70,7 @@ const LoginOrganizer = () => {
       <Header />
       <form
         onSubmit={onSubmit}
-        className="w-[400px] mx-auto mt-12 text-white bg-teal-700 p-5"
+        className="w-[400px] mx-auto mt-12 text-white bg-teal-700 p-5 rounded"
       >
         <div className="flex items-center gap-2 my-5 justify-center">
           <FaSignInAlt size={"2em"} />{" "}

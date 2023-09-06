@@ -57,7 +57,16 @@ const Login = () => {
         theme: "light",
       });
     } catch (err) {
-      toast.error(err.data.message || err.error);
+      toast.error(err?.data?.message, {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -67,7 +76,7 @@ const Login = () => {
       <Header />
       <form
         onSubmit={onSubmit}
-        className="w-[400px] mx-auto mt-12 text-white bg-dark p-5"
+        className="w-[400px] mx-auto mt-12 text-dark border-[1px] border-gray-300 rounded p-5"
       >
         <div className="flex items-center gap-2 my-5 justify-center">
           <FaSignInAlt size={"2em"} />{" "}
@@ -109,7 +118,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="w-full text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
         >
           Login account
         </button>

@@ -45,7 +45,16 @@ const Register = () => {
         };
         dispatch(setCredentials({ data }));
       } catch (err) {
-        toast.error(err.data.message);
+        toast.error(err?.data?.message, {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
       }
     }
   };
@@ -55,14 +64,14 @@ const Register = () => {
       <Header />
       <form
         onSubmit={onSubmit}
-        className="w-[400px] mx-auto mt-12 text-white bg-dark p-5"
+        className="w-[400px] mx-auto mt-8 text-dark border-[1px] rounded p-5 "
       >
-        <div className="flex items-center gap-2 my-5 justify-center">
+        <div className="flex items-center gap-2 my-3 justify-center">
           <FaUser size={"2em"} />{" "}
           <span className="font-semibold text-2xl">Register </span>
         </div>
-        <div className="mb-6">
-          <label htmlFor="text" className="block mb-2 text-sm font-medium  ">
+        <div className="mb-3">
+          <label htmlFor="text" className="block  text-sm font-medium  ">
             Your name
           </label>
           <input
@@ -76,8 +85,8 @@ const Register = () => {
             required
           />
         </div>
-        <div className="mb-6">
-          <label htmlFor="email" className="block mb-2 text-sm font-medium  ">
+        <div className="mb-3">
+          <label htmlFor="email" className="block  text-sm font-medium  ">
             Your email
           </label>
           <input
@@ -91,11 +100,8 @@ const Register = () => {
             required
           />
         </div>
-        <div className="mb-6">
-          <label
-            htmlFor="password"
-            className="block mb-2 text-sm font-medium  "
-          >
+        <div className="mb-3">
+          <label htmlFor="password" className="block  text-sm font-medium  ">
             Your password
           </label>
           <input
@@ -108,10 +114,10 @@ const Register = () => {
             required
           />
         </div>
-        <div className="mb-6">
+        <div className="mb-3">
           <label
             htmlFor="repeat-password"
-            className="block mb-2 text-sm font-medium  "
+            className="block  text-sm font-medium  "
           >
             Repeat password
           </label>
@@ -128,7 +134,7 @@ const Register = () => {
 
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="w-full text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
         >
           {isLoading ? "sending......" : "Register new account"}
         </button>

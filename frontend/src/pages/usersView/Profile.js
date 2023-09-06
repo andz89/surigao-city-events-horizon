@@ -12,10 +12,10 @@ const Profile = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: "",
-    password2: "",
+    currentPassword: "",
+    newPassword: "",
   });
-  const { name, email, password, password2 } = formData;
+  const { name, email, currentPassword, newPassword } = formData;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -38,42 +38,49 @@ const Profile = () => {
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (password !== password2) {
-      toast.error("Passwords do not match");
-    } else {
-      try {
-        const res = await updateProfile({
-          name,
-          email,
-          password,
-        }).unwrap();
-        const data = {
-          ...userInfo,
-          user: {
-            name: res.name,
-            email: res.email,
-            roles: res.roles,
-          },
-        };
-        dispatch(
-          setCredentials({
-            data,
-          })
-        );
 
-        toast.success("Update Successfully", {
-          position: "top-left",
-          autoClose: 5000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      } catch (err) {
-        toast.error(err?.data?.message);
-      }
+    try {
+      const res = await updateProfile({
+        name,
+        email,
+        currentPassword,
+        newPassword,
+      }).unwrap();
+      const data = {
+        ...userInfo,
+        user: {
+          name: res.name,
+          email: res.email,
+          roles: res.roles,
+        },
+      };
+      dispatch(
+        setCredentials({
+          data,
+        })
+      );
+
+      toast.success("Update Successfully", {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (err) {
+      toast.error(err?.data?.message, {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -83,14 +90,14 @@ const Profile = () => {
       <Header />
       <form
         onSubmit={onSubmit}
-        className="w-[400px] bg-dark py-3 px-5 mx-auto mt-3 text-white"
+        className="w-[400px]  border-2 border-gray-300 py-2 px-5 mx-auto mt-12 text-dark"
       >
-        <div className="flex items-center gap-2 my-5 justify-center">
+        <div className="flex items-center gap-2 my-2 justify-center  ">
           <FaUser size={"2em"} />{" "}
-          <span className="font-semibold text-2xl">Update Profile </span>
+          <span className="font-bold text-2xl uppercase">Update Profile </span>
         </div>
-        <div className="mb-6">
-          <label htmlFor="text" className="block mb-2 text-sm font-medium  ">
+        <div className="mb-3">
+          <label htmlFor="text" className="block   text-sm font-medium  ">
             Your name
           </label>
           <input
@@ -104,8 +111,8 @@ const Profile = () => {
             required
           />
         </div>
-        <div className="mb-6">
-          <label htmlFor="email" className="block mb-2 text-sm font-medium  ">
+        <div className="mb-3">
+          <label htmlFor="email" className="block   text-sm font-medium  ">
             Your email
           </label>
           <input
@@ -119,35 +126,35 @@ const Profile = () => {
             required
           />
         </div>
-        <div className="mb-6">
+        <div className="mb-3">
           <label
-            htmlFor="password"
-            className="block mb-2 text-sm font-medium  "
+            htmlFor="currentPassword"
+            className="block  text-sm font-medium  "
           >
-            Your password
+            Current Password
           </label>
           <input
             type="password"
-            name="password"
-            id="password"
-            value={password}
+            name="currentPassword"
+            id="currentPassword"
+            value={currentPassword}
             onChange={onChange}
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             required
           />
         </div>
-        <div className="mb-6">
+        <div className="mb-4">
           <label
-            htmlFor="repeat-password"
-            className="block mb-2 text-sm font-medium  "
+            htmlFor="newPassword"
+            className="block   text-sm font-medium  "
           >
-            Repeat password
+            New Password
           </label>
           <input
-            name="password2"
+            name="newPassword"
             type="password"
-            id="repeat-password"
-            value={password2}
+            id="newPassword"
+            value={newPassword}
             onChange={onChange}
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             required
@@ -156,7 +163,7 @@ const Profile = () => {
 
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           {isLoading ? "Updating......" : "Update"}
         </button>

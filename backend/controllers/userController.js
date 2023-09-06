@@ -55,7 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    generateRefreshToken(res, user._id);
+    generateRefreshToken(res, user);
     const roles = user.roles;
     const data = {
       name: user.name,
@@ -113,72 +113,76 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
 
-    if (req.body.password) {
-      user.password = req.body.password;
+    if (
+      req.body.currentPassword &&
+      (await user.matchPassword(req.body.currentPassword))
+    ) {
+      user.password = req.body.newPassword;
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        roles: updatedUser.roles,
+      });
+    } else {
+      res.status(404);
+      throw new Error("Wrong current password");
     }
-
-    const updatedUser = await user.save();
-
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      roles: updatedUser.roles,
-    });
   } else {
     res.status(404);
     throw new Error("User not found");
   }
 });
 
-const handleRefreshToken = asyncHandler(async (req, res) => {
-  let token;
+// const handleRefreshToken = asyncHandler(async (req, res) => {
+//   let token;
 
-  token = req.cookies.jwt;
+//   token = req.cookies.jwt;
 
-  if (token) {
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//   if (token) {
+//     try {
+//       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      let user;
-      if (decoded.userId.roles[0] === "user") {
-        user = await User.findById(decoded.userId).select("-password");
-      } else if (decoded.userId.roles) {
-        user = await Organizer.findById(decoded.userId).select("-password");
-      } else {
-        res.status(401);
-        throw new Error("Not authorized, token failed");
-      }
-      const data = {
-        name: user.name,
-        email: user.email,
-        roles: user.roles,
-      };
+//       let user;
+//       if (decoded.userId.roles[0] === "user") {
+//         user = await User.findById(decoded.userId).select("-password");
+//       } else if (decoded.userId.roles) {
+//         user = await Organizer.findById(decoded.userId).select("-password");
+//       } else {
+//         res.status(401);
+//         throw new Error("Not authorized, token failed");
+//       }
+//       const data = {
+//         name: user.name,
+//         email: user.email,
+//         roles: user.roles,
+//       };
 
-      // create JWTs
-      const accessToken = generateAccessToken(res, user.name, user.roles);
+//       // create JWTs
+//       const accessToken = generateAccessToken(res, user.name, user.roles);
 
-      res.json({ data, accessToken });
-    } catch (error) {
-      console.error(error);
-      res.status(401);
-      throw new Error("Not authorized, token failed");
-    }
-  } else {
-    const data = null;
-    const accessToken = null;
-    res.json({ data, accessToken });
+//       res.json({ data, accessToken });
+//     } catch (error) {
+//       console.error(error);
+//       res.status(401);
+//       throw new Error("Not authorized, token failed");
+//     }
+//   } else {
+//     const data = null;
+//     const accessToken = null;
+//     res.json({ data, accessToken });
 
-    // res.status(401);
-    // throw new Error("Not authorized, no token");
-  }
-});
-
+//     // res.status(401);
+//     // throw new Error("Not authorized, no token");
+//   }
+// });
+// handleRefreshToken,
 export {
   authUser,
   registerUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
-  handleRefreshToken,
 };
