@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import Header from "../../component/Header";
 import { setCredentials } from "../../features/authUser/authSlice";
 import { useUpdateProfileMutation } from "../../features/authUser/usersApiSlice";
+import LoadingSpinner from "../../component/LoadingSpinner";
 const Profile = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -69,6 +70,7 @@ const Profile = () => {
 
   return (
     <>
+      {isLoading && <LoadingSpinner />}
       <Header />
       <form
         onSubmit={onSubmit}

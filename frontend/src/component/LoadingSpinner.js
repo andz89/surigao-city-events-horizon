@@ -1,10 +1,10 @@
 const LoadingSpinner = () => {
   return (
-    <div className="fixed top-0 left-0 right-0 z-50   w-full p-4 overflow-x-hidden bg-slate-900 bg-opacity-40 overflow-y-auto md:inset-0 h-[calc(100%-1rem)]  h-screen  ">
-      <div role="status" className="flex items-center justify-center mt-10">
+    <div className="fixed top-0 left-0 right-0 z-50   w-full p-4 overflow-x-hidden bg-slate-900 bg-opacity-40 overflow-y-auto md:inset-0 h-[calc(100%-1rem)]  h-screen  flex items-center justify-center ">
+      <div role="status" className="flex items-center justify-center  ">
         <svg
           aria-hidden="true"
-          className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+          className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-orange-600"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -18,7 +18,7 @@ const LoadingSpinner = () => {
             fill="currentFill"
           />
         </svg>
-        <span className="text-slate-900">Loading...</span>
+        {/* <span className="text-slate-900">Loading...</span> */}
       </div>
     </div>
   );
