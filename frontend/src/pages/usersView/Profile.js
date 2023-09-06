@@ -61,7 +61,16 @@ const Profile = () => {
           })
         );
 
-        toast.success("Profile Updated");
+        toast.success("Update Successfully", {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } catch (err) {
         toast.error(err?.data?.message);
       }

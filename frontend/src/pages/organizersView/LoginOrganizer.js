@@ -49,6 +49,13 @@ const LoginOrganizer = () => {
       // Set the token in cookies
       toast.success("Hello" + " " + res.data.name + ", Welcome back!", {
         position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
     } catch (err) {
       toast.error(err.data.message || err.error, {

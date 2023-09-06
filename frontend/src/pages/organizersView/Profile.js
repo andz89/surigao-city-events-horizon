@@ -62,8 +62,17 @@ const Profile = () => {
             data,
           })
         );
-        console.log(userInfo.data.user.name);
-        toast.success("Profile Updated");
+
+        toast.success("Hello" + " " + res.data.name + ", Welcome back!", {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } catch (err) {
         console.log(err);
         toast.error(err?.data?.message);
