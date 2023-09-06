@@ -34,18 +34,26 @@ const Header = () => {
           {userInfo ? (
             <>
               {userInfo.data?.user.roles[0] === "user" ? (
-                <li>
-                  <Link to={"/posts"}> Post</Link>{" "}
-                </li>
+                <>
+                  <li>
+                    <Link to={"/posts"}> Post</Link>{" "}
+                  </li>
+                  <li>
+                    <Link to={"/profile-user"}> Profile </Link>{" "}
+                  </li>
+                </>
               ) : (
-                <li>
-                  <Link to={"/dashboard"}> Dashboard</Link>{" "}
-                </li>
+                <>
+                  {" "}
+                  <li>
+                    <Link to={"/dashboard"}> Dashboard</Link>{" "}
+                  </li>
+                  <li>
+                    <Link to={"/profile-organizer"}> Profile </Link>{" "}
+                  </li>
+                </>
               )}
 
-              <li>
-                <Link to={"/profile"}> Profile </Link>{" "}
-              </li>
               <li>
                 <button
                   className="flex items-center gap-2 bg-dark px-2 py-1 text-white rounded"

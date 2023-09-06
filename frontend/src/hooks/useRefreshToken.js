@@ -24,6 +24,7 @@ const useRefreshToken = () => {
       }
     } catch (err) {
       console.error(err.status);
+      console.error(err);
 
       // Handle error as needed, e.g., toast.error(err.data.message || err.error);
     }

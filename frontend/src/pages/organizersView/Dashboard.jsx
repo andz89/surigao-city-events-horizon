@@ -1,7 +1,9 @@
 import Header from "../../component/Header"
+import { useSelector, useDispatch } from "react-redux";
 
 const Dashboard = () => {
-
+ 
+ 
   return (
     <>
       <Header />

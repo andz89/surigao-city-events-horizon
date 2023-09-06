@@ -4,9 +4,9 @@ import { FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Header from "../component/Header";
-import { setCredentials } from "../features/authUser/authSlice";
-import { useUpdateProfileMutation } from "../features/authUser/usersApiSlice";
+import Header from "../../component/Header";
+import { setCredentials } from "../../features/authOrganizer/authSlice";
+import { useUpdateProfileMutation } from "../../features/authOrganizer/usersApiSlice";
 const Profile = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -28,7 +28,8 @@ const Profile = () => {
       name: userInfo.data.user.name,
       email: userInfo.data.user.email,
     }));
-  }, [userInfo.data.user.name, userInfo.data.user.email]);
+  }, [userInfo.data.user.name, userInfo.data.user.email, dispatch]);
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -47,18 +48,23 @@ const Profile = () => {
           password,
         }).unwrap();
 
+        const data = {
+          ...userInfo.data,
+          user: {
+            name: res.name,
+            email: res.email,
+            roles: res.roles,
+          },
+        };
         dispatch(
           setCredentials({
-            ...userInfo,
-            user: {
-              name: res.name,
-              email: res.email,
-            },
+            data,
           })
         );
-
+        console.log(userInfo.data.user.name);
         toast.success("Profile Updated");
       } catch (err) {
+        console.log(err);
         toast.error(err?.data?.message);
       }
     }

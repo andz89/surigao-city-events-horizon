@@ -123,6 +123,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      roles: updatedUser.roles,
     });
   } else {
     res.status(404);

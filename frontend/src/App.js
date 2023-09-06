@@ -8,12 +8,12 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PersistLogin from "./component/PersistLogin";
 import LoginOrganizer from "./pages/organizersView/LoginOrganizer";
-import Profile from "./pages/Profile";
+import ProfileUser from "./pages/usersView/Profile";
 import Private from "./component/Private";
 import RegisterOrganizer from "./pages/organizersView/RegisterOrganizer";
 import Unauthorized from "./component/Unauthorized";
 import PublicRoute from "./component/Public";
-
+import ProfileOrganizer from "./pages/organizersView/Profile";
 import Posts from "./pages/usersView/posts";
 
 function App() {
@@ -43,19 +43,22 @@ function App() {
               {/*users view */}
 
               <Route path="" element={<Private allowedRoles={["user"]} />}>
+                <Route path="/profile-user" element={<ProfileUser />} />
                 <Route path="/posts" element={<Posts />} />
               </Route>
 
               <Route path="" element={<Private allowedRoles={["organizer"]} />}>
+                <Route
+                  path="/profile-organizer"
+                  element={<ProfileOrganizer />}
+                />
                 <Route path="/dashboard" element={<Dashboard />} />
               </Route>
 
               <Route
                 path=""
                 element={<Private allowedRoles={["user", "organizer"]} />}
-              >
-                <Route path="/profile" element={<Profile />} />
-              </Route>
+              ></Route>
             </Route>
           </Routes>
         </div>
