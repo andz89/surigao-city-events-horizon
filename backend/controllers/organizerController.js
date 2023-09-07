@@ -110,6 +110,23 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
 
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      roles: updatedUser.roles,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+const updateUserPassword = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
     if (
       req.body.currentPassword &&
       (await user.matchPassword(req.body.currentPassword))
@@ -132,11 +149,11 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
-
 export {
   authUser,
   registerUser,
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  updateUserPassword,
 };

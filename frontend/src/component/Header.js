@@ -30,7 +30,7 @@ const Header = () => {
             Surigao City Event Horizons
           </span>
         </div>
-        <ul className="flex gap-2 mx-3 items-center font-semibold">
+        <ul className="flex gap-4 mx-3 items-center font-semibold">
           {userInfo ? (
             <>
               {userInfo.data?.user.roles[0] === "user" ? (

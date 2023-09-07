@@ -5,31 +5,21 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Header from "../../component/Header";
-import { setCredentials } from "../../features/authOrganizer/authSlice";
-import { useUpdateProfileMutation } from "../../features/authOrganizer/usersApiSlice";
+import { setCredentials } from "../../features/authUser/authSlice";
+import { useUpdatePasswordMutation } from "../../features/authUser/usersApiSlice";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import { BiLinkExternal } from "react-icons/bi";
-
-const Profile = () => {
+const UpdatePassword = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    currentPassword: "",
+    newPassword: "",
   });
-  const { name, email } = formData;
+  const { currentPassword, newPassword } = formData;
 
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.auth);
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
-
-  useEffect(() => {
-    // Set name and email in the formData state
-    setFormData((prevState) => ({
-      ...prevState,
-      name: userInfo.data.user.name,
-      email: userInfo.data.user.email,
-    }));
-  }, [userInfo.data.user.name, userInfo.data.user.email, dispatch]);
+  const [updatePassword, { isLoading }] = useUpdatePasswordMutation();
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -41,13 +31,12 @@ const Profile = () => {
     e.preventDefault();
 
     try {
-      const res = await updateProfile({
-        name,
-        email,
+      const res = await updatePassword({
+        currentPassword,
+        newPassword,
       }).unwrap();
-
       const data = {
-        ...userInfo.data,
+        ...userInfo,
         user: {
           name: res.name,
           email: res.email,
@@ -66,7 +55,7 @@ const Profile = () => {
         hideProgressBar: true,
         closeOnClick: true,
         pauseOnHover: false,
-        draggable: true,
+        draggable: false,
         progress: undefined,
         theme: "light",
       });
@@ -90,47 +79,52 @@ const Profile = () => {
       <Header />
       <form
         onSubmit={onSubmit}
-        className="w-[400px]  border-2 border-gray-300 pb-4 px-5 mx-auto mt-12 text-dark"
+        className="w-[400px]  border-2 border-gray-300 pb-5 px-5 mx-auto mt-12 text-dark"
       >
         <div className="flex justify-end mt-1">
           <Link
-            to="/updatePasswordOrganizer"
+            to="/profile-user"
             className="hover:bg-slate-500 hover:text-white flex items-center  gap-1 bg-slate-400 p-1 rounded text-sm"
           >
-            <BiLinkExternal className="font-bold" /> Change Password
+            <BiLinkExternal className="font-bold" /> Profile
           </Link>
         </div>
         <div className="flex items-center gap-2 my-2 justify-center  ">
           <FaUser size={"2em"} />{" "}
-          <span className="font-bold text-2xl uppercase">Update Profile </span>
+          <span className="font-bold text-2xl uppercase">Update Password </span>
         </div>
+
         <div className="mb-3">
-          <label htmlFor="text" className="block   text-sm font-medium  ">
-            Your name
+          <label
+            htmlFor="currentPassword"
+            className="block  text-sm font-medium  "
+          >
+            Current Password
           </label>
           <input
-            type="text"
-            id="text"
-            value={name}
-            name="name"
+            type="password"
+            name="currentPassword"
+            id="currentPassword"
+            value={currentPassword}
             onChange={onChange}
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-            placeholder="name@flowbite.com"
             required
           />
         </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="block   text-sm font-medium  ">
-            Your email
+        <div className="mb-4">
+          <label
+            htmlFor="newPassword"
+            className="block   text-sm font-medium  "
+          >
+            New Password
           </label>
           <input
-            name="email"
-            type="email"
-            id="email"
-            value={email}
+            name="newPassword"
+            type="password"
+            id="newPassword"
+            value={newPassword}
             onChange={onChange}
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-            placeholder="name@flowbite.com"
             required
           />
         </div>
@@ -146,4 +140,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default UpdatePassword;

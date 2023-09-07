@@ -3,8 +3,9 @@ import {
   authUser,
   registerUser,
   logoutUser,
-  getUserProfile,
+  // getUserProfile,
   updateUserProfile,
+  updateUserPassword,
 } from "../controllers/organizerController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -16,7 +17,10 @@ router.post("/logout", logoutUser);
 
 router
   .route("/profile")
-  .get(protect, getUserProfile)
+  // .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
+router
+  .route("/updatePassword")
 
+  .put(protect, updateUserPassword);
 export default router;

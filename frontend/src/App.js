@@ -15,6 +15,8 @@ import Unauthorized from "./component/Unauthorized";
 import PublicRoute from "./component/Public";
 import ProfileOrganizer from "./pages/organizersView/Profile";
 import Posts from "./pages/usersView/posts";
+import UpdatePasswordUser from "./pages/usersView/UpdatePassword";
+import UpdatePasswordOrganizer from "./pages/organizersView/UpdatePassword";
 
 function App() {
   return (
@@ -45,6 +47,10 @@ function App() {
               <Route path="" element={<Private allowedRoles={["user"]} />}>
                 <Route path="/profile-user" element={<ProfileUser />} />
                 <Route path="/posts" element={<Posts />} />
+                <Route
+                  path="/updatePasswordUser"
+                  element={<UpdatePasswordUser />}
+                />
               </Route>
 
               <Route path="" element={<Private allowedRoles={["organizer"]} />}>
@@ -53,6 +59,10 @@ function App() {
                   element={<ProfileOrganizer />}
                 />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route
+                  path="/updatePasswordOrganizer"
+                  element={<UpdatePasswordOrganizer />}
+                />
               </Route>
 
               <Route

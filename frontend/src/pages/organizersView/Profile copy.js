@@ -2,21 +2,21 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Header from "../../component/Header";
 import { setCredentials } from "../../features/authOrganizer/authSlice";
 import { useUpdateProfileMutation } from "../../features/authOrganizer/usersApiSlice";
 import LoadingSpinner from "../../component/LoadingSpinner";
-import { BiLinkExternal } from "react-icons/bi";
-
 const Profile = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    currentPassword: "",
+    newPassword: "",
   });
-  const { name, email } = formData;
-
+  const { name, email, currentPassword, newPassword } = formData;
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.auth);
@@ -44,6 +44,8 @@ const Profile = () => {
       const res = await updateProfile({
         name,
         email,
+        currentPassword,
+        newPassword,
       }).unwrap();
 
       const data = {
@@ -90,16 +92,8 @@ const Profile = () => {
       <Header />
       <form
         onSubmit={onSubmit}
-        className="w-[400px]  border-2 border-gray-300 pb-4 px-5 mx-auto mt-12 text-dark"
+        className="w-[400px]  border-2 border-gray-300 py-2 px-5 mx-auto mt-12 text-dark"
       >
-        <div className="flex justify-end mt-1">
-          <Link
-            to="/updatePasswordOrganizer"
-            className="hover:bg-slate-500 hover:text-white flex items-center  gap-1 bg-slate-400 p-1 rounded text-sm"
-          >
-            <BiLinkExternal className="font-bold" /> Change Password
-          </Link>
-        </div>
         <div className="flex items-center gap-2 my-2 justify-center  ">
           <FaUser size={"2em"} />{" "}
           <span className="font-bold text-2xl uppercase">Update Profile </span>
@@ -131,6 +125,40 @@ const Profile = () => {
             onChange={onChange}
             className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             placeholder="name@flowbite.com"
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <label
+            htmlFor="currentPassword"
+            className="block  text-sm font-medium  "
+          >
+            Current Password
+          </label>
+          <input
+            type="password"
+            name="currentPassword"
+            id="currentPassword"
+            value={currentPassword}
+            onChange={onChange}
+            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="newPassword"
+            className="block   text-sm font-medium  "
+          >
+            New Password
+          </label>
+          <input
+            name="newPassword"
+            type="password"
+            id="newPassword"
+            value={newPassword}
+            onChange={onChange}
+            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             required
           />
         </div>
