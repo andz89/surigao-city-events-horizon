@@ -1,11 +1,11 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaUser } from "react-icons/fa";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import { toast } from "react-toastify";
-import { useRegisterMutation } from "../../features/authOrganizer/usersApiSlice";
-import { setCredentials } from "../../features/authOrganizer/authSlice";
+import { useOrganizerRegisterMutation } from "../../features/authUser/usersApiSlice";
+import { setCredentials } from "../../features/authUser/authSlice";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import Header from "../../component/Header";
 const Register = () => {
@@ -16,16 +16,10 @@ const Register = () => {
     password2: "",
   });
   const { name, email, password, password2 } = formData;
-  const navigate = useNavigate();
+
   const dispatch = useDispatch();
-  const [register, { isLoading }] = useRegisterMutation();
-  // const { userInfo } = useSelector((state) => state.auth);
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     navigate("/dashboard");
-  //   }
-  //   // dispatch(reset());
-  // }, [userInfo, navigate]);
+  const [register, { isLoading }] = useOrganizerRegisterMutation();
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,

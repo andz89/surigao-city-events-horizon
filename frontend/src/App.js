@@ -17,7 +17,7 @@ import ProfileOrganizer from "./pages/organizersView/Profile";
 import Posts from "./pages/usersView/posts";
 import UpdatePasswordUser from "./pages/usersView/UpdatePassword";
 import UpdatePasswordOrganizer from "./pages/organizersView/UpdatePassword";
-
+import PostsOrganizer from "./pages/organizersView/Posts";
 function App() {
   return (
     <>
@@ -63,6 +63,7 @@ function App() {
                   path="/updatePasswordOrganizer"
                   element={<UpdatePasswordOrganizer />}
                 />
+                <Route path="/postsOrganizer" element={<PostsOrganizer />} />
               </Route>
 
               <Route

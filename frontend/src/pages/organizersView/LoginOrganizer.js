@@ -1,12 +1,12 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import { toast } from "react-toastify";
-import { useLoginMutation } from "../../features/authOrganizer/usersApiSlice";
-import { setCredentials } from "../../features/authOrganizer/authSlice";
+import { useOrganizerLoginMutation } from "../../features/authUser/usersApiSlice";
+import { setCredentials } from "../../features/authUser/authSlice";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import Header from "../../component/Header";
 
@@ -17,16 +17,8 @@ const LoginOrganizer = () => {
   });
   const { email, password } = formData;
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login, { isLoading }] = useLoginMutation();
-  // const { userInfo } = useSelector((state) => state.auth);
-
-  // useEffect(() => {
-  //   if (userInfo) {
-  //     navigate("/dashboard");
-  //   }
-  // }, [userInfo, navigate]);
+  const [login, { isLoading }] = useOrganizerLoginMutation();
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -47,7 +39,7 @@ const LoginOrganizer = () => {
 
       dispatch(setCredentials({ data }));
       // Set the token in cookies
-      toast.success("Hello" + " " + res.data.name + ", Welcome back!", {
+      toast.success(`Hello   ${res.data.name}  Welcome back!`, {
         position: "top-left",
         autoClose: 5000,
         hideProgressBar: true,

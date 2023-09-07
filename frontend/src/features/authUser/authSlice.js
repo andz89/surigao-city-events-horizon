@@ -1,15 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Get user from localStorage
+// local mutation
 
 const initialState = {
   userInfo: null,
 };
-// const initialState = {
-//   userInfo: localStorage.getItem("UserInfo")
-//     ? JSON.parse(localStorage.getItem("UserInfo"))
-//     : null,
-// };
+
 const authSlice = createSlice({
   name: "auth",
   initialState,

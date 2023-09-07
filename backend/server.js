@@ -8,6 +8,7 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import userRoutes from "./routes/userRoutes.js";
 import organizerRoutes from "./routes/organizerRoutes.js";
 import tokenRoutes from "./routes/tokenRoutes.js";
+import postsRoutes from "./routes/postsRoutes.js";
 
 const port = process.env.PORT || 5000;
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use("/api/users", userRoutes);
 app.use("/api/organizers", organizerRoutes);
 app.use("/api/token", tokenRoutes);
+app.use("/api/posts", postsRoutes);
 
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();

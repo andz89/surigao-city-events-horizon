@@ -1,6 +1,6 @@
-import { apiSlice } from "./apiSlice";
+import { apiSlice } from "../api/apiSlice";
 const USERS_URL = "/api/users";
-
+const ORGANIZER_URL = "/api/organizers";
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
@@ -39,8 +39,40 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     }),
     refresh: builder.mutation({
       query: () => ({
-        url: `${USERS_URL}/refresh`,
+        url: `/api/token/refresh`,
         method: "GET",
+      }),
+    }),
+
+    //organizer ------------------
+    organizerLogin: builder.mutation({
+      query: (data) => ({
+        url: `${ORGANIZER_URL}/auth`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    organizerUpdateProfile: builder.mutation({
+      query: (data) => ({
+        url: `${ORGANIZER_URL}/profile`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+
+    organizerRegister: builder.mutation({
+      query: (data) => ({
+        url: `${ORGANIZER_URL}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    organizerUpdatePassword: builder.mutation({
+      query: (data) => ({
+        url: `${ORGANIZER_URL}/updatePassword`,
+        method: "PUT",
+        body: data,
       }),
     }),
   }),
@@ -52,4 +84,8 @@ export const {
   useUpdateProfileMutation,
   useUpdatePasswordMutation,
   useRefreshMutation,
+  useOrganizerLoginMutation,
+  useOrganizerUpdateProfileMutation,
+  useOrganizerRegisterMutation,
+  useOrganizerUpdatePasswordMutation,
 } = usersApiSlice;

@@ -1,12 +1,12 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Header from "../../component/Header";
-import { setCredentials } from "../../features/authOrganizer/authSlice";
-import { useUpdatePasswordMutation } from "../../features/authOrganizer/usersApiSlice";
+import { setCredentials } from "../../features/authUser/authSlice";
+import { useOrganizerUpdatePasswordMutation } from "../../features/authUser/usersApiSlice";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import { BiLinkExternal } from "react-icons/bi";
 const UpdatePassword = () => {
@@ -19,7 +19,7 @@ const UpdatePassword = () => {
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.auth);
-  const [updatePassword, { isLoading }] = useUpdatePasswordMutation();
+  const [updatePassword, { isLoading }] = useOrganizerUpdatePasswordMutation();
 
   const onChange = (e) => {
     setFormData((prevState) => ({

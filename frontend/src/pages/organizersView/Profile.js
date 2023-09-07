@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Header from "../../component/Header";
-import { setCredentials } from "../../features/authOrganizer/authSlice";
-import { useUpdateProfileMutation } from "../../features/authOrganizer/usersApiSlice";
+import { setCredentials } from "../../features/authUser/authSlice";
+import { useOrganizerUpdateProfileMutation } from "../../features/authUser/usersApiSlice";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import { BiLinkExternal } from "react-icons/bi";
 
@@ -20,7 +20,7 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.auth);
-  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
+  const [updateProfile, { isLoading }] = useOrganizerUpdateProfileMutation();
 
   useEffect(() => {
     // Set name and email in the formData state
