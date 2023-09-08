@@ -1,17 +1,67 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { commentAdded } from "../../features/posts/postsSlice";
 import { nanoid } from "@reduxjs/toolkit";
+import { useAddCommentMutation } from "../../features/posts/postsApiSlice";
+import { toast } from "react-toastify";
 const AddComment = ({ post }) => {
+  const { userInfo } = useSelector((state) => state.auth);
+  const name = userInfo.data.user.name;
+
   const date = new Date().toISOString();
-  const userEmail = post.organizer; //for testing only. this data should from users data when login.
+  const commentId = nanoid();
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
-
-  const handleCommentSubmit = (e) => {
+  const [addComments, { isLoading }] = useAddCommentMutation();
+  const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    const postId = post.id;
-    dispatch(commentAdded({ postId, userEmail, comment, date }));
+    const postId = post._id;
+    if (comment) {
+      try {
+        const res = await addComments({
+          postId,
+          name,
+          comment,
+          commentId,
+        }).unwrap();
+        console.log(res.comment.commentId);
+        const data = {
+          postId,
+          _id: res.comment.commentId,
+          comment: res.comment.comment,
+          name: res.comment.name,
+          createdAt: new Date().toISOString(),
+        };
+        console.log(data);
+        dispatch(commentAdded(data));
+
+        toast.success("Publish Successfuly", {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setComment("");
+      } catch (error) {
+        toast.error(error?.data?.message, {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    }
+
+    // dispatch(commentAdded({ postId, userEmail, comment, date }));
     setComment("");
   };
   return (

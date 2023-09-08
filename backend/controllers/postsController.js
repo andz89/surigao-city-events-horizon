@@ -14,8 +14,11 @@ const addPost = asyncHandler(async (req, res) => {
   const posts = await Post.create({
     title: req.body.title,
     content: req.body.content,
+    name: req.body.name,
+    agency: req.body.agency,
     user: req.user._id,
   });
+
   res.json({ posts });
 });
 // @desc    Get organizer posts
@@ -31,4 +34,45 @@ const getOrganizerPosts = asyncHandler(async (req, res) => {
     throw new Error("Posts not found");
   }
 });
-export { addPost, getOrganizerPosts };
+const addComment = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.body.postId);
+  const commentData = {
+    commentId: req.body.commentId,
+    postId: req.body.postId,
+    name: req.body.name,
+    comment: req.body.comment,
+    date: req.body.date,
+  };
+  if (post) {
+    post.comments.push(commentData);
+
+    await post.save();
+
+    res.json({
+      comment: commentData,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
+const removePost = asyncHandler(async (req, res) => {
+  const postId = req.body.postId;
+  console.log(postId);
+  try {
+    // Use async/await with findByIdAndRemove to ensure proper handling of asynchronous code.
+    const removedPost = await Post.findByIdAndRemove(postId);
+
+    // Check if the post was found and removed successfully.
+    if (!removedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.json({ message: "Post removed successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+export { addPost, getOrganizerPosts, addComment, removePost };

@@ -1,26 +1,64 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaChessKing } from "react-icons/fa";
 import TimeAgo from "../../component/posts/TimeAgo";
 import { useEffect } from "react";
 import Comments from "../../component/posts/Comments";
 import AddComments from "../../component/posts/AddComments";
 import Header from "../../component/Header";
 import AddPostForm from "../../component/posts/AddPostForm";
-import { useGetPostMutation } from "../../features/posts/postsApiSlice";
-import { postAdded, postsFetched } from "../../features/posts/postsSlice";
-
+import { removePost } from "../../features/posts/postsSlice";
+import {
+  useGetPostMutation,
+  useDeletePostMutation,
+} from "../../features/posts/postsApiSlice";
+import { postsFetched } from "../../features/posts/postsSlice";
+import { toast } from "react-toastify";
+import LoadingSpinner from "../../component/LoadingSpinner";
 const Posts = () => {
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
-  const [getPosts, { isLoading }] = useGetPostMutation();
+  const [getPosts] = useGetPostMutation();
+  const [deletePost, {isLoading: deleteLoading}] = useDeletePostMutation();
+ 
+
+  const handleDelete = async(postId) =>{
+ console.log(postId)
+    try {
+       await deletePost({postId}).unwrap();
+      
+      toast.success("Delete Successfully", {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      dispatch(removePost({postId}));
+    } catch (error) {
+      toast.error(error?.data?.message, {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await getPosts().unwrap();
 
         dispatch(postsFetched(res));
-        console.log(res);
+     
       } catch (error) {
         console.error(error);
       }
@@ -36,18 +74,20 @@ const Posts = () => {
   const renderedPosts = orderedPosts?.map((post) => (
     <article key={post._id}>
       <div className="w-[800px] p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex justify-end">
+        <div className="bg-rose-500 p-2 rounded text-white font-semibold cursor-pointer" onClick={()=>handleDelete(post._id)}>Delete Post</div>
+
+        </div>
         <div className="flex flex-col">
           <h5 className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
             {post.title}
           </h5>
-          <small className="text-slate-500  ">
-            Agency Name: {post.agencyName}
-          </small>
+          <small className="text-slate-500  ">Agency Name: {post.agency}</small>
 
           <small className="text-slate-500  ">
-            Event Organizer: {post.organizer}
+            Event Organizer: {post.name}
           </small>
-          <TimeAgo timestamp={post.date} />
+          <TimeAgo timestamp={post.createdAt} />
         </div>
 
         <br />
@@ -62,9 +102,9 @@ const Posts = () => {
         </div>
 
         <div className="mt-5">
-          {/* <Comments comments={post.comments} />
+          <Comments comments={post?.comments} />
 
-          <AddComments post={post} /> */}
+          <AddComments post={post} />
         </div>
       </div>
     </article>
@@ -72,6 +112,7 @@ const Posts = () => {
 
   return (
     <>
+    {deleteLoading && <LoadingSpinner />}
       <Header />
       <AddPostForm />
       <section className="">

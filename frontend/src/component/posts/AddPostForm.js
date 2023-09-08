@@ -1,12 +1,17 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+
 import { FaPlus } from "react-icons/fa";
 import { postAdded } from "../../features/posts/postsSlice";
 import { useAddPostMutation } from "../../features/posts/postsApiSlice";
 import LoadingSpinner from "../LoadingSpinner";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
 
 const AddPostForm = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  const name = userInfo.data.user.name;
+  const agency = userInfo.data.user.agency;
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [form, setForm] = useState(false);
@@ -20,9 +25,22 @@ const AddPostForm = () => {
     e.preventDefault();
     if (title && content) {
       try {
-        const res = await addPost({ title, content }).unwrap();
+        const res = await addPost({
+          title,
+          content,
+          name,
+          agency,
+        }).unwrap();
 
-        dispatch(postAdded(title, content));
+        const data = {
+          title,
+          content,
+          name,
+          agency,
+          _id: res.posts._id,
+        };
+
+        dispatch(postAdded(data));
         toast.success("Publish Successfuly", {
           position: "top-left",
           autoClose: 5000,

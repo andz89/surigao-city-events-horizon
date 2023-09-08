@@ -1,5 +1,17 @@
 import mongoose from "mongoose";
 
+const commentSchema = mongoose.Schema(
+  {
+    postId: mongoose.Schema.Types.ObjectId,
+    name: String,
+    comment: String,
+    date: Date,
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const postsSchema = mongoose.Schema(
   {
     user: {
@@ -11,10 +23,19 @@ const postsSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
+    agency: {
+      type: String,
+      required: true,
+    },
     content: {
       type: String,
       required: true,
     },
+    comments: [commentSchema],
   },
   {
     timestamps: true,

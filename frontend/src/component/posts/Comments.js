@@ -5,12 +5,12 @@ const Comments = ({ comments }) => {
 
   const userComments = comments.map((comment) => {
     return (
-      <article key={comment.userEmail}>
+      <article key={comment._id}>
         <div className="border-slate-300 border p-1 rounded mb-3">
           <div className="flex items-center">
             <div className="font-medium dark:text-white">
-              <p className="text-sm">{comment.userEmail}</p>
-              <TimeAgo timestamp={comment.date} />
+              <p className="text-sm">{comment.name}</p>
+              <TimeAgo timestamp={comment.createdAt} />
             </div>
           </div>
 
