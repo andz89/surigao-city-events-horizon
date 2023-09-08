@@ -36,6 +36,7 @@ const getOrganizerPosts = asyncHandler(async (req, res) => {
 });
 const addComment = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.body.postId);
+  console.log(req.body.commentId);
   const commentData = {
     commentId: req.body.commentId,
     postId: req.body.postId,
@@ -88,7 +89,7 @@ const removeComment = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
     const new_comment = post.comments.filter((comment) => {
-      return comment._id.toString() !== commentId;
+      return comment.commentId !== commentId;
     });
 
     post.comments = new_comment;

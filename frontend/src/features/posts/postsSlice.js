@@ -39,11 +39,17 @@ const postsSlice = createSlice({
       state.posts = action.payload;
     },
     commentAdded: (state, action) => {
-      const { _id, postId, name, comment, createdAt } = action.payload;
+      const { commentId, postId, name, comment, createdAt } = action.payload;
       const existingPost = state.posts.find((post) => post._id === postId);
 
       if (existingPost) {
-        existingPost.comments.push({ _id, postId, name, comment, createdAt });
+        existingPost.comments.push({
+          commentId,
+          postId,
+          name,
+          comment,
+          createdAt,
+        });
       }
     },
     removePost: (state, action) => {
@@ -60,7 +66,7 @@ const postsSlice = createSlice({
 
       if (existingPost) {
         const newComments = existingPost.comments.filter(
-          (comment) => comment._id !== commentId
+          (comment) => comment.commentId !== commentId
         );
         existingPost.comments = newComments;
       }

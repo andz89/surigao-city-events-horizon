@@ -9,7 +9,6 @@ const AddComment = ({ post }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const name = userInfo.data.user.name;
 
-  const commentId = nanoid();
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const [addComments, { isLoading: addCommentLoading }] =
@@ -23,12 +22,12 @@ const AddComment = ({ post }) => {
           postId,
           name,
           comment,
-          commentId,
+          commentId: nanoid(),
         }).unwrap();
-        console.log(res.comment.commentId);
+
         const data = {
           postId,
-          _id: res.comment.commentId,
+          commentId: res.comment.commentId,
           comment: res.comment.comment,
           name: res.comment.name,
           createdAt: new Date().toISOString(),
