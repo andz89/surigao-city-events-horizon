@@ -17,6 +17,8 @@ const addPost = asyncHandler(async (req, res) => {
     name: req.body.name,
     agency: req.body.agency,
     user: req.user._id,
+    dateCreated: req.body.dateCreated,
+    dateUpdated: req.body.dateUpdated,
   });
 
   res.json({ posts });
@@ -36,7 +38,7 @@ const getOrganizerPosts = asyncHandler(async (req, res) => {
 });
 const addComment = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.body.postId);
-  console.log(req.body.commentId);
+
   const commentData = {
     commentId: req.body.commentId,
     postId: req.body.postId,
@@ -99,4 +101,38 @@ const removeComment = asyncHandler(async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-export { addPost, getOrganizerPosts, addComment, removePost, removeComment };
+const editPost = asyncHandler(async (req, res) => {
+  const postId = req.body.postId;
+
+  try {
+    // Use async/await with findById to ensure proper handling of asynchronous code.
+    const post = await Post.findById(postId);
+
+    // Check if the post was found.
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Update the post's properties based on the request body data.
+    post.title = req.body.title;
+    post.content = req.body.content;
+    post.name = req.body.name;
+    post.agency = req.body.agency;
+    post.dateUpdated = req.body.dateUpdated;
+    // Save the updated post.
+    await post.save();
+
+    res.json(post.dateUpdated);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+export {
+  addPost,
+  getOrganizerPosts,
+  addComment,
+  removePost,
+  removeComment,
+  editPost,
+};

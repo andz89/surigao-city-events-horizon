@@ -19,6 +19,7 @@ const AddComment = ({ post }) => {
     if (comment) {
       try {
         const res = await addComments({
+          date: new Date().toISOString(),
           postId,
           name,
           comment,
@@ -30,7 +31,7 @@ const AddComment = ({ post }) => {
           commentId: res.comment.commentId,
           comment: res.comment.comment,
           name: res.comment.name,
-          createdAt: new Date().toISOString(),
+          createdAt: res.comment.date,
         };
         console.log(data);
         dispatch(commentAdded(data));
@@ -98,13 +99,7 @@ const AddComment = ({ post }) => {
         </form>
         <p className="ml-auto text-xs text-gray-500 dark:text-gray-400">
           Remember, contributions to this topic should follow our{" "}
-          <a
-            href="#"
-            className="text-blue-600 dark:text-blue-500 hover:underline"
-          >
-            Community Guidelines
-          </a>
-          .
+          <span className="text-blue-600 ">Community Guidelines .</span>
         </p>
       </div>
     </>

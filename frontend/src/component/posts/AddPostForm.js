@@ -30,6 +30,8 @@ const AddPostForm = () => {
           content,
           name,
           agency,
+          dateCreated: new Date().toISOString(),
+          dateUpdated: new Date().toISOString(),
         }).unwrap();
 
         const data = {
@@ -38,9 +40,12 @@ const AddPostForm = () => {
           name,
           agency,
           _id: res.posts._id,
+          dateCreated: res.posts.dateCreated,
+          dateUpdated: res.posts.dateUpdated,
         };
 
         dispatch(postAdded(data));
+        setForm(false);
         toast.success("Publish Successfuly", {
           position: "top-left",
           autoClose: 5000,

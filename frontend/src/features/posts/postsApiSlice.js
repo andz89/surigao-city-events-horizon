@@ -31,6 +31,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    EditPost: builder.mutation({
+      query: (data) => ({
+        url: `${POST_URL}/EditPost`,
+        method: "PUT",
+        body: { ...data },
+      }),
+    }),
     deleteComment: builder.mutation({
       query: (data) => ({
         url: `${POST_URL}/removeComment`,
@@ -47,4 +54,5 @@ export const {
   useAddCommentMutation,
   useDeletePostMutation,
   useDeleteCommentMutation,
+  useEditPostMutation,
 } = usersApiSlice;

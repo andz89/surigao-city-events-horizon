@@ -5,6 +5,7 @@ import {
   addComment,
   removePost,
   removeComment,
+  editPost,
 } from "../controllers/postsController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -14,6 +15,7 @@ router.post("/addPost", protect, addPost);
 router.put("/addComment", protect, addComment);
 router.put("/removePost", protect, removePost);
 router.put("/removeComment", protect, removeComment);
+router.put("/editPost", protect, editPost);
 
 router.route("/").get(protect, getOrganizerPosts);
 export default router;

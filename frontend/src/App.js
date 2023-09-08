@@ -18,6 +18,7 @@ import Posts from "./pages/usersView/posts";
 import UpdatePasswordUser from "./pages/usersView/UpdatePassword";
 import UpdatePasswordOrganizer from "./pages/organizersView/UpdatePassword";
 import PostsOrganizer from "./pages/organizersView/Posts";
+
 function App() {
   return (
     <>
@@ -52,7 +53,7 @@ function App() {
                   element={<UpdatePasswordUser />}
                 />
               </Route>
-
+              {/*organizer view */}
               <Route path="" element={<Private allowedRoles={["organizer"]} />}>
                 <Route
                   path="/profile-organizer"
