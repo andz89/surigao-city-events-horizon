@@ -54,10 +54,26 @@ const postsSlice = createSlice({
         state.posts = posts;
       }
     },
+    removeComment: (state, action) => {
+      const { postId, commentId } = action.payload;
+      const existingPost = state.posts.find((post) => post._id === postId);
+
+      if (existingPost) {
+        const newComments = existingPost.comments.filter(
+          (comment) => comment._id !== commentId
+        );
+        existingPost.comments = newComments;
+      }
+    },
   },
 });
 
-export const { postAdded, commentAdded, postsFetched, removePost } =
-  postsSlice.actions;
+export const {
+  postAdded,
+  commentAdded,
+  postsFetched,
+  removePost,
+  removeComment,
+} = postsSlice.actions;
 
 export default postsSlice.reducer;

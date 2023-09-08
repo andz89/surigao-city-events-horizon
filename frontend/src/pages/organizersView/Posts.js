@@ -23,7 +23,7 @@ const Posts = () => {
  
 
   const handleDelete = async(postId) =>{
- console.log(postId)
+ 
     try {
        await deletePost({postId}).unwrap();
       
@@ -102,7 +102,7 @@ const Posts = () => {
         </div>
 
         <div className="mt-5">
-          <Comments comments={post?.comments} />
+          <Comments comments={post?.comments} postId={post._id} />
 
           <AddComments post={post} />
         </div>

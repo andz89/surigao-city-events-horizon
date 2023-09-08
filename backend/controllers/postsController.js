@@ -59,7 +59,7 @@ const addComment = asyncHandler(async (req, res) => {
 
 const removePost = asyncHandler(async (req, res) => {
   const postId = req.body.postId;
-  console.log(postId);
+
   try {
     // Use async/await with findByIdAndRemove to ensure proper handling of asynchronous code.
     const removedPost = await Post.findByIdAndRemove(postId);
@@ -75,4 +75,27 @@ const removePost = asyncHandler(async (req, res) => {
   }
 });
 
-export { addPost, getOrganizerPosts, addComment, removePost };
+const removeComment = asyncHandler(async (req, res) => {
+  const postId = req.body.postId;
+  const commentId = req.body.commentId;
+
+  try {
+    // Use async/await with findByIdAndRemove to ensure proper handling of asynchronous code.
+    const post = await Post.findById(postId);
+
+    // Check if the post was found and removed successfully.
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    const new_comment = post.comments.filter((comment) => {
+      return comment._id.toString() !== commentId;
+    });
+
+    post.comments = new_comment;
+    await post.save();
+    res.json({ message: "Post removed successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+export { addPost, getOrganizerPosts, addComment, removePost, removeComment };
