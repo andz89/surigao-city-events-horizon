@@ -1,9 +1,9 @@
 import express from "express";
-import { addPost } from "../controllers/postsController.js";
+import { addPost, getOrganizerPosts } from "../controllers/postsController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.post("/addPost", protect, addPost);
-
+router.route("/").get(protect, getOrganizerPosts);
 export default router;

@@ -17,6 +17,8 @@ const authUser = asyncHandler(async (req, res) => {
     const data = {
       name: user.name,
       email: user.email,
+      number: user.number,
+      agency: user.agency,
       roles: user.roles,
     };
     // create JWTs
@@ -34,7 +36,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, number, agency, password } = req.body;
 
   const userExists = await User.findOne({ email });
 
@@ -47,6 +49,8 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create({
     name,
     email,
+    number,
+    agency,
     password,
     roles,
   });
@@ -109,6 +113,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
+    user.agency = req.body.agency || user.agency;
+    user.number = req.body.number || user.number;
 
     const updatedUser = await user.save();
 
@@ -116,6 +122,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      number: updatedUser.number,
+      agency: updatedUser.agency,
+
       roles: updatedUser.roles,
     });
   } else {

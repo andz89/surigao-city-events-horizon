@@ -2,8 +2,8 @@ import asyncHandler from "express-async-handler";
 
 import Post from "../models/postsModel.js";
 
-// @desc    Update user profile
-// @route   PUT /api/users/addpost
+// @desc    add Post
+// @route   POST /api/users/addpost
 // @access  Private
 const addPost = asyncHandler(async (req, res) => {
   if (!req.body.content || !req.body.title) {
@@ -18,5 +18,17 @@ const addPost = asyncHandler(async (req, res) => {
   });
   res.json({ posts });
 });
+// @desc    Get organizer posts
+// @route   GET /api/posts
+// @access  Private
+const getOrganizerPosts = asyncHandler(async (req, res) => {
+  const post = await Post.find({ user: req.user._id });
 
-export { addPost };
+  if (post) {
+    res.json(post);
+  } else {
+    res.status(404);
+    throw new Error("Posts not found");
+  }
+});
+export { addPost, getOrganizerPosts };

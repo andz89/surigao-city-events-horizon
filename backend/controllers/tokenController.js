@@ -26,6 +26,8 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
       const data = {
         name: user.name,
         email: user.email,
+        number: user.number,
+        agency: user.agency,
         roles: user.roles,
       };
 
