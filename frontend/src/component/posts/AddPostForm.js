@@ -93,14 +93,14 @@ const AddPostForm = () => {
           {form ? (
             "Cancel Post"
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2  ">
               <FaPlus /> Add Post{" "}
             </div>
           )}
         </div>
       </div>
       {form && (
-        <section className="w-[800px] flex flex-col bg-white justify-center p-2 mx-auto rounded my-5">
+        <section className=" min-w-[300px] max-w-[600px] flex flex-col bg-white justify-center p-2 mx-auto rounded my-5">
           <form className="flex flex-col bg-white justify-center p-2">
             <div>
               <label

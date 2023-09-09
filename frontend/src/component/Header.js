@@ -24,39 +24,37 @@ const Header = () => {
   return (
     <>
       {isLoading && <LoadingSpinner />}
-      <header className="bg-slate-300 flex justify-between items-center p-2">
-        <div>
+      <header className="bg-slate-300 flex flex-col sm:flex-row justify-between items-center p-2">
+        <div className="text-center sm:text-left">
           <span className="font-semibold text-xl">
             Surigao City Event Horizons
           </span>
         </div>
-        <ul className="flex gap-4 mx-3 items-center font-semibold">
+        <ul className="flex  sm:text-base    gap-4 mx-3 items-center font-semibold">
           {userInfo ? (
             <>
               {userInfo.data?.user.roles[0] === "user" ? (
                 <>
                   <li>
-                    <Link to={"/posts"}> Post</Link>{" "}
+                    <Link to={"/posts"}>Post</Link>
                   </li>
                   <li>
-                    <Link to={"/profile-user"}> Profile </Link>{" "}
+                    <Link to={"/profile-user"}>Profile</Link>
                   </li>
                 </>
               ) : (
                 <>
-                  {" "}
                   <li>
-                    <Link to={"/dashboard"}> Dashboard</Link>{" "}
+                    <Link to={"/dashboard"}>Dashboard</Link>
                   </li>
                   <li>
-                    <Link to={"/postsOrganizer"}> Posts </Link>{" "}
+                    <Link to={"/postsOrganizer"}>Posts</Link>
                   </li>
                   <li>
-                    <Link to={"/profile-organizer"}> Profile </Link>{" "}
+                    <Link to={"/profile-organizer"}>Profile</Link>
                   </li>
                 </>
               )}
-
               <li>
                 <button
                   className="flex items-center gap-2 bg-dark px-2 py-1 text-white rounded"
@@ -71,7 +69,6 @@ const Header = () => {
             <>
               <li>
                 <Link to="/login" className="flex items-center gap-2">
-                  {" "}
                   <FaSignInAlt /> Login
                 </Link>
               </li>

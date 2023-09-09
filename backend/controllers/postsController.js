@@ -27,13 +27,18 @@ const addPost = asyncHandler(async (req, res) => {
 // @route   GET /api/posts
 // @access  Private
 const getOrganizerPosts = asyncHandler(async (req, res) => {
-  const post = await Post.find({ user: req.user._id });
-
-  if (post) {
-    res.json(post);
+  if (req.user.roles[0] === "user") {
+    const posts = await Post.find();
+    res.json(posts);
   } else {
-    res.status(404);
-    throw new Error("Posts not found");
+    const post = await Post.find({ user: req.user._id });
+
+    if (post) {
+      res.json(post);
+    } else {
+      res.status(404);
+      throw new Error("Posts not found");
+    }
   }
 });
 const addComment = asyncHandler(async (req, res) => {
@@ -45,6 +50,7 @@ const addComment = asyncHandler(async (req, res) => {
     name: req.body.name,
     comment: req.body.comment,
     date: req.body.date,
+    userId: req.user._id,
   };
   if (post) {
     post.comments.push(commentData);
@@ -65,14 +71,18 @@ const removePost = asyncHandler(async (req, res) => {
 
   try {
     // Use async/await with findByIdAndRemove to ensure proper handling of asynchronous code.
-    const removedPost = await Post.findByIdAndRemove(postId);
+    const result = await Post.findById(postId);
 
-    // Check if the post was found and removed successfully.
-    if (!removedPost) {
-      return res.status(404).json({ message: "Post not found" });
+    if (result.user.toString() === req.user._id.toString()) {
+      const removedPost = await Post.findByIdAndRemove(postId);
+      // Check if the post was found and removed successfully.
+      if (!removedPost) {
+        return res.status(404).json({ message: "Post not found" });
+      }
+      res.json({ message: "Post removed successfully" });
+    } else {
+      res.json({ message: "You are not the owner of this post!" });
     }
-
-    res.json({ message: "Post removed successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -85,18 +95,40 @@ const removeComment = asyncHandler(async (req, res) => {
   try {
     // Use async/await with findByIdAndRemove to ensure proper handling of asynchronous code.
     const post = await Post.findById(postId);
-
     // Check if the post was found and removed successfully.
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res.status(404).json({ message: "comment not found" });
     }
-    const new_comment = post.comments.filter((comment) => {
-      return comment.commentId !== commentId;
-    });
 
-    post.comments = new_comment;
-    await post.save();
-    res.json({ message: "Post removed successfully" });
+    //if the owner use delete function
+    if (post.user.toString() === req.user._id.toString()) {
+      console.log("nathc");
+      const new_comment = post.comments.filter((comment) => {
+        return comment.commentId !== commentId;
+      });
+
+      post.comments = new_comment;
+      await post.save();
+      res.json({ message: "Post removed successfully" });
+    } else {
+      //get the comment fron the post
+      const result = post.comments.filter((comment) => {
+        return comment.commentId === commentId;
+      });
+
+      // check the owner of the comment
+      if (result[0].userId.toString() === req.user._id.toString()) {
+        const new_comment = post.comments.filter((comment) => {
+          return comment.commentId !== commentId;
+        });
+
+        post.comments = new_comment;
+        await post.save();
+        res.json({ message: "Post removed successfully" });
+      } else {
+        res.status(500).json({ error: error.message });
+      }
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

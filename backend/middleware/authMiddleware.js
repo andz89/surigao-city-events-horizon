@@ -20,6 +20,7 @@ const protect = asyncHandler(async (req, res, next) => {
           "-password"
         );
       }
+
       next();
     } catch (error) {
       res.status(401);

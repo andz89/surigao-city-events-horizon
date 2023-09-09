@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
  
+import { FaTrash,FaRegEdit } from "react-icons/fa";
 import TimeAgo from "../../component/posts/TimeAgo";
 import { useEffect, useState } from "react";
 import Comments from "../../component/posts/Comments";
@@ -16,15 +16,22 @@ import { postsFetched } from "../../features/posts/postsSlice";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import EditPostForm from "../../component/posts/EditPostForm";
+import MiniLoading from "../../component/MiniLoading";
+import ConfirmDiaglog from "../../component/ConfirmDialog";
 const Posts = () => {
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
-  const [getPosts] = useGetPostMutation();
+  const [getPosts, {isLoading:getPostsLoading}] = useGetPostMutation();
   const [deletePost, {isLoading: deleteLoading}] = useDeletePostMutation();
  
 const [editPostId, setEditPostId] = useState("")
-  const handleDelete = async(postId) =>{
- 
+const [deletePostId, setDeletePostId] = useState(false)
+
+const showConfirm = (id)=>{
+  setDeletePostId(id)
+}
+  const handleDelete = async (postId) =>{
+   console.log(postId)
     try {
        await deletePost({postId}).unwrap();
       
@@ -40,6 +47,7 @@ const [editPostId, setEditPostId] = useState("")
       });
 
       dispatch(removePost({postId}));
+      setDeletePostId("")
     } catch (error) {
       toast.error(error?.data?.message, {
         position: "top-left",
@@ -53,7 +61,15 @@ const [editPostId, setEditPostId] = useState("")
       });
     }
   }
- const handleHideEditForm = ()=>{
+  const toggleConfirmDelete = (b) =>{
+    if(b){
+      handleDelete(deletePostId)
+    }else{
+      setDeletePostId("")
+    }
+  
+  }
+ const handleHideEditForm = async ()=>{
   setEditPostId("")
  }
  const handleShowEditForm = (e)=>{
@@ -79,16 +95,18 @@ const [editPostId, setEditPostId] = useState("")
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
   const renderedPosts = orderedPosts?.map((post) => (
+  
     <article key={post._id}>
-      <div className="w-[800px] p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="sm:w-[600px] p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="flex justify-end gap-2">
-        <div className="bg-rose-500 p-1 rounded text-white font-semibold cursor-pointer text-sm" onClick={()=>handleDelete(post._id)}>Delete Post</div>
-        <div className="bg-slate-500 p-1 rounded text-white font-semibold cursor-pointer text-sm" onClick={()=>handleShowEditForm(post._id)} > Edit Post  </div>
+        <div className="bg-rose-500 p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1" onClick={()=>showConfirm(post._id)}>  
+         <FaTrash className="text-slate-100"  />Delete Post</div>
+        <div className="bg-slate-500 p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1" onClick={()=>handleShowEditForm(post._id)} > <FaRegEdit/> Edit Post  </div>
 
 
         </div>
         <div className="flex flex-col">
-          <h5 className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          <h5 className=" font-bold  text-gray-900 dark:text-white   sm:text-2xl ">
             {post.title}
           </h5>
           <small className="text-slate-500  ">Agency Name: {post.agency}</small>
@@ -96,48 +114,48 @@ const [editPostId, setEditPostId] = useState("")
           <small className="text-slate-500  ">
             Event Organizer: {post.name}
           </small>
-          <div className="my-[-7px]">
-          <small className="text-slate-500"> Published: </small>  <TimeAgo timestamp={post.dateCreated} />
+          <div className="my-[0px]">
+          <small className="text-slate-500 "> Published: </small>  <TimeAgo timestamp={post.dateCreated} />
+          { post.dateCreated !== post.dateUpdated && <span>;
+          <small className="text-slate-500 "> last update: </small>   <TimeAgo timestamp={post.dateUpdated} />
+          </span>}
           </div>
         
-         { post.dateCreated !== post.dateUpdated && <div>
-          <small className="text-slate-500"> Last update: </small>   <TimeAgo timestamp={post.dateUpdated} />
-          </div>}
+        
 
 
         </div>
 
         <br />
-        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 sm:text-base">
           {post.content}
         </p>
 
-        <div className="flex justify-end items-center">
-          <div className="flex items-center p-1 text-xs   mb-2   text-center text-white bg-slate-600 rounded  hover:bg-slate-700   cursor-pointer">
-            Read more
-          </div>
-        </div>
+       
 
         <div className="mt-5">
-          <Comments comments={post?.comments} postId={post._id} />
+          <Comments comments={post?.comments} postId={post._id} postOwnerId={post.user} />
 
           <AddComments post={post} />
         </div>
       </div>
     </article>
+   
+  
   ));
 
   return (
     <>
+      { deletePostId && <ConfirmDiaglog toggleConfirmDelete={toggleConfirmDelete} />}
     {deleteLoading && <LoadingSpinner />}
     { editPostId && <EditPostForm handleHideEditForm={handleHideEditForm} editPostId={editPostId} />}
       <Header />
       <AddPostForm />
-      <section className="">
+      {getPostsLoading ? <MiniLoading/>:  <section className="">
         <div className="flex justify-center flex-col items-center gap-4">
           {renderedPosts}
         </div>
-      </section>
+      </section>}
     </>
   );
 };

@@ -51,6 +51,7 @@ const Profile = () => {
           name: res.name,
           email: res.email,
           roles: res.roles,
+          userId: res.userId,
         },
       };
       dispatch(
@@ -93,7 +94,7 @@ const Profile = () => {
       >
         <div className="flex justify-end mt-1">
           <Link
-            to="/updatePassword"
+            to="/updatePasswordUser"
             className="hover:bg-slate-500 hover:text-white flex items-center  gap-1 bg-slate-400 p-1 rounded text-sm"
           >
             <BiLinkExternal className="font-bold" /> Change Password

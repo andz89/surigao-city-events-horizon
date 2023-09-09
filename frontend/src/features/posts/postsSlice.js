@@ -40,7 +40,8 @@ const postsSlice = createSlice({
       state.posts = action.payload;
     },
     commentAdded: (state, action) => {
-      const { commentId, postId, name, comment, createdAt } = action.payload;
+      const { commentId, postId, name, comment, createdAt, userId } =
+        action.payload;
       const existingPost = state.posts.find((post) => post._id === postId);
 
       if (existingPost) {
@@ -50,6 +51,7 @@ const postsSlice = createSlice({
           name,
           comment,
           createdAt,
+          userId,
         });
       }
     },

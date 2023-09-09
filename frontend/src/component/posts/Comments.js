@@ -1,11 +1,15 @@
 import TimeAgo from "./TimeAgo";
 import { useEffect, useState } from "react";
 import { removeComment } from "../../features/posts/postsSlice";
-import { useDispatch } from "react-redux";
+
+import { useSelector, useDispatch } from "react-redux";
 import { useDeleteCommentMutation } from "../../features/posts/postsApiSlice";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../LoadingSpinner";
-const Comments = ({ comments, postId }) => {
+import { FaTrash } from "react-icons/fa";
+
+const Comments = ({ comments, postId, postOwnerId }) => {
+  const { userInfo } = useSelector((state) => state.auth);
   const [viewComments, setViewComments] = useState(false);
   const [deleteComment, { isLoading: deleteCommentLoading }] =
     useDeleteCommentMutation();
@@ -50,14 +54,25 @@ const Comments = ({ comments, postId }) => {
   const userComments = orderedPosts.map((comment) => {
     return (
       <article key={comment.commentId}>
-        <div className="border-slate-300 border p-1 rounded mb-3">
+        <div className="border-slate-300 border p-2 rounded mb-3">
           <div className="flex justify-end">
-            <div
-              className="bg-slate-200 p-1 text-[11px] rounded cursor-pointer"
-              onClick={() => handleRemove(comment.commentId)}
-            >
-              Delete Comment
-            </div>
+            {postOwnerId === userInfo.data.user.userId ? (
+              <div
+                className="hover:bg-blue-200 p-1 text-[11px] rounded cursor-pointer"
+                onClick={() => handleRemove(comment.commentId)}
+              >
+                <FaTrash className="text-slate-700" size="1.5em" />
+              </div>
+            ) : (
+              comment?.userId === userInfo.data.user.userId && (
+                <div
+                  className="hover:bg-blue-200 p-1 text-[11px] rounded cursor-pointer"
+                  onClick={() => handleRemove(comment.commentId)}
+                >
+                  <FaTrash className="text-slate-700" size="1.5em" />
+                </div>
+              )
+            )}
           </div>
           <div className="flex items-center">
             <div className="font-medium dark:text-white">
@@ -77,55 +92,77 @@ const Comments = ({ comments, postId }) => {
   return (
     <div>
       {deleteCommentLoading && <LoadingSpinner />}
+      <div className="h-[1px] bg-gray-300 border-0 rounded my-4"></div>
       <div className="flex justify-end">
         {comments.length > 0 ? (
           <small
             className="cursor-pointer"
             onClick={() => setViewComments((prev) => !prev)}
           >
-            {!viewComments ? <span>View</span> : <span>Hide</span>}{" "}
-            {!viewComments
-              ? comments.length === 0
-                ? comments.length - 1
-                : comments.length
-              : comments.length}{" "}
-            Comments
+            {comments.length !== 1 && (
+              <>
+                {!viewComments ? <span>View</span> : <span>Hide</span>}{" "}
+                {!viewComments
+                  ? comments.length === 0
+                    ? comments.length - 1
+                    : comments.length
+                  : comments.length}{" "}
+                Comments
+              </>
+            )}
           </small>
         ) : (
-          <span className="text-sm">No Comment</span>
+          " "
         )}
       </div>
       <div
         className={
-          viewComments ? "h-[240px] overflow-y-auto" : "  overflow-y-auto"
+          viewComments
+            ? comments.length === 1
+              ? "  overflow-y-auto"
+              : "h-[240px] overflow-y-auto"
+            : "  overflow-y-auto"
         }
       >
         {viewComments && userComments}
         {!viewComments && comments.length > 0 && (
           <article key={comments[comments.length - 1]?.commentId}>
             <div className="border-slate-300 border p-1 rounded mb-3">
-              <div className="flex justify-end">
-                <div
-                  className="bg-slate-200 p-1 text-[11px] rounded cursor-pointer"
-                  onClick={() =>
-                    handleRemove(comments[comments.length - 1]?.commentId)
-                  }
-                >
-                  Delete Comment
-                </div>
-              </div>
-              <div className="flex items-center">
-                <div className="font-medium dark:text-white">
-                  <div className="text-sm my-[-8px]">
-                    {comments[comments.length - 1]?.name}
+              <div className="flex  justify-between ">
+                <div className="font-medium dark:text-white p-2">
+                  <div className="w-full text-sm my-[-8px] flex justify-end">
+                    <div> {comments[comments.length - 1]?.name}</div>
                   </div>
                   <TimeAgo
                     timestamp={comments[comments.length - 1]?.createdAt}
                   />
                 </div>
+
+                {postOwnerId === userInfo.data.user.userId
+                  ? userInfo.data.user.userId && (
+                      <div
+                        className="hover:bg-slate-200 p-1 text-[11px] rounded cursor-pointer"
+                        onClick={() =>
+                          handleRemove(comments[comments.length - 1]?.commentId)
+                        }
+                      >
+                        <FaTrash className="text-slate-700" size="1.5em" />
+                      </div>
+                    )
+                  : comments[comments.length - 1]?.userId ===
+                      userInfo.data.user.userId && (
+                      <div
+                        className="hover:bg-slate-200 p-1 text-[11px] rounded cursor-pointer"
+                        onClick={() =>
+                          handleRemove(comments[comments.length - 1]?.commentId)
+                        }
+                      >
+                        <FaTrash className="text-slate-700" size="1.5em" />
+                      </div>
+                    )}
               </div>
 
-              <p className="  text-gray-500 text-sm dark:text-gray-400">
+              <p className="  text-gray-500 text-sm dark:text-gray-400 px-2">
                 {comments[comments.length - 1]?.comment}
               </p>
             </div>

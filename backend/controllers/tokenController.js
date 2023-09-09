@@ -29,6 +29,7 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
         number: user.number,
         agency: user.agency,
         roles: user.roles,
+        userId: user._id,
       };
 
       // create JWTs

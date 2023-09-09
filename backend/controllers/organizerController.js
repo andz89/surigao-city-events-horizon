@@ -62,6 +62,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       roles: user.roles,
+      agency: user.agency,
     };
     const accessToken = generateAccessToken(res, user.name, roles);
 
@@ -119,7 +120,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     const updatedUser = await user.save();
 
     res.json({
-      _id: updatedUser._id,
+      userId: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
       number: updatedUser.number,

@@ -8,6 +8,7 @@ import LoadingSpinner from "../LoadingSpinner";
 const AddComment = ({ post }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const name = userInfo.data.user.name;
+  const userId = userInfo.data.user.userId;
 
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const AddComment = ({ post }) => {
           comment: res.comment.comment,
           name: res.comment.name,
           createdAt: res.comment.date,
+          userId,
         };
         console.log(data);
         dispatch(commentAdded(data));

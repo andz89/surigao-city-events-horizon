@@ -21,6 +21,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       roles: user.roles,
+      userId: user._id,
     };
     // create JWTs
     const accessToken = generateAccessToken(res, user.name, user.roles);
@@ -116,7 +117,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     const updatedUser = await user.save();
 
     res.json({
-      _id: updatedUser._id,
+      userId: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
       roles: updatedUser.roles,
