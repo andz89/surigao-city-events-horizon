@@ -36,7 +36,7 @@ const LoginOrganizer = () => {
         token: res.accessToken,
         user: res.data,
       };
-
+      console.log(res.data);
       dispatch(setCredentials({ data }));
       // Set the token in cookies
       toast.success(`Hello   ${res.data.name}  Welcome back!`, {
