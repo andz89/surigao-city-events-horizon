@@ -108,7 +108,7 @@ const Profile = () => {
       </Label>
       <form
         onSubmit={onSubmit}
-        className="w-[400px]  border-2 border-gray-300 pb-4 px-5 mx-auto mt-12 text-dark"
+        className="sm:w-[600px]   border-2 border-gray-300 pb-4 px-5 mx-auto mt-12 text-dark"
       >
         <div className="flex justify-end mt-1">
           <Link

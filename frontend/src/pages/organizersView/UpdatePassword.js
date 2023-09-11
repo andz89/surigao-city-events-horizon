@@ -79,7 +79,7 @@ const UpdatePassword = () => {
 
       <form
         onSubmit={onSubmit}
-        className="w-[400px]  border-2 border-gray-300 pb-5 px-5 mx-auto mt-12 text-dark"
+        className="sm:w-[600px]  border-2 border-gray-300 pb-4 px-5 mx-auto mt-12 text-dark"
       >
         <div className="flex justify-end mt-1">
           <Link
@@ -91,7 +91,9 @@ const UpdatePassword = () => {
         </div>
         <div className="flex items-center gap-2 my-2 justify-center  ">
           <FaUser size={"2em"} />{" "}
-          <span className="font-bold text-2xl uppercase">Update Password </span>
+          <span className="font-bold sm:text-2xl uppercase">
+            Update Password{" "}
+          </span>
         </div>
 
         <div className="mb-3">
@@ -107,7 +109,7 @@ const UpdatePassword = () => {
             id="currentPassword"
             value={currentPassword}
             onChange={onChange}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             required
           />
         </div>
@@ -124,14 +126,14 @@ const UpdatePassword = () => {
             id="newPassword"
             value={newPassword}
             onChange={onChange}
-            className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+            className="wshadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
             required
           />
         </div>
 
         <button
           type="submit"
-          className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           {isLoading ? "Updating......" : "Update"}
         </button>

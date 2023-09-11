@@ -40,8 +40,8 @@ const Posts = () => {
 
   const renderedPosts = orderedPosts?.map((post) => (
     <article key={post._id}>
-      <div className="sm:w-[600px] p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <div className="flex flex-col">
+      <div className=" sm:w-[600px] p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex flex-col ">
           <h5 className=" font-bold  text-gray-900 dark:text-white   sm:text-2xl ">
             {post.title}
           </h5>
