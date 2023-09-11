@@ -1,79 +1,22 @@
 import { useSelector, useDispatch } from "react-redux";
 
-import { FaTrash, FaRegEdit } from "react-icons/fa";
 import TimeAgo from "../../component/posts/TimeAgo";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Comments from "../../component/posts/Comments";
 import AddComments from "../../component/posts/AddComments";
 import Header from "../../component/Header";
 import AddPostForm from "../../component/posts/AddPostForm";
-import { removePost } from "../../features/posts/postsSlice";
-import {
-  useGetPostMutation,
-  useDeletePostMutation,
-} from "../../features/posts/postsApiSlice";
+
+import { useGetPublicPostMutation } from "../../features/posts/postsApiSlice";
 import { postsFetched } from "../../features/posts/postsSlice";
-import { toast } from "react-toastify";
-import LoadingSpinner from "../../component/LoadingSpinner";
-import EditPostForm from "../../component/posts/EditPostForm";
+
 import MiniLoading from "../../component/MiniLoading";
-import ConfirmDiaglog from "../../component/ConfirmDialog";
+
 const Posts = () => {
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
-  const [getPosts, { isLoading: getPostsLoading }] = useGetPostMutation();
-  const [deletePost, { isLoading: deleteLoading }] = useDeletePostMutation();
+  const [getPosts, { isLoading: getPostsLoading }] = useGetPublicPostMutation();
 
-  const [editPostId, setEditPostId] = useState("");
-  const [deletePostId, setDeletePostId] = useState(false);
-
-  const showConfirm = (id) => {
-    setDeletePostId(id);
-  };
-  const handleDelete = async (postId) => {
-    console.log(postId);
-    try {
-      await deletePost({ postId }).unwrap();
-
-      toast.success("Delete Successfully", {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-
-      dispatch(removePost({ postId }));
-      setDeletePostId("");
-    } catch (error) {
-      toast.error(error?.data?.message, {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
-  const toggleConfirmDelete = (b) => {
-    if (b) {
-      handleDelete(deletePostId);
-    } else {
-      setDeletePostId("");
-    }
-  };
-  const handleHideEditForm = async () => {
-    setEditPostId("");
-  };
-  const handleShowEditForm = (e) => {
-    setEditPostId(e);
-  };
   useEffect(() => {
     const fetchData = async () => {
       try {

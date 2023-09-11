@@ -12,6 +12,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getPost: builder.mutation({
+      //get organizer post
+      query: () => ({
+        url: `${POST_URL}`,
+        method: "GET",
+      }),
+    }),
+
+    getOrganizerPost: builder.mutation({
       query: () => ({
         url: `${POST_URL}`,
         method: "GET",
@@ -45,6 +53,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getPublicPost: builder.mutation({
+      //get all posts of organizers
+      query: () => ({
+        url: `${POST_URL}/publicPosts`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -55,4 +70,5 @@ export const {
   useDeletePostMutation,
   useDeleteCommentMutation,
   useEditPostMutation,
+  useGetPublicPostMutation,
 } = usersApiSlice;

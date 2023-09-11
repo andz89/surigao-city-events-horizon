@@ -27,19 +27,18 @@ const addPost = asyncHandler(async (req, res) => {
 // @route   GET /api/posts
 // @access  Private
 const getOrganizerPosts = asyncHandler(async (req, res) => {
-  if (req.user.roles[0] === "user") {
-    const posts = await Post.find();
-    res.json(posts);
-  } else {
-    const post = await Post.find({ user: req.user._id });
+  const post = await Post.find({ user: req.user._id });
 
-    if (post) {
-      res.json(post);
-    } else {
-      res.status(404);
-      throw new Error("Posts not found");
-    }
+  if (post) {
+    res.json(post);
+  } else {
+    res.status(404);
+    throw new Error("Posts not found");
   }
+});
+const getPublicPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find();
+  res.json(posts);
 });
 const addComment = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.body.postId);
@@ -167,4 +166,5 @@ export {
   removePost,
   removeComment,
   editPost,
+  getPublicPosts,
 };

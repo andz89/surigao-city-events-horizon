@@ -122,7 +122,7 @@ const showConfirm = (id)=>{
           <small className="text-slate-500 "> last update: </small>   <TimeAgo timestamp={post.dateUpdated} />
           </span>}
           </div>
-        
+        {}
         
 
 

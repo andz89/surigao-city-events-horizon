@@ -23,6 +23,7 @@ const AddPostForm = () => {
 
   const onSavePostClicked = async (e) => {
     e.preventDefault();
+    let dataStamp = new Date().toISOString();
     if (title && content) {
       try {
         const res = await addPost({
@@ -30,8 +31,8 @@ const AddPostForm = () => {
           content,
           name,
           agency,
-          dateCreated: new Date().toISOString(),
-          dateUpdated: new Date().toISOString(),
+          dateCreated: dataStamp,
+          dateUpdated: dataStamp,
         }).unwrap();
 
         const data = {
