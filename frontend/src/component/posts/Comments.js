@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import LoadingSpinner from "../LoadingSpinner";
 import { FaTrash } from "react-icons/fa";
 
-const Comments = ({ comments, postId, postOwnerId }) => {
+const Comments = ({ comments, postId, postOwnerId, readOnly }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const [viewComments, setViewComments] = useState(false);
   const [deleteComment, { isLoading: deleteCommentLoading }] =
@@ -68,7 +68,7 @@ const Comments = ({ comments, postId, postOwnerId }) => {
               </p>
             </div>
             <div>
-              {postOwnerId === userInfo.data.user.userId ? (
+              {!readOnly && postOwnerId === userInfo.data.user.userId ? (
                 <div
                   className="hover:bg-blue-200 p-1 text-[11px] rounded cursor-pointer"
                   onClick={() => handleRemove(comment.commentId)}
@@ -76,14 +76,15 @@ const Comments = ({ comments, postId, postOwnerId }) => {
                   <FaTrash className="text-slate-700" size="1.5em" />
                 </div>
               ) : (
-                comment?.userId === userInfo.data.user.userId && (
-                  <div
-                    className="hover:bg-blue-200 p-1 text-[11px] rounded cursor-pointer"
-                    onClick={() => handleRemove(comment.commentId)}
-                  >
-                    <FaTrash className="text-slate-700" size="1.5em" />
-                  </div>
-                )
+                ""
+                // comment?.userId === userInfo.data.user.userId && (
+                //   <div
+                //     className="hover:bg-blue-200 p-1 text-[11px] rounded cursor-pointer"
+                //     onClick={() => handleRemove(comment.commentId)}
+                //   >
+                //     <FaTrash className="text-slate-700" size="1.5em" />
+                //   </div>
+                // )
               )}
             </div>
           </div>
@@ -128,54 +129,55 @@ const Comments = ({ comments, postId, postOwnerId }) => {
         }
       >
         {viewComments && userComments}
-        {!viewComments && comments.length > 0 && (
-          <article key={comments[comments.length - 1]?.commentId}>
-            <div className="border-slate-300 border p-1 rounded mb-3">
-              <div className="flex  justify-between ">
-                <div className="font-medium dark:text-white p-2">
-                  <div className="w-full text-sm my-[-8px] flex justify-between">
-                    <div> {comments[comments.length - 1]?.name}</div>
+        {readOnly === true ||
+          (!viewComments && comments.length > 0 && (
+            <article key={comments[comments.length - 1]?.commentId}>
+              <div className="border-slate-300 border p-1 rounded mb-3">
+                <div className="flex  justify-between ">
+                  <div className="font-medium dark:text-white p-2">
+                    <div className="w-full text-sm my-[-8px] flex justify-between">
+                      <div> {comments[comments.length - 1]?.name}</div>
+                    </div>
+                    <TimeAgo
+                      timestamp={comments[comments.length - 1]?.createdAt}
+                    />
                   </div>
-                  <TimeAgo
-                    timestamp={comments[comments.length - 1]?.createdAt}
-                  />
+                  <div>
+                    {postOwnerId === userInfo.data.user.userId
+                      ? userInfo.data.user.userId && (
+                          <div
+                            className="hover:bg-slate-200 p-1 text-[11px] rounded cursor-pointer"
+                            onClick={() =>
+                              handleRemove(
+                                comments[comments.length - 1]?.commentId
+                              )
+                            }
+                          >
+                            <FaTrash className="text-slate-700" size="1.5em" />
+                          </div>
+                        )
+                      : comments[comments.length - 1]?.userId ===
+                          userInfo.data.user.userId && (
+                          <div
+                            className="hover:bg-slate-200 p-1 text-[11px] rounded cursor-pointer"
+                            onClick={() =>
+                              handleRemove(
+                                comments[comments.length - 1]?.commentId
+                              )
+                            }
+                          >
+                            <FaTrash className="text-slate-700" size="1.5em" />
+                          </div>
+                        )}
+                  </div>
                 </div>
-                <div>
-                  {postOwnerId === userInfo.data.user.userId
-                    ? userInfo.data.user.userId && (
-                        <div
-                          className="hover:bg-slate-200 p-1 text-[11px] rounded cursor-pointer"
-                          onClick={() =>
-                            handleRemove(
-                              comments[comments.length - 1]?.commentId
-                            )
-                          }
-                        >
-                          <FaTrash className="text-slate-700" size="1.5em" />
-                        </div>
-                      )
-                    : comments[comments.length - 1]?.userId ===
-                        userInfo.data.user.userId && (
-                        <div
-                          className="hover:bg-slate-200 p-1 text-[11px] rounded cursor-pointer"
-                          onClick={() =>
-                            handleRemove(
-                              comments[comments.length - 1]?.commentId
-                            )
-                          }
-                        >
-                          <FaTrash className="text-slate-700" size="1.5em" />
-                        </div>
-                      )}
-                </div>
-              </div>
 
-              <p className="  text-gray-500 text-sm dark:text-gray-400 px-2">
-                {comments[comments.length - 1]?.comment}
-              </p>
-            </div>
-          </article>
-        )}
+                <p className="  text-gray-500 text-sm dark:text-gray-400 px-2">
+                  {comments[comments.length - 1]?.comment}
+                </p>
+              </div>
+            </article>
+          ))}
       </div>
     </div>
   );

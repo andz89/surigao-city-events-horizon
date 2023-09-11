@@ -25,10 +25,14 @@ const Header = () => {
     <>
       {isLoading && <LoadingSpinner />}
       <header className="bg-slate-300 flex flex-col sm:flex-row justify-between items-center p-2">
-        <div className="text-center sm:text-left">
-          <span className="font-semibold text-xl">
-            Surigao City Event Horizons
-          </span>
+        <div className="text-center sm:text-left ">
+          <ul className="flex items-end gap-3 justify-center">
+            <li>
+              <Link to={"/dashboard"} className=" text-2xl font-semibold">
+                Surigao City Event Horizons
+              </Link>
+            </li>
+          </ul>
         </div>
         <ul className="flex  sm:text-base    gap-4 mx-3 items-center font-semibold">
           {userInfo ? (
@@ -44,23 +48,24 @@ const Header = () => {
                 </>
               ) : (
                 <>
-                  <li>
-                    <Link to={"/dashboard"}>Dashboard</Link>
-                  </li>
-                  <li>
-                    <Link to={"/postsOrganizer"}>Posts</Link>
-                  </li>
-                  <li>
+                  {/* <li>
+                    <Link to={"/postsOrganizer"}>Public Posts</Link>
+                  </li> */}
+                  {/* <li>
                     <Link to={"/profile-organizer"}>Profile</Link>
+                  </li> */}
+                  <li>
+                    <Link to={"/dashboard"} className="font-semibold">
+                      Dashboard
+                    </Link>
                   </li>
                 </>
               )}
               <li>
                 <button
-                  className="flex items-center gap-2 bg-dark px-2 py-1 text-white rounded"
+                  className="flex items-center text-[16px] "
                   onClick={logoutHanler}
                 >
-                  <FaSignOutAlt />
                   Logout
                 </button>
               </li>

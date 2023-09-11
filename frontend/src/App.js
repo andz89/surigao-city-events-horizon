@@ -18,6 +18,9 @@ import Posts from "./pages/usersView/posts";
 import UpdatePasswordUser from "./pages/usersView/UpdatePassword";
 import UpdatePasswordOrganizer from "./pages/organizersView/UpdatePassword";
 import PostsOrganizer from "./pages/organizersView/Posts";
+import PublicPosts from "./pages/organizersView/PublicPosts";
+
+import Main from "./component/HeaderAndsidebar/Main";
 
 function App() {
   return (
@@ -55,16 +58,19 @@ function App() {
               </Route>
               {/*organizer view */}
               <Route path="" element={<Private allowedRoles={["organizer"]} />}>
-                <Route
-                  path="/profile-organizer"
-                  element={<ProfileOrganizer />}
-                />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route
-                  path="/updatePasswordOrganizer"
-                  element={<UpdatePasswordOrganizer />}
-                />
-                <Route path="/postsOrganizer" element={<PostsOrganizer />} />
+                <Route element={<Main />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/postsOrganizer" element={<PostsOrganizer />} />
+                  <Route
+                    path="/profile-organizer"
+                    element={<ProfileOrganizer />}
+                  />
+                  <Route
+                    path="/updatePasswordOrganizer"
+                    element={<UpdatePasswordOrganizer />}
+                  />
+                </Route>
+                <Route path="/publicPost" element={<PublicPosts />} />
               </Route>
 
               <Route

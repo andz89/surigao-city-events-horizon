@@ -1,14 +1,12 @@
-import Header from "../../component/Header";
-import { useSelector, useDispatch } from "react-redux";
-
+import SideBar from "../../component/HeaderAndsidebar/SideBar";
+import NavBar from "../../component/HeaderAndsidebar/NavBar";
+import Label from "../../component/HeaderAndsidebar/Label";
 const Dashboard = () => {
   return (
     <>
-      <Header />
-
-      <div className="m-2 bg">
-        <h3 className="text-dark text-md">Dashboard Events for organizer</h3>
-      </div>
+      <Label>
+        <div>Dashboard</div>
+      </Label>
     </>
   );
 };

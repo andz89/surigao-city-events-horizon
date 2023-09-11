@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
- 
-import { FaTrash,FaRegEdit } from "react-icons/fa";
+
+import { FaTrash, FaRegEdit } from "react-icons/fa";
 import TimeAgo from "../../component/posts/TimeAgo";
 import { useEffect, useState } from "react";
 import Comments from "../../component/posts/Comments";
@@ -18,24 +18,23 @@ import LoadingSpinner from "../../component/LoadingSpinner";
 import EditPostForm from "../../component/posts/EditPostForm";
 import MiniLoading from "../../component/MiniLoading";
 import ConfirmDiaglog from "../../component/ConfirmDialog";
-import Label from "../../component/HeaderAndsidebar/Label";
 const Posts = () => {
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
-  const [getPosts, {isLoading:getPostsLoading}] = useGetPostMutation();
-  const [deletePost, {isLoading: deleteLoading}] = useDeletePostMutation();
- 
-const [editPostId, setEditPostId] = useState("")
-const [deletePostId, setDeletePostId] = useState(false)
+  const [getPosts, { isLoading: getPostsLoading }] = useGetPostMutation();
+  const [deletePost, { isLoading: deleteLoading }] = useDeletePostMutation();
 
-const showConfirm = (id)=>{
-  setDeletePostId(id)
-}
-  const handleDelete = async (postId) =>{
-   console.log(postId)
+  const [editPostId, setEditPostId] = useState("");
+  const [deletePostId, setDeletePostId] = useState(false);
+
+  const showConfirm = (id) => {
+    setDeletePostId(id);
+  };
+  const handleDelete = async (postId) => {
+    console.log(postId);
     try {
-       await deletePost({postId}).unwrap();
-      
+      await deletePost({ postId }).unwrap();
+
       toast.success("Delete Successfully", {
         position: "top-left",
         autoClose: 5000,
@@ -47,8 +46,8 @@ const showConfirm = (id)=>{
         theme: "light",
       });
 
-      dispatch(removePost({postId}));
-      setDeletePostId("")
+      dispatch(removePost({ postId }));
+      setDeletePostId("");
     } catch (error) {
       toast.error(error?.data?.message, {
         position: "top-left",
@@ -61,29 +60,26 @@ const showConfirm = (id)=>{
         theme: "light",
       });
     }
-  }
-  const toggleConfirmDelete = (b) =>{
-    if(b){
-      handleDelete(deletePostId)
-    }else{
-      setDeletePostId("")
+  };
+  const toggleConfirmDelete = (b) => {
+    if (b) {
+      handleDelete(deletePostId);
+    } else {
+      setDeletePostId("");
     }
-  
-  }
- const handleHideEditForm = async ()=>{
-  setEditPostId("")
- }
- const handleShowEditForm = (e)=>{
-  setEditPostId(e)
-}
+  };
+  const handleHideEditForm = async () => {
+    setEditPostId("");
+  };
+  const handleShowEditForm = (e) => {
+    setEditPostId(e);
+  };
   useEffect(() => {
-    console.log('private posts')
     const fetchData = async () => {
       try {
         const res = await getPosts().unwrap();
 
         dispatch(postsFetched(res));
-     
       } catch (error) {
         console.error(error);
       }
@@ -97,16 +93,8 @@ const showConfirm = (id)=>{
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
   const renderedPosts = orderedPosts?.map((post) => (
-  
     <article key={post._id}>
       <div className="sm:w-[600px] p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <div className="flex justify-end gap-2">
-        <div className="bg-rose-500 p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1" onClick={()=>showConfirm(post._id)}>  
-         <FaTrash className="text-slate-100"  />Delete Post</div>
-        <div className="bg-slate-500 p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1" onClick={()=>handleShowEditForm(post._id)} > <FaRegEdit/> Edit Post  </div>
-
-
-        </div>
         <div className="flex flex-col">
           <h5 className=" font-bold  text-gray-900 dark:text-white   sm:text-2xl ">
             {post.title}
@@ -117,15 +105,15 @@ const showConfirm = (id)=>{
             Event Organizer: {post.name}
           </small>
           <div className="my-[0px]">
-          <small className="text-slate-500 "> Published: </small>  <TimeAgo timestamp={post.dateCreated} />
-          { post.dateCreated !== post.dateUpdated && <span>;
-          <small className="text-slate-500 "> last update: </small>   <TimeAgo timestamp={post.dateUpdated} />
-          </span>}
+            <small className="text-slate-500 "> Published: </small>{" "}
+            <TimeAgo timestamp={post.dateCreated} />
+            {post.dateCreated !== post.dateUpdated && (
+              <span>
+                ;<small className="text-slate-500 "> last update: </small>{" "}
+                <TimeAgo timestamp={post.dateUpdated} />
+              </span>
+            )}
           </div>
-        
-        
-
-
         </div>
 
         <br />
@@ -133,33 +121,26 @@ const showConfirm = (id)=>{
           {post.content}
         </p>
 
-       
-
         <div className="mt-5">
-          <Comments comments={post?.comments} postId={post._id} postOwnerId={post.user} />
-
-          <AddComments post={post} />
+          <Comments
+            comments={post?.comments}
+            postId={post._id}
+            postOwnerId={post.user}
+            readOnly={true}
+          />
         </div>
       </div>
     </article>
-   
-  
   ));
 
   return (
     <>
-      { deletePostId && <ConfirmDiaglog toggleConfirmDelete={toggleConfirmDelete} />}
-    {deleteLoading && <LoadingSpinner />}
-    { editPostId && <EditPostForm handleHideEditForm={handleHideEditForm} editPostId={editPostId} />}
-  <Label>
-    <div >Post</div>
-  </Label>
-      <AddPostForm />
-      {getPostsLoading ? <MiniLoading/>:  <section className="">
+      <Header />
+      <section className=" my-5">
         <div className="flex justify-center flex-col items-center gap-4">
-          {renderedPosts}
+          {getPostsLoading ? <MiniLoading /> : renderedPosts}
         </div>
-      </section>}
+      </section>
     </>
   );
 };

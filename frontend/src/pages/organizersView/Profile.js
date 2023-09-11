@@ -9,6 +9,7 @@ import { setCredentials } from "../../features/authUser/authSlice";
 import { useOrganizerUpdateProfileMutation } from "../../features/authUser/usersApiSlice";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import { BiLinkExternal } from "react-icons/bi";
+import Label from "../../component/HeaderAndsidebar/Label";
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -102,7 +103,9 @@ const Profile = () => {
   return (
     <>
       {isLoading && <LoadingSpinner />}
-      <Header />
+      <Label>
+        <div>Profile</div>
+      </Label>
       <form
         onSubmit={onSubmit}
         className="w-[400px]  border-2 border-gray-300 pb-4 px-5 mx-auto mt-12 text-dark"
