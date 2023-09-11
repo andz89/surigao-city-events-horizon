@@ -76,7 +76,7 @@ const UpdatePassword = () => {
   return (
     <>
       {isLoading && <LoadingSpinner />}
-      <Header />
+
       <form
         onSubmit={onSubmit}
         className="w-[400px]  border-2 border-gray-300 pb-5 px-5 mx-auto mt-12 text-dark"
