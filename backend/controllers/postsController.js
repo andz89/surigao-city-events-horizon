@@ -1,22 +1,37 @@
 import asyncHandler from "express-async-handler";
 
 import Post from "../models/postsModel.js";
-
+import { deleteImage } from "../middleware/deleteImage.js";
 // @desc    add Post
 // @route   POST /api/users/addpost
 // @access  Private
 const addPost = asyncHandler(async (req, res) => {
+  let image_one;
+  let image_two;
+
+  req.files.image_one.forEach((e) => {
+    image_one = e.filename;
+  });
+
+  req.files.image_two.forEach((e) => {
+    image_two = e.filename;
+  });
+
+  req.body.image_two = image_two;
+  req.body.image_one = image_one;
   if (!req.body.content || !req.body.title) {
     res.status(400);
     throw new Error("Please add a text field");
   }
-
   const posts = await Post.create({
     title: req.body.title,
     content: req.body.content,
     name: req.body.name,
     agency: req.body.agency,
     user: req.user._id,
+    image_one: req.body.image_one,
+    image_two: req.body.image_two,
+
     dateCreated: req.body.dateCreated,
     dateUpdated: req.body.dateUpdated,
   });
@@ -73,6 +88,9 @@ const removePost = asyncHandler(async (req, res) => {
     const result = await Post.findById(postId);
 
     if (result.user.toString() === req.user._id.toString()) {
+      let arrayImgs = [result.image_one, result.image_two];
+
+      await deleteImage(arrayImgs);
       const removedPost = await Post.findByIdAndRemove(postId);
       // Check if the post was found and removed successfully.
       if (!removedPost) {
@@ -143,17 +161,32 @@ const editPost = asyncHandler(async (req, res) => {
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
+    req.files.image_one &&
+      req.files.image_one.forEach(async (e) => {
+        let arrayImgs = [post.image_one];
+
+        await deleteImage(arrayImgs);
+        post.image_one = e.filename;
+      });
+
+    req.files.image_two &&
+      req.files.image_two.forEach(async (e) => {
+        let arrayImgs = [post.image_two];
+
+        await deleteImage(arrayImgs);
+        post.image_two = e.filename;
+      });
 
     // Update the post's properties based on the request body data.
     post.title = req.body.title;
     post.content = req.body.content;
-    post.name = req.body.name;
-    post.agency = req.body.agency;
+    // post.name = req.body.name;
+    // post.agency = req.body.agency;
     post.dateUpdated = req.body.dateUpdated;
     // Save the updated post.
     await post.save();
 
-    res.json(post.dateUpdated);
+    res.json(post);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

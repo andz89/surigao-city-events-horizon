@@ -45,6 +45,14 @@ const Header = () => {
                   <li>
                     <Link to={"/profile-user"}>Profile</Link>
                   </li>
+                  <li>
+                    <button
+                      className="flex items-center text-[16px] "
+                      onClick={logoutHanler}
+                    >
+                      Logout
+                    </button>
+                  </li>
                 </>
               ) : (
                 <>
@@ -61,14 +69,6 @@ const Header = () => {
                   </li>
                 </>
               )}
-              <li>
-                <button
-                  className="flex items-center text-[16px] "
-                  onClick={logoutHanler}
-                >
-                  Logout
-                </button>
-              </li>
             </>
           ) : (
             <>

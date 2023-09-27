@@ -59,8 +59,11 @@ const Posts = () => {
           </div>
         </div>
 
-        <br />
-        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 sm:text-base">
+        <div className="p-4  ">
+          <img src={post.image_one} className="object-cover h-[300px] w-full" />
+        </div>
+
+        <p className="mb-3 px-3 font-normal text-gray-700 dark:text-gray-400 sm:text-base">
           {post.content}
         </p>
 

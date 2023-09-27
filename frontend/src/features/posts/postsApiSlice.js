@@ -8,7 +8,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `${POST_URL}/addPost`,
         method: "POST",
-        body: { ...data }, // Ensure data is properly included in the request body
+        body: data, // Ensure data is properly included in the request body
       }),
     }),
     getPost: builder.mutation({
@@ -43,7 +43,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `${POST_URL}/EditPost`,
         method: "PUT",
-        body: { ...data },
+        body: data,
       }),
     }),
     deleteComment: builder.mutation({

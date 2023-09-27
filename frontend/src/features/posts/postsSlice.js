@@ -13,7 +13,18 @@ const postsSlice = createSlice({
       reducer(state, action) {
         state.posts.push(action.payload);
       },
-      prepare({ title, content, name, agency, _id, dateUpdated, dateCreated }) {
+      prepare({
+        title,
+        content,
+        name,
+        agency,
+        _id,
+        dateUpdated,
+
+        dateCreated,
+        image_one,
+        image_two,
+      }) {
         return {
           payload: {
             _id,
@@ -23,6 +34,8 @@ const postsSlice = createSlice({
             agency,
             dateCreated,
             dateUpdated,
+            image_one,
+            image_two,
             reactions: {
               thumbsUp: 0,
               wow: 0,
@@ -56,13 +69,16 @@ const postsSlice = createSlice({
       }
     },
     postEditted: (state, action) => {
-      const { postId, title, content, dateUpdated } = action.payload;
+      const { postId, title, content, dateUpdated, image_one, image_two } =
+        action.payload;
       const existingPost = state.posts.find((post) => post._id === postId);
 
       if (existingPost) {
         existingPost.title = title;
         existingPost.content = content;
         existingPost.dateUpdated = dateUpdated;
+        existingPost.image_one = image_one;
+        existingPost.image_two = image_two;
       }
     },
     removePost: (state, action) => {

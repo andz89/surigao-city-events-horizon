@@ -25,7 +25,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/organizers", organizerRoutes);
 app.use("/api/token", tokenRoutes);
 app.use("/api/posts", postsRoutes);
-
+app.use(express.static("backend/public/images"));
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, "/frontend/build")));

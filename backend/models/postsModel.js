@@ -46,6 +46,14 @@ const postsSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    image_one: {
+      type: String,
+      required: true,
+    },
+    image_two: {
+      type: String,
+      required: true,
+    },
     comments: [commentSchema],
   },
   {

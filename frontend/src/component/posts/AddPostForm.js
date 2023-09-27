@@ -15,6 +15,9 @@ const AddPostForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [form, setForm] = useState(false);
+  const [image_one, setImage_one] = useState();
+  const [image_two, setImage_two] = useState();
+
   const onTitleChanged = (e) => setTitle(e.target.value);
   const onContentChanged = (e) => setContent(e.target.value);
 
@@ -25,16 +28,20 @@ const AddPostForm = () => {
     e.preventDefault();
     let dataStamp = new Date().toISOString();
     if (title && content) {
-      try {
-        const res = await addPost({
-          title,
-          content,
-          name,
-          agency,
-          dateCreated: dataStamp,
-          dateUpdated: dataStamp,
-        }).unwrap();
+      const formData = new FormData();
 
+      formData.append("image_one", image_one);
+      formData.append("image_two", image_two);
+      formData.append("name", name);
+
+      formData.append("title", title);
+      formData.append("agency", agency);
+      formData.append("content", content);
+      formData.append("dateCreated", dataStamp);
+      formData.append("dateUpdated", dataStamp);
+      try {
+        const res = await addPost(formData).unwrap();
+        console.log(res);
         const data = {
           title,
           content,
@@ -43,6 +50,8 @@ const AddPostForm = () => {
           _id: res.posts._id,
           dateCreated: res.posts.dateCreated,
           dateUpdated: res.posts.dateUpdated,
+          image_one: res.posts.image_one,
+          image_two: res.posts.image_two,
         };
 
         dispatch(postAdded(data));
@@ -136,7 +145,20 @@ const AddPostForm = () => {
               value={content}
               onChange={onContentChanged}
             ></textarea>
-
+            <div className="relative z-0 w-full mb-6 group">
+              <input
+                type="file"
+                accept="image/*"
+                name="image_one"
+                onChange={(e) => setImage_one(e.target.files[0])}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                name="image_two"
+                onChange={(e) => setImage_two(e.target.files[0])}
+              />
+            </div>
             <button
               type="button"
               className={

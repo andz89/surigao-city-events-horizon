@@ -7,8 +7,13 @@ import { useDeleteCommentMutation } from "../../features/posts/postsApiSlice";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../LoadingSpinner";
 import { FaTrash } from "react-icons/fa";
-
+import { useLocation } from "react-router-dom";
 const Comments = ({ comments, postId, postOwnerId, readOnly }) => {
+  const location = useLocation();
+
+  // Access the current URL path (excluding the domain name)
+  const currentPath = location.pathname;
+
   const { userInfo } = useSelector((state) => state.auth);
   const [viewComments, setViewComments] = useState(false);
   const [deleteComment, { isLoading: deleteCommentLoading }] =
@@ -103,17 +108,29 @@ const Comments = ({ comments, postId, postOwnerId, readOnly }) => {
             className="cursor-pointer"
             onClick={() => setViewComments((prev) => !prev)}
           >
-            {comments.length !== 1 && (
-              <>
-                {!viewComments ? <span>View</span> : <span>Hide</span>}{" "}
-                {!viewComments
-                  ? comments.length === 0
-                    ? comments.length - 1
-                    : comments.length
-                  : comments.length}{" "}
-                Comments
-              </>
-            )}
+            {currentPath === "/publicPost"
+              ? comments.length && (
+                  <>
+                    {!viewComments ? <span>View</span> : <span>Hide</span>}{" "}
+                    {!viewComments
+                      ? comments.length === 0
+                        ? comments.length - 1
+                        : comments.length
+                      : comments.length}{" "}
+                    {comments.length > 1 ? "Comments" : "Comment"}
+                  </>
+                )
+              : comments.length !== 1 && (
+                  <>
+                    {!viewComments ? <span>View</span> : <span>Hide</span>}{" "}
+                    {!viewComments
+                      ? comments.length === 0
+                        ? comments.length - 1
+                        : comments.length
+                      : comments.length}{" "}
+                    {comments.length > 1 ? "Comments" : "Comment"}
+                  </>
+                )}
           </small>
         ) : (
           " "

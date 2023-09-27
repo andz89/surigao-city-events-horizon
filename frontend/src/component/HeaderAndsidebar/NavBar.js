@@ -1,7 +1,29 @@
 import React from "react";
 // import logo from "../assets/ssct-logo.jpg";
+
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useLogoutMutation } from "../../features/authUser/usersApiSlice";
+// import { logout } from "../../features/authUser/authSlice";
+import { logout } from "../../features/authUser/authSlice";
+
+import LoadingSpinner from "../../component/LoadingSpinner";
+
 const NavBar = () => {
+  const navigage = useNavigate();
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+  const [logoutApiCall, { isLoading }] = useLogoutMutation();
+  const logoutHanler = async () => {
+    try {
+      await logoutApiCall().unwrap();
+
+      dispatch(logout());
+      navigage("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -40,7 +62,10 @@ const NavBar = () => {
                 </li>
               </ul>
 
-              <span className="flex-1 ml-3 bg-gray-300 rounded p-1 font-semibold hover:bg-gray-200 cursor-pointer text-slate-700 whitespace-nowrap">
+              <span
+                onClick={logoutHanler}
+                className="flex-1 ml-3 bg-gray-300 rounded p-1 font-semibold hover:bg-gray-200 cursor-pointer text-slate-700 whitespace-nowrap"
+              >
                 Sign Out
               </span>
             </div>

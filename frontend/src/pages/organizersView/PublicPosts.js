@@ -36,7 +36,7 @@ const Posts = () => {
 
   const orderedPosts = posts
     .slice()
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    .sort((a, b) => b.dateCreated.localeCompare(a.dateCreated));
 
   const renderedPosts = orderedPosts?.map((post) => (
     <article key={post._id}>
@@ -61,9 +61,11 @@ const Posts = () => {
             )}
           </div>
         </div>
+        <div className="p-4  ">
+          <img src={post.image_one} className="object-cover h-[300px] w-full" />
+        </div>
 
-        <br />
-        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 sm:text-base">
+        <p className="mb-3 px-3 font-normal text-gray-700 dark:text-gray-400 sm:text-base">
           {post.content}
         </p>
 
