@@ -16,7 +16,7 @@ const AddComment = ({ post }) => {
     useAddCommentMutation();
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-    const postId = post._id;
+    const postId = post._id ? post._id : post[0]._id;
     if (comment) {
       try {
         const res = await addComments({

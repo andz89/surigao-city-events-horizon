@@ -81,15 +81,14 @@ const Comments = ({ comments, postId, postOwnerId, readOnly }) => {
                   <FaTrash className="text-slate-700" size="1.5em" />
                 </div>
               ) : (
-                ""
-                // comment?.userId === userInfo.data.user.userId && (
-                //   <div
-                //     className="hover:bg-blue-200 p-1 text-[11px] rounded cursor-pointer"
-                //     onClick={() => handleRemove(comment.commentId)}
-                //   >
-                //     <FaTrash className="text-slate-700" size="1.5em" />
-                //   </div>
-                // )
+                comment?.userId === userInfo.data.user.userId && (
+                  <div
+                    className="hover:bg-blue-200 p-1 text-[11px] rounded cursor-pointer"
+                    onClick={() => handleRemove(comment.commentId)}
+                  >
+                    <FaTrash className="text-slate-700" size="1.5em" />
+                  </div>
+                )
               )}
             </div>
           </div>

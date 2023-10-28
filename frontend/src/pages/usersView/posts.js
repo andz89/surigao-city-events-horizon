@@ -79,7 +79,7 @@ const Posts = () => {
   return (
     <>
       <Header />
-      <AddPostForm />
+
       {getPostsLoading ? (
         <MiniLoading />
       ) : (

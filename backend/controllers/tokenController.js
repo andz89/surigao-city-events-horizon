@@ -9,7 +9,7 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
   let token;
 
   token = req.cookies.jwt;
-  console.log("from token");
+
   if (token) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -24,16 +24,16 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
         throw new Error("Not authorized, token failed");
       }
       const data = {
-        name: user.name,
-        email: user.email,
-        number: user.number,
-        agency: user.agency,
-        roles: user.roles,
-        userId: user._id,
+        name: user?.name,
+        email: user?.email,
+        number: user?.number,
+        agency: user?.agency,
+        roles: user?.roles,
+        userId: user?._id,
       };
 
       // create JWTs
-      const accessToken = generateAccessToken(res, user.name, user.roles);
+      const accessToken = generateAccessToken(res, user?.name, user.roles);
 
       res.json({ data, accessToken });
     } catch (error) {

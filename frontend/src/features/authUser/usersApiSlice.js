@@ -52,6 +52,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    organizerImageBg: builder.mutation({
+      query: (data) => ({
+        url: `${ORGANIZER_URL}/imageBg`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
 
     organizerUpdateProfile: builder.mutation({
       query: (data) => ({
@@ -88,4 +95,5 @@ export const {
   useOrganizerUpdateProfileMutation,
   useOrganizerRegisterMutation,
   useOrganizerUpdatePasswordMutation,
+  useOrganizerImageBgMutation,
 } = usersApiSlice;

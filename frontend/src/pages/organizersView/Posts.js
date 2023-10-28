@@ -79,7 +79,7 @@ const Posts = () => {
     const fetchData = async () => {
       try {
         const res = await getPosts().unwrap();
-        console.log(res);
+
         dispatch(postsFetched(res));
       } catch (error) {
         console.error(error);

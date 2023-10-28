@@ -83,7 +83,10 @@ const Posts = () => {
 
   return (
     <>
-      <Header />
+      <div className="sticky top-0">
+        <Header />
+      </div>
+
       <section className=" my-5">
         <div className="flex justify-center flex-col items-center gap-4">
           {getPostsLoading ? <MiniLoading /> : renderedPosts}
