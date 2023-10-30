@@ -1,18 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { FaUser } from "react-icons/fa";
+
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import Header from "../../component/Header";
+
 import { setCredentials } from "../../features/authUser/authSlice";
 import {
   useOrganizerUpdateProfileMutation,
   useOrganizerImageBgMutation,
 } from "../../features/authUser/usersApiSlice";
 import LoadingSpinner from "../../component/LoadingSpinner";
-import { BiLinkExternal } from "react-icons/bi";
-import Label from "../../component/HeaderAndsidebar/Label";
+
 import { addBg } from "../../features/authUser/authSlice";
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +19,10 @@ const Profile = () => {
     email: "",
     number: "",
     agency: "",
+    address: "",
+    description: "",
   });
-  const { name, email, number, agency } = formData;
+  const { name, email, number, agency, address, description } = formData;
   const [imageBg, setImageBg] = useState();
   const dispatch = useDispatch();
 
@@ -37,12 +38,16 @@ const Profile = () => {
       email: userInfo.data.user.email,
       number: userInfo.data.user.number,
       agency: userInfo.data.user.agency,
+      address: userInfo.data.user.address,
+      description: userInfo.data.user.description,
     }));
   }, [
     userInfo.data.user.name,
     userInfo.data.user.email,
     userInfo.data.user.number,
     userInfo.data.user.agency,
+    userInfo.data.user.address,
+    userInfo.data.user.description,
     dispatch,
   ]);
 
@@ -61,6 +66,8 @@ const Profile = () => {
         email,
         number,
         agency,
+        address,
+        description,
       }).unwrap();
 
       const data = {
@@ -71,6 +78,9 @@ const Profile = () => {
           number: res.number,
           agency: res.agency,
           userId: res.userId,
+          address: res.address,
+          description: res.description,
+          imageBg: res.imageBg,
           roles: res.roles,
         },
       };
@@ -181,18 +191,19 @@ const Profile = () => {
         />
         <div className="px-4 mx-auto max-w-screen-xl text-center py-12 relative">
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">
-            {userInfo.data.user.storeName}
+            {agency}
           </h1>
           <p className="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
-            {userInfo.data.user.description}
+            {description}
           </p>
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-            <a
-              href="#"
+            <Link
+              to={userInfo.data.user.userId}
               className="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
+              target="_blank"
             >
-              View Menu
-            </a>
+              View Page
+            </Link>
           </div>
         </div>
       </section>
@@ -256,6 +267,7 @@ const Profile = () => {
           </div>
           <div className="relative z-0 w-full mb-6 group ">
             <input
+              value={description}
               type="description"
               name="description"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -291,6 +303,7 @@ const Profile = () => {
           </div>
           <div className="relative z-0 w-full mb-6 group">
             <input
+              value={address}
               type="text"
               name="address"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"

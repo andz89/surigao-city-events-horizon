@@ -82,6 +82,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getProfile: builder.mutation({
+      query: () => ({
+        url: `${ORGANIZER_URL}/organizerProfile`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 export const {
@@ -96,4 +102,5 @@ export const {
   useOrganizerRegisterMutation,
   useOrganizerUpdatePasswordMutation,
   useOrganizerImageBgMutation,
+  useGetProfileMutation,
 } = usersApiSlice;

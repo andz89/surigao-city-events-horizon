@@ -4,7 +4,7 @@ import {
   generateRefreshToken,
   generateAccessToken,
 } from "../utils/generateToken.js";
-
+import { deleteImage } from "../helper/deleteImage.js";
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
 // @access  Public
@@ -18,9 +18,11 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       number: user.number,
-      agency: user.agency,
       roles: user.roles,
       userId: user._id,
+      address: user.address,
+      description: user.description,
+      imageBg: user.imageBg,
     };
     // create JWTs
     const accessToken = generateAccessToken(res, user.name, user.roles);
@@ -32,7 +34,26 @@ const authUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 });
+const updateImageBg = asyncHandler(async (req, res) => {
+  console.log(req.body);
+  const user = await User.findById(req.user._id);
 
+  if (user) {
+    req.files.imageBg.forEach(async (e) => {
+      let arrayImgs = [user.imageBg];
+
+      user.imageBg && (await deleteImage(arrayImgs));
+      user.imageBg = e.filename;
+    });
+
+    const bgName = await user.save();
+
+    res.json(bgName);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
 // @desc    Register a new user
 // @route   POST /api/users
 // @access  Public
@@ -91,15 +112,11 @@ const logoutUser = (req, res) => {
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
-const getUserProfile = asyncHandler(async (req, res) => {
+const getOrganizerProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-    });
+    res.json(user);
   } else {
     res.status(404);
     throw new Error("User not found");
@@ -116,6 +133,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
     user.agency = req.body.agency || user.agency;
+    user.address = req.body.address || user.address;
+    user.description = req.body.description || user.description;
+
     user.number = req.body.number || user.number;
 
     const updatedUser = await user.save();
@@ -126,7 +146,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       number: updatedUser.number,
       agency: updatedUser.agency,
-
+      address: updatedUser.address,
+      description: updatedUser.description,
+      imageBg: updatedUser.imageBg,
       roles: updatedUser.roles,
     });
   } else {
@@ -164,7 +186,8 @@ export {
   authUser,
   registerUser,
   logoutUser,
-  getUserProfile,
+  getOrganizerProfile,
   updateUserProfile,
   updateUserPassword,
+  updateImageBg,
 };

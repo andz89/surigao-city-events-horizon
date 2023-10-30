@@ -19,7 +19,7 @@ import EditPostForm from "../../component/posts/EditPostForm";
 import MiniLoading from "../../component/MiniLoading";
 import ConfirmDiaglog from "../../component/ConfirmDialog";
 import Label from "../../component/HeaderAndsidebar/Label";
-const Posts = () => {
+const Posts = ({ displayLabel }) => {
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const [getPosts, { isLoading: getPostsLoading }] = useGetPostMutation();
@@ -134,7 +134,10 @@ const Posts = () => {
           {}
         </div>
         <div className="p-4  ">
-          <img src={post.image_one} className="object-cover h-[300px] w-full" />
+          <img
+            src={"http://localhost:3000/" + post.image_one}
+            className="object-cover h-[300px] w-full"
+          />
         </div>
 
         <p className="mb-3 px-3 font-normal text-gray-700 dark:text-gray-400 sm:text-base">
@@ -166,9 +169,12 @@ const Posts = () => {
           editPostId={editPostId}
         />
       )}
-      <Label>
-        <div>Post</div>
-      </Label>
+      {displayLabel && (
+        <Label>
+          <div>Post</div>
+        </Label>
+      )}
+
       <AddPostForm />
       {getPostsLoading ? (
         <MiniLoading />

@@ -20,9 +20,18 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    address: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
     password: {
       type: String,
       required: true,
+    },
+    imageBg: {
+      type: String,
     },
     roles: {
       type: [String], // Change the type to an array of strings

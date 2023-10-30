@@ -21,6 +21,7 @@ import PostsOrganizer from "./pages/organizersView/Posts";
 import PublicPosts from "./pages/organizersView/PublicPosts";
 
 import Main from "./component/HeaderAndsidebar/Main";
+import SinglePage from "./pages/organizersView/SinglePage";
 
 function App() {
   return (
@@ -60,16 +61,21 @@ function App() {
               <Route path="" element={<Private allowedRoles={["organizer"]} />}>
                 <Route element={<Main />}>
                   <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/postsOrganizer" element={<PostsOrganizer />} />
+                  <Route
+                    path="/postsOrganizer"
+                    element={<PostsOrganizer displayLabel={true} />}
+                  />
                   <Route
                     path="/profile-organizer"
                     element={<ProfileOrganizer />}
                   />
+
                   <Route
                     path="/updatePasswordOrganizer"
                     element={<UpdatePasswordOrganizer />}
                   />
                 </Route>
+                <Route path="/profile-organizer/:id" element={<SinglePage />} />
                 <Route path="/publicPost" element={<PublicPosts />} />
               </Route>
 
