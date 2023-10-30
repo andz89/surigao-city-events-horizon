@@ -4,17 +4,14 @@ import Label from "../../component/HeaderAndsidebar/Label";
 import { postsFetched } from "../../features/posts/postsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import {
-  useGetPostMutation,
-  useDeletePostMutation,
-} from "../../features/posts/postsApiSlice";
+import { useGetPostMutation } from "../../features/posts/postsApiSlice";
 import EditPostForm from "../../component/posts/EditPostForm";
 import ViewPost from "../../component/posts/ViewPost";
 
 const Dashboard = () => {
   const [editPostId, setEditPostId] = useState("");
   const [viewPostId, setViewPostId] = useState("");
-
+  const { userInfo } = useSelector((state) => state.auth);
   const handleHideEditForm = async () => {
     setEditPostId("");
   };
@@ -82,6 +79,7 @@ const Dashboard = () => {
         <ViewPost
           handleHideViewPost={handleHideViewPost}
           viewPostId={viewPostId}
+          userInfo={userInfo}
         />
       )}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">

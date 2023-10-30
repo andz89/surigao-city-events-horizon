@@ -12,7 +12,7 @@ import AddComments from "../../component/posts/AddComments";
 import { useDeletePostMutation } from "../../features/posts/postsApiSlice";
 import { removePost } from "../../features/posts/postsSlice";
 import ConfirmDiaglog from "../../component/ConfirmDialog";
-const EditPostForm = ({ handleHideViewPost, viewPostId }) => {
+const EditPostForm = ({ handleHideViewPost, viewPostId, userInfo }) => {
   const [deletePostId, setDeletePostId] = useState(false);
   const { posts } = useSelector((state) => state.posts);
   const viewPost = posts.filter((post) => post._id === viewPostId);
@@ -114,12 +114,13 @@ const EditPostForm = ({ handleHideViewPost, viewPostId }) => {
               <p className="mb-3 px-3 font-normal text-gray-700 dark:text-gray-400 sm:text-base">
                 {viewPost[0].content}
               </p>
-
+              {console.log(userInfo)}
               <div className="mt-5">
                 <Comments
                   comments={viewPost[0]?.comments}
                   postId={viewPost[0]._id}
                   postOwnerId={viewPost[0].user}
+                  userInfo={userInfo}
                 />
 
                 <AddComments post={viewPost} />

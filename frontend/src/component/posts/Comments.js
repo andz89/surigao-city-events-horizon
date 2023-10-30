@@ -8,13 +8,12 @@ import { toast } from "react-toastify";
 import LoadingSpinner from "../LoadingSpinner";
 import { FaTrash } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
-const Comments = ({ comments, postId, postOwnerId, readOnly }) => {
+const Comments = ({ comments, postId, postOwnerId, readOnly, userInfo }) => {
   const location = useLocation();
 
   // Access the current URL path (excluding the domain name)
   const currentPath = location.pathname;
 
-  const { userInfo } = useSelector((state) => state.auth);
   const [viewComments, setViewComments] = useState(false);
   const [deleteComment, { isLoading: deleteCommentLoading }] =
     useDeleteCommentMutation();

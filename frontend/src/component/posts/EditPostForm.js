@@ -77,7 +77,7 @@ const EditPostForm = ({ handleHideEditForm, editPostId }) => {
   return (
     <>
       <section className="fixed top-0 left-0 right-0 z-50    p-4   bg-slate-900 bg-opacity-40 md:inset-0       flex items-center justify-center ">
-        <form className="flex flex-col bg-white justify-center p-2   w-2/3">
+        <form className="flex flex-col bg-white justify-center p-2 w-full mx-auto max-w-2xl">
           <div className="h-[500px] overflow-y-auto">
             <div className="flex justify-between items-center sticky top-0 z-10 bg-white">
               <div className="bg-teal-700 p-2 rounded text-white font-semibold my-2">
@@ -156,7 +156,11 @@ const EditPostForm = ({ handleHideEditForm, editPostId }) => {
                 />
               </label>
 
-              <img src={postToEdit[0].image_one} width={200} className="py-3" />
+              <img
+                src={"/" + postToEdit[0].image_one}
+                width={200}
+                className="py-3"
+              />
               <label
                 forhtml="image_two"
                 className="border-[1px] border-slate-300 rounded text-center p-1 w-[150px] hover:bg-slate-100 cursor-pointer"
@@ -171,7 +175,11 @@ const EditPostForm = ({ handleHideEditForm, editPostId }) => {
                 />
               </label>
 
-              <img src={postToEdit[0].image_two} width={200} className="py-3" />
+              <img
+                src={"/" + postToEdit[0].image_two}
+                width={200}
+                className="py-3"
+              />
             </div>
           </div>
         </form>

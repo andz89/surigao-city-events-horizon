@@ -61,10 +61,7 @@ function App() {
               <Route path="" element={<Private allowedRoles={["organizer"]} />}>
                 <Route element={<Main />}>
                   <Route path="/dashboard" element={<Dashboard />} />
-                  <Route
-                    path="/postsOrganizer"
-                    element={<PostsOrganizer displayLabel={true} />}
-                  />
+
                   <Route
                     path="/profile-organizer"
                     element={<ProfileOrganizer />}

@@ -185,7 +185,7 @@ const Profile = () => {
       </div>
       <section className="bg-black bg-blend-multiply relative">
         <img
-          src={userInfo.data.user.imageBg}
+          src={"/" + userInfo.data.user.imageBg}
           alt="Conference"
           className="opacity-40 absolute inset-0 w-full h-full object-cover object-center"
         />

@@ -91,26 +91,26 @@ const AddPostForm = () => {
   return (
     <>
       {isLoading && <LoadingSpinner />}
-      <div className="flex justify-end m-5">
+      <div className="flex justify-end    mt-2 w-full max-w-2xl">
         <div
           className={
             form
-              ? "bg-rose-500 font-semibold  p-2 text-white rounded flex items-center gap-2 cursor-pointer"
-              : "bg-teal-700 font-semibold  p-2 text-white rounded flex items-center gap-2 cursor-pointer"
+              ? "bg-rose-500 font-semibold  p-2  text-white rounded flex  gap-2 cursor-pointer"
+              : "border-2 rounded border-teal-600 shadow-md  font-semibold  p-2 text-teal-700  rounded flex  gap-2 cursor-pointer"
           }
           onClick={handleShowForm}
         >
           {form ? (
             "Cancel Post"
           ) : (
-            <div className="flex items-center gap-2  ">
-              <FaPlus /> Add Post{" "}
+            <div className="flex  items-center gap-2  ">
+              <FaPlus /> Add Post
             </div>
           )}
         </div>
       </div>
       {form && (
-        <section className=" min-w-[300px] max-w-[600px] flex flex-col bg-white justify-center p-2 mx-auto rounded my-5">
+        <section className="bg-slate-200 w-full max-w-2xl flex flex-col bg-white justify-center p-2 mx-auto rounded my-5">
           <form className="flex flex-col bg-white justify-center p-2">
             <div>
               <label
@@ -139,13 +139,13 @@ const AddPostForm = () => {
             </label>
             <textarea
               rows="4"
-              className="block p-2.5 w-full text-sm outline-none text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="block p-2.5 w-full text-sm outline-none text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-6"
               placeholder="Write your thoughts here..."
               name="postContent"
               value={content}
               onChange={onContentChanged}
             ></textarea>
-            <div className="relative z-0 w-full mb-6 group">
+            <div className="relative z-0 w-full mb-6 group gap-2">
               <input
                 type="file"
                 accept="image/*"

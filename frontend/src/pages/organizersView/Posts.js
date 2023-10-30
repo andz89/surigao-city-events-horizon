@@ -19,8 +19,7 @@ import EditPostForm from "../../component/posts/EditPostForm";
 import MiniLoading from "../../component/MiniLoading";
 import ConfirmDiaglog from "../../component/ConfirmDialog";
 import Label from "../../component/HeaderAndsidebar/Label";
-const Posts = ({ displayLabel }) => {
-  const { posts } = useSelector((state) => state.posts);
+const Posts = ({ displayLabel, posts, userInfo }) => {
   const dispatch = useDispatch();
   const [getPosts, { isLoading: getPostsLoading }] = useGetPostMutation();
   const [deletePost, { isLoading: deleteLoading }] = useDeletePostMutation();
@@ -95,7 +94,7 @@ const Posts = ({ displayLabel }) => {
 
   const renderedPosts = orderedPosts?.map((post) => (
     <article key={post._id}>
-      <div className="sm:w-[600px] p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="  p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="flex justify-end gap-2">
           <div
             className="bg-rose-500 p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1"
@@ -135,7 +134,7 @@ const Posts = ({ displayLabel }) => {
         </div>
         <div className="p-4  ">
           <img
-            src={"http://localhost:3000/" + post.image_one}
+            src={"/" + post.image_one}
             className="object-cover h-[300px] w-full"
           />
         </div>
@@ -149,6 +148,7 @@ const Posts = ({ displayLabel }) => {
             comments={post?.comments}
             postId={post._id}
             postOwnerId={post.user}
+            userInfo={userInfo}
           />
 
           <AddComments post={post} />
@@ -175,12 +175,12 @@ const Posts = ({ displayLabel }) => {
         </Label>
       )}
 
-      <AddPostForm />
       {getPostsLoading ? (
         <MiniLoading />
       ) : (
         <section className="">
-          <div className="flex justify-center flex-col items-center gap-4">
+          <div className="flex justify-center flex-col   gap-4 w-full mx-auto max-w-2xl">
+            <AddPostForm />
             {renderedPosts}
           </div>
         </section>
