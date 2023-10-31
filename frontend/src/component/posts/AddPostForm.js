@@ -110,7 +110,7 @@ const AddPostForm = () => {
         </div>
       </div>
       {form && (
-        <section className="bg-slate-200 w-full max-w-2xl flex flex-col bg-white justify-center p-2 mx-auto rounded my-5">
+        <section className="border-slate-400 border-2 w-full max-w-2xl flex flex-col bg-white justify-center p-2 mx-auto rounded my-5">
           <form className="flex flex-col bg-white justify-center p-2">
             <div>
               <label

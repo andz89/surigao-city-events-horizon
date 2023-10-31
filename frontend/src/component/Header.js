@@ -24,7 +24,7 @@ const Header = () => {
   return (
     <>
       {isLoading && <LoadingSpinner />}
-      <header className="bg-slate-300 flex flex-col sm:flex-row justify-between items-center p-2">
+      <header className="bg-slate-300 sticky top-0 flex flex-col z-50 sm:flex-row justify-between items-center p-2">
         <div className="text-center sm:text-left ">
           <ul className="flex items-end gap-3 justify-center">
             <li>
@@ -62,9 +62,21 @@ const Header = () => {
                   {/* <li>
                     <Link to={"/profile-organizer"}>Profile</Link>
                   </li> */}
+
+                  <li>
+                    <Link
+                      to={`/home/${userInfo.data.user.userId}`}
+                      className="font-semibold"
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/publicPost"> Posts</Link>
+                  </li>
                   <li>
                     <Link to={"/dashboard"} className="font-semibold">
-                      Dashboard
+                      Settings
                     </Link>
                   </li>
                 </>

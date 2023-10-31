@@ -55,6 +55,13 @@ const getPublicPosts = asyncHandler(async (req, res) => {
   const posts = await Post.find();
   res.json(posts);
 });
+const getPostsByOwner = asyncHandler(async (req, res) => {
+  const ownerId = req.query.postOwnerId;
+
+  const posts = await Post.find({ user: ownerId }); //find all post that has this owner id
+
+  res.json(posts);
+});
 const addComment = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.body.postId);
 
@@ -200,4 +207,5 @@ export {
   removeComment,
   editPost,
   getPublicPosts,
+  getPostsByOwner,
 };

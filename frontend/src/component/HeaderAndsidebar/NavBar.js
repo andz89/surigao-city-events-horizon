@@ -56,9 +56,9 @@ const NavBar = () => {
               </a>
             </div>
             <div className="flex items-center ">
-              <ul>
+              <ul className="flex items-center font-semibold   gap-2">
                 <li>
-                  <Link to="/publicPost">Public Posts</Link>
+                  <Link to={`/home/${userInfo.data.user.userId}`}> Site </Link>
                 </li>
               </ul>
 

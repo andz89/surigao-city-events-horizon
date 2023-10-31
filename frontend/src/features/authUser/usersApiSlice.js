@@ -88,6 +88,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    publicProfile: builder.mutation({
+      query: (data) => ({
+        url: `${ORGANIZER_URL}/publicProfile?ownerId=${data.userId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 export const {
@@ -103,4 +109,5 @@ export const {
   useOrganizerUpdatePasswordMutation,
   useOrganizerImageBgMutation,
   useGetProfileMutation,
+  usePublicProfileMutation,
 } = usersApiSlice;

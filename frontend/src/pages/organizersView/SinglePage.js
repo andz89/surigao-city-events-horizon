@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import PostsOrganizer from "./Posts";
 import { setCredentials } from "../../features/authUser/authSlice";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
+import NavBar from "../../component/HeaderAndsidebar/NavBar";
+import Header from "../../component/Header";
 const SinglePage = () => {
   const { posts } = useSelector((state) => state.posts);
 
@@ -46,7 +48,8 @@ const SinglePage = () => {
   }, []);
   return (
     <div>
-      <section className="bg-black bg-blend-multiply relative">
+      <Header />
+      <section className="bg-black bg-blend-multiply relative h-[350px]  ">
         <img
           src={"/" + userInfo.data.user.imageBg}
           alt="Conference"

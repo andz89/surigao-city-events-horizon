@@ -7,6 +7,7 @@ import {
   removeComment,
   editPost,
   getPublicPosts,
+  getPostsByOwner,
 } from "../controllers/postsController.js";
 import multer from "multer";
 import path from "path";
@@ -60,5 +61,6 @@ router.put(
 
 router.route("/").get(protect, getOrganizerPosts);
 router.route("/publicPosts").get(protect, getPublicPosts);
+router.route("/postsByOwner").get(getPostsByOwner);
 
 export default router;

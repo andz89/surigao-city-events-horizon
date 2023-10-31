@@ -60,6 +60,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getPostsByOwner: builder.mutation({
+      //get all posts of organizers
+      query: (data) => ({
+        url: `${POST_URL}/postsByOwner?postOwnerId=${data.postOwnerId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -71,4 +78,5 @@ export const {
   useDeleteCommentMutation,
   useEditPostMutation,
   useGetPublicPostMutation,
+  useGetPostsByOwnerMutation,
 } = usersApiSlice;

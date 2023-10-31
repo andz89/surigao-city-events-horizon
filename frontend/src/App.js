@@ -14,14 +14,15 @@ import RegisterOrganizer from "./pages/organizersView/RegisterOrganizer";
 import Unauthorized from "./component/Unauthorized";
 import PublicRoute from "./component/Public";
 import ProfileOrganizer from "./pages/organizersView/Profile";
-import Posts from "./pages/usersView/posts";
+import Posts from "./pages/usersView/Posts";
 import UpdatePasswordUser from "./pages/usersView/UpdatePassword";
 import UpdatePasswordOrganizer from "./pages/organizersView/UpdatePassword";
-import PostsOrganizer from "./pages/organizersView/Posts";
+
 import PublicPosts from "./pages/organizersView/PublicPosts";
 
 import Main from "./component/HeaderAndsidebar/Main";
 import SinglePage from "./pages/organizersView/SinglePage";
+import SinglePagePublic from "./pages/usersView/SinglePage";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
               <Route path="" element={<Private allowedRoles={["user"]} />}>
                 <Route path="/profile-user" element={<ProfileUser />} />
                 <Route path="/posts" element={<Posts />} />
+                <Route path="/profile/:id" element={<SinglePagePublic />} />
                 <Route
                   path="/updatePasswordUser"
                   element={<UpdatePasswordUser />}
@@ -72,7 +74,7 @@ function App() {
                     element={<UpdatePasswordOrganizer />}
                   />
                 </Route>
-                <Route path="/profile-organizer/:id" element={<SinglePage />} />
+                <Route path="/home/:id" element={<SinglePage />} />
                 <Route path="/publicPost" element={<PublicPosts />} />
               </Route>
 
@@ -83,7 +85,6 @@ function App() {
             </Route>
           </Routes>
         </div>
-        ;
       </Router>
       <ToastContainer />
     </>

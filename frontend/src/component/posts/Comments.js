@@ -72,7 +72,8 @@ const Comments = ({ comments, postId, postOwnerId, readOnly, userInfo }) => {
               </p>
             </div>
             <div>
-              {!readOnly && postOwnerId === userInfo.data.user.userId ? (
+              {console.log(userInfo)}
+              {!readOnly && postOwnerId === userInfo?.data?.user?.userId ? (
                 <div
                   className="hover:bg-blue-200 p-1 text-[11px] rounded cursor-pointer"
                   onClick={() => handleRemove(comment.commentId)}
@@ -80,7 +81,7 @@ const Comments = ({ comments, postId, postOwnerId, readOnly, userInfo }) => {
                   <FaTrash className="text-slate-700" size="1.5em" />
                 </div>
               ) : (
-                comment?.userId === userInfo.data.user.userId && (
+                comment?.userId === userInfo?.data?.user?.userId && (
                   <div
                     className="hover:bg-blue-200 p-1 text-[11px] rounded cursor-pointer"
                     onClick={() => handleRemove(comment.commentId)}
@@ -158,8 +159,8 @@ const Comments = ({ comments, postId, postOwnerId, readOnly, userInfo }) => {
                     />
                   </div>
                   <div>
-                    {postOwnerId === userInfo.data.user.userId
-                      ? userInfo.data.user.userId && (
+                    {postOwnerId === userInfo?.data?.user?.userId
+                      ? userInfo?.data?.user?.userId && (
                           <div
                             className="hover:bg-slate-200 p-1 text-[11px] rounded cursor-pointer"
                             onClick={() =>
@@ -172,7 +173,7 @@ const Comments = ({ comments, postId, postOwnerId, readOnly, userInfo }) => {
                           </div>
                         )
                       : comments[comments.length - 1]?.userId ===
-                          userInfo.data.user.userId && (
+                          userInfo?.data?.user?.userId && (
                           <div
                             className="hover:bg-slate-200 p-1 text-[11px] rounded cursor-pointer"
                             onClick={() =>

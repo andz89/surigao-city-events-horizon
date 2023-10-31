@@ -35,14 +35,15 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 const updateImageBg = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const user = await User.findById(req.user._id);
-
+  console.log(user.imageBg);
   if (user) {
     req.files.imageBg.forEach(async (e) => {
       let arrayImgs = [user.imageBg];
+      if (user.imageBg !== undefined) {
+        await deleteImage(arrayImgs);
+      }
 
-      user.imageBg && (await deleteImage(arrayImgs));
       user.imageBg = e.filename;
     });
 
@@ -123,6 +124,17 @@ const getOrganizerProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const publicProfile = asyncHandler(async (req, res) => {
+  console.log(req.query.ownerId);
+  const user = await User.findById(req.query.ownerId);
+
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
 // @desc    Update user profile
 // @route   PUT /api/users/profile
 // @access  Private
@@ -188,6 +200,7 @@ export {
   logoutUser,
   getOrganizerProfile,
   updateUserProfile,
+  publicProfile,
   updateUserPassword,
   updateImageBg,
 };

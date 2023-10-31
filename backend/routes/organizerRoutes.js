@@ -4,10 +4,10 @@ import {
   registerUser,
   logoutUser,
   updateImageBg,
-  // getUserProfile,
   getOrganizerProfile,
   updateUserProfile,
   updateUserPassword,
+  publicProfile,
 } from "../controllers/organizerController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import multer from "multer";
@@ -30,12 +30,9 @@ router.post("/", registerUser);
 router.post("/auth", authUser);
 router.post("/logout", logoutUser);
 
-router
-  .route("/profile")
-
-  // .get(protect, getUserProfile)
-  .put(protect, updateUserProfile);
+router.route("/profile").put(protect, updateUserProfile);
 router.route("/organizerProfile").get(protect, getOrganizerProfile);
+router.route("/publicProfile").get(protect, publicProfile);
 
 router.route("/updatePassword").put(protect, updateUserPassword);
 

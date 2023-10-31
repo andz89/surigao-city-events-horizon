@@ -179,7 +179,7 @@ const Posts = ({ displayLabel, posts, userInfo }) => {
         <MiniLoading />
       ) : (
         <section className="">
-          <div className="flex justify-center flex-col   gap-4 w-full mx-auto max-w-2xl">
+          <div className="flex justify-center flex-col   gap-4 w-full mx-auto max-w-2xl  ">
             <AddPostForm />
             {renderedPosts}
           </div>
