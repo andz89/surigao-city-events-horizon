@@ -1,8 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
-
-import { FaTrash, FaRegEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import TimeAgo from "../../component/posts/TimeAgo";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Comments from "../../component/posts/Comments";
 import AddComments from "../../component/posts/AddComments";
 import Header from "../../component/Header";
@@ -15,6 +14,8 @@ import LoadingSpinner from "../../component/LoadingSpinner";
 import EditPostForm from "../../component/posts/EditPostForm";
 import MiniLoading from "../../component/MiniLoading";
 import ConfirmDiaglog from "../../component/ConfirmDialog";
+import { FaExternalLinkAlt } from "react-icons/fa";
+
 const Posts = () => {
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
@@ -42,6 +43,14 @@ const Posts = () => {
     <article key={post._id}>
       <div className=" sm:w-[600px] p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="flex flex-col ">
+          <div className="flex items-center w-full justify-end">
+            <Link to={`${"/publicPost/" + post.user}`} target="_blank">
+              <div className="flex items-center justify-center gap-2 font-semibold text-[14px] bg-slate-300 py-1 px-2 rounded hover:bg-slate-200 cursor-pointer">
+                <span>Visit Page</span>
+                <FaExternalLinkAlt />
+              </div>
+            </Link>
+          </div>
           <h5 className=" font-bold  text-gray-900 dark:text-white   sm:text-2xl ">
             {post.title}
           </h5>

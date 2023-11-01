@@ -13,7 +13,7 @@ import {
 import { postsFetched } from "../../features/posts/postsSlice";
 
 import MiniLoading from "../../component/MiniLoading";
-
+import { FaExternalLinkAlt } from "react-icons/fa";
 const Posts = ({ userInfo, postOwnerId }) => {
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
@@ -56,15 +56,18 @@ const Posts = ({ userInfo, postOwnerId }) => {
     <article key={post._id}>
       <div className="mx-auto max-w-2xl w-full mt-5 p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="flex flex-col">
+          <div className="flex items-center w-full justify-end">
+            <Link to={`${"/profile/" + post.user}`} target="_blank">
+              <div className="flex items-center justify-center gap-2 font-semibold text-[14px] bg-slate-300 py-1 px-2 rounded hover:bg-slate-200 cursor-pointer">
+                <span>Visit Page</span>
+                <FaExternalLinkAlt />
+              </div>
+            </Link>
+          </div>
           <h5 className=" font-bold  text-gray-900 dark:text-white   sm:text-2xl ">
             {post.title}
           </h5>
-          <Link to={`${"/profile/" + post.user}`}>
-            <small className="text-slate-500  ">
-              Agency Name: {post.agency}
-            </small>{" "}
-          </Link>
-
+          <small className="text-slate-500  ">Agency Name: {post.agency}</small>{" "}
           <small className="text-slate-500  ">
             Event Organizer: {post.name}
           </small>

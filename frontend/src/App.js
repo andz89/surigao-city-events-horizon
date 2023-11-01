@@ -74,6 +74,7 @@ function App() {
                     element={<UpdatePasswordOrganizer />}
                   />
                 </Route>
+                <Route path="/publicPost/:id" element={<SinglePagePublic />} />
                 <Route path="/home/:id" element={<SinglePage />} />
                 <Route path="/publicPost" element={<PublicPosts />} />
               </Route>

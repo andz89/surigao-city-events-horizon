@@ -49,7 +49,7 @@ const SinglePage = () => {
   return (
     <div>
       <Header />
-      <section className="bg-black bg-blend-multiply relative h-[350px]  ">
+      <section className="bg-black bg-blend-multiply relative h-[350px]   ">
         <img
           src={"/" + userInfo.data.user.imageBg}
           alt="Conference"

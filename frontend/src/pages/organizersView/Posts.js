@@ -19,6 +19,7 @@ import EditPostForm from "../../component/posts/EditPostForm";
 import MiniLoading from "../../component/MiniLoading";
 import ConfirmDiaglog from "../../component/ConfirmDialog";
 import Label from "../../component/HeaderAndsidebar/Label";
+
 const Posts = ({ displayLabel, posts, userInfo }) => {
   const dispatch = useDispatch();
   const [getPosts, { isLoading: getPostsLoading }] = useGetPostMutation();
@@ -26,7 +27,7 @@ const Posts = ({ displayLabel, posts, userInfo }) => {
 
   const [editPostId, setEditPostId] = useState("");
   const [deletePostId, setDeletePostId] = useState(false);
-
+  const [renderImage, setRenderImage] = useState(false);
   const showConfirm = (id) => {
     setDeletePostId(id);
   };
@@ -88,6 +89,48 @@ const Posts = ({ displayLabel, posts, userInfo }) => {
     fetchData();
   }, []);
 
+  const ViewImg = ({ img }) => {
+    return (
+      <>
+        <div className="fixed top-0  left-0 right-0 z-50   w-full p-4 overflow-x-hidden bg-slate-900 bg-opacity-40 overflow-y-auto md:inset-0 h-[calc(100%-1rem)]  h-screen ">
+          <div className="top-5 right-10 fixed flex justify-end  ">
+            <span
+              className="bg-slate-800 p-2 rounded text-white cursor-pointer font-semibold"
+              onClick={() => setRenderImage(false)}
+            >
+              Close
+            </span>
+          </div>
+          <div>
+            <div className=" flex items-center m-auto justify-center">
+              <img
+                class="sm:w-[600px]  my-auto  max-w-2xl "
+                src={"/" + img}
+                alt="image description"
+              />
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+  const RenderImages = ({ image }) => {
+    const arrayImg = [image.image_one, image.image_two];
+
+    const images = arrayImg.map((img) => (
+      <>
+        <img
+          onClick={() => setRenderImage(img)}
+          src={"/" + img}
+          className="object-cover h-[200px] w-full"
+        />
+      </>
+    ));
+    return <>{images}</>;
+  };
+
+  document.body.style.overflow = renderImage ? "hidden" : "";
+
   const orderedPosts = posts
     .slice()
     .sort((a, b) => b.dateCreated.localeCompare(a.dateCreated));
@@ -132,11 +175,8 @@ const Posts = ({ displayLabel, posts, userInfo }) => {
           </div>
           {}
         </div>
-        <div className="p-4  ">
-          <img
-            src={"/" + post.image_one}
-            className="object-cover h-[300px] w-full"
-          />
+        <div className="p-4 flex  flex-wrap">
+          <RenderImages image={post} />
         </div>
 
         <p className="mb-3 px-3 font-normal text-gray-700 dark:text-gray-400 sm:text-base">
@@ -159,6 +199,7 @@ const Posts = ({ displayLabel, posts, userInfo }) => {
 
   return (
     <>
+      {renderImage && <ViewImg img={renderImage} />}
       {deletePostId && (
         <ConfirmDiaglog toggleConfirmDelete={toggleConfirmDelete} />
       )}
@@ -181,6 +222,7 @@ const Posts = ({ displayLabel, posts, userInfo }) => {
         <section className="">
           <div className="flex justify-center flex-col   gap-4 w-full mx-auto max-w-2xl  ">
             <AddPostForm />
+
             {renderedPosts}
           </div>
         </section>
