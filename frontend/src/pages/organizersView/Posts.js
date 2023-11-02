@@ -92,7 +92,7 @@ const Posts = ({ displayLabel, posts, userInfo }) => {
   const ViewImg = ({ img }) => {
     return (
       <>
-        <div className="fixed top-0  left-0 right-0 z-50   w-full p-4 overflow-x-hidden bg-slate-900 bg-opacity-40 overflow-y-auto md:inset-0 h-[calc(100%-1rem)]  h-screen ">
+        <div className="fixed top-0  left-0 right-0 z-50   w-full   overflow-x-hidden bg-slate-900 bg-opacity-40  md:inset-0 h-[calc(100%-1rem)]  h-screen ">
           <div className="top-5 right-10 fixed flex justify-end  ">
             <span
               className="bg-slate-800 p-2 rounded text-white cursor-pointer font-semibold"
@@ -102,7 +102,7 @@ const Posts = ({ displayLabel, posts, userInfo }) => {
             </span>
           </div>
           <div>
-            <div className=" flex items-center m-auto justify-center">
+            <div className=" flex items-center m-auto bg-slate-200 h-screen max-h-full p-2 justify-center overflow-y-auto">
               <img
                 class="sm:w-[600px]  my-auto  max-w-2xl "
                 src={"/" + img}

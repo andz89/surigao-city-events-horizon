@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
 import TimeAgo from "../../component/posts/TimeAgo";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Comments from "../../component/posts/Comments";
 import AddComments from "../../component/posts/AddComments";
 import Header from "../../component/Header";
@@ -20,7 +20,7 @@ const Posts = ({ userInfo, postOwnerId }) => {
   const [getPosts, { isLoading: getPostsLoading }] = useGetPublicPostMutation();
   const [getPostsByOwner, { isLoading: getPostsOwnerLoading }] =
     useGetPostsByOwnerMutation();
-
+  const [renderImage, setRenderImage] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,7 +47,47 @@ const Posts = ({ userInfo, postOwnerId }) => {
       fetchData();
     }
   }, []);
+  const ViewImg = ({ img }) => {
+    return (
+      <>
+        <div className="fixed top-0  left-0 right-0 z-50   w-full   overflow-x-hidden bg-slate-900 bg-opacity-40  md:inset-0 h-[calc(100%-1rem)]  h-screen ">
+          <div className="top-5 right-10 fixed flex justify-end  ">
+            <span
+              className="bg-slate-800 p-2 rounded text-white cursor-pointer font-semibold"
+              onClick={() => setRenderImage(false)}
+            >
+              Close
+            </span>
+          </div>
+          <div>
+            <div className=" flex items-center m-auto bg-slate-200   h-screen max-h-full p-2 justify-center overflow-y-auto">
+              <img
+                class="sm:w-[600px]  my-auto  max-w-2xl "
+                src={"/" + img}
+                alt="image description"
+              />
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+  const RenderImages = ({ image }) => {
+    const arrayImg = [image.image_one, image.image_two];
 
+    const images = arrayImg.map((img) => (
+      <>
+        <img
+          onClick={() => setRenderImage(img)}
+          src={"/" + img}
+          className="object-cover h-[200px] w-full"
+        />
+      </>
+    ));
+    return <>{images}</>;
+  };
+
+  document.body.style.overflow = renderImage ? "hidden" : "";
   const orderedPosts = posts
     .slice()
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
@@ -83,11 +123,8 @@ const Posts = ({ userInfo, postOwnerId }) => {
           </div>
         </div>
 
-        <div className="py-4 px-1  ">
-          <img
-            src={"/" + post.image_one}
-            className="object-cover h-[300px] w-full"
-          />
+        <div className="p-4 flex  flex-wrap">
+          <RenderImages image={post} />
         </div>
         <div className="sm:w-[630px] w-full mx-auto max-w-2xl">
           <p className="mb-3 px-1    font-normal text-gray-700 dark:text-gray-400  sm:text-base ">
@@ -111,7 +148,7 @@ const Posts = ({ userInfo, postOwnerId }) => {
   return (
     <>
       {!postOwnerId && <Header />}
-
+      {renderImage && <ViewImg img={renderImage} />}
       {getPostsLoading ? (
         <div className="mt-6">
           <MiniLoading />
