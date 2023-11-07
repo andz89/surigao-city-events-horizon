@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 import TimeAgo from "../../component/posts/TimeAgo";
 import { useEffect, useState } from "react";
@@ -105,12 +106,33 @@ const Posts = ({ postOwnerId }) => {
   const removePostFromBookmark = async (postId) => {
     try {
       let res = await removeBookmark({ postId }).unwrap();
-      console.log(res.post_id);
+
       var newPosts = postsData.filter((post) => {
         return post._id !== res.post_id;
       });
       setPostsData(newPosts);
-    } catch (error) {}
+      toast.success("Removed Succesfully", {
+        position: "top-left",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      toast.error("Someting went wrong", {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
   document.body.style.overflow = renderImage ? "hidden" : "";
 
