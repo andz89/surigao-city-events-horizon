@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+
 import TimeAgo from "../../component/posts/TimeAgo";
 import { useEffect, useState } from "react";
 import Comments from "../../component/posts/Comments";
@@ -10,28 +10,40 @@ import {
   useGetPublicPostMutation,
   useGetPostsByOwnerMutation,
 } from "../../features/posts/postsApiSlice";
-import { useAddBookmarkMutation } from "../../features/bookmark/bookmarksApiSlice";
 import { postsFetched } from "../../features/posts/postsSlice";
-
+import {
+  useGetBookmarksByOwnerMutation,
+  useRemoveBookmarkMutation,
+} from "../../features/bookmark/bookmarksApiSlice";
 import MiniLoading from "../../component/MiniLoading";
-import { FaExternalLinkAlt, FaStar, FaBookmark } from "react-icons/fa";
-import { Error } from "mongoose";
+import { FaExternalLinkAlt, FaBookmark } from "react-icons/fa";
 import LoadingSpinner from "../../component/LoadingSpinner";
-const Posts = ({ userInfo, postOwnerId }) => {
-  const { posts } = useSelector((state) => state.posts);
+
+const Posts = ({ postOwnerId }) => {
+  const { userInfo } = useSelector((state) => state.auth);
+  // const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const [getPosts, { isLoading: getPostsLoading }] = useGetPublicPostMutation();
   const [getPostsByOwner, { isLoading: getPostsOwnerLoading }] =
     useGetPostsByOwnerMutation();
-  const [addBookmark, { isLoading: addBookmarkLoading }] =
-    useAddBookmarkMutation();
   const [renderImage, setRenderImage] = useState(false);
+  const [getBookmarksByOwner, { isLoading: getBookmarksByOwnerLoading }] =
+    useGetBookmarksByOwnerMutation();
+  const [removeBookmark, { isLoading: removeBookmarkByOwnerLoading }] =
+    useRemoveBookmarkMutation();
+
+  const [savedPostId, setSavedPostId] = useState([]);
+  let user_id = userInfo.data.user.userId;
+  const [postsData, setPostsData] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await getPosts().unwrap();
-
-        dispatch(postsFetched(res));
+        const bookmarkPosts = await getBookmarksByOwner({ user_id }).unwrap();
+        setSavedPostId(bookmarkPosts);
+        // dispatch(postsFetched(res));
+        setPostsData(res);
       } catch (error) {
         console.error(error);
       }
@@ -52,34 +64,6 @@ const Posts = ({ userInfo, postOwnerId }) => {
       fetchData();
     }
   }, []);
-
-  const handleBookmarkPost = async (postId) => {
-    try {
-      const res = await addBookmark({ postId }).unwrap();
-
-      toast.success(res.message, {
-        position: "top-left",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
-    } catch (err) {
-      toast.error("Someting went wrong", {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-  };
   const ViewImg = ({ img }) => {
     return (
       <>
@@ -118,9 +102,23 @@ const Posts = ({ userInfo, postOwnerId }) => {
     ));
     return <>{images}</>;
   };
-
+  const removePostFromBookmark = async (postId) => {
+    try {
+      let res = await removeBookmark({ postId }).unwrap();
+      console.log(res.post_id);
+      var newPosts = postsData.filter((post) => {
+        return post._id !== res.post_id;
+      });
+      setPostsData(newPosts);
+    } catch (error) {}
+  };
   document.body.style.overflow = renderImage ? "hidden" : "";
-  const orderedPosts = posts
+
+  const savedPost = postsData.filter((post) =>
+    savedPostId.some((element) => post._id === element.post_id)
+  );
+
+  const orderedPosts = savedPost
     .slice()
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
@@ -128,21 +126,21 @@ const Posts = ({ userInfo, postOwnerId }) => {
     <article key={post._id}>
       <div className="mx-auto max-w-2xl w-full mt-5 p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="flex flex-col">
-          <div className="flex items-center w-full justify-end  gap-2">
+          <div className="flex items-center w-full justify-between">
+            <div
+              onClick={() => removePostFromBookmark(post._id)}
+              className="flex justify-center items-center gap-2 hover:bg-slate-200 py-1 px-2  rounded cursor-pointer"
+            >
+              <FaBookmark className="text-blue-800" />{" "}
+              <span className="font-semibold">Remove</span>
+            </div>
+
             <Link to={`${"/profile/" + post.user}`} target="_blank">
               <div className="flex items-center justify-center gap-2 font-semibold text-[14px] bg-slate-300 py-1 px-2 rounded hover:bg-slate-200 cursor-pointer">
                 <span>Visit Page</span>
                 <FaExternalLinkAlt />
               </div>
             </Link>
-
-            <div
-              onClick={() => handleBookmarkPost(post._id)}
-              className="flex justify-center items-center gap-2 hover:bg-slate-200 py-1 px-2 rounded cursor-pointer"
-            >
-              <FaBookmark className="text-blue-800" />{" "}
-              <span className="font-semibold">Save Post</span>
-            </div>
           </div>
           <h5 className=" font-bold  text-gray-900 dark:text-white   sm:text-2xl ">
             {post.title}
@@ -187,8 +185,8 @@ const Posts = ({ userInfo, postOwnerId }) => {
 
   return (
     <>
-      {addBookmarkLoading && <LoadingSpinner />}
       {!postOwnerId && <Header />}
+      {removeBookmarkByOwnerLoading && <LoadingSpinner />}
       {renderImage && <ViewImg img={renderImage} />}
       {getPostsLoading ? (
         <div className="mt-6">

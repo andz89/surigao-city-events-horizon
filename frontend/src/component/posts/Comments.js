@@ -72,7 +72,6 @@ const Comments = ({ comments, postId, postOwnerId, readOnly, userInfo }) => {
               </p>
             </div>
             <div>
-              {console.log(userInfo)}
               {!readOnly && postOwnerId === userInfo?.data?.user?.userId ? (
                 <div
                   className="hover:bg-blue-200 p-1 text-[11px] rounded cursor-pointer"

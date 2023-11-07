@@ -39,15 +39,18 @@ const Header = () => {
             <>
               {userInfo.data?.user.roles[0] === "user" ? (
                 <>
-                  <li>
+                  <li className="hover:underline">
                     <Link to={"/posts"}>Post</Link>
                   </li>
-                  <li>
+                  <li className="hover:underline">
+                    <Link to={"/savedEvents"}>Saved Events</Link>
+                  </li>
+                  <li className="hover:underline">
                     <Link to={"/profile-user"}>Profile</Link>
                   </li>
                   <li>
                     <button
-                      className="flex items-center text-[16px] "
+                      className="flex items-center text-[16px] hover:bg-slate-100 p-1 rounded"
                       onClick={logoutHanler}
                     >
                       Logout

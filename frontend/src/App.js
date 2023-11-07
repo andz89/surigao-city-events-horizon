@@ -23,6 +23,7 @@ import PublicPosts from "./pages/organizersView/PublicPosts";
 import Main from "./component/HeaderAndsidebar/Main";
 import SinglePage from "./pages/organizersView/SinglePage";
 import SinglePagePublic from "./pages/usersView/SinglePage";
+import SavedEvents from "./pages/usersView/SavedEvents";
 
 function App() {
   return (
@@ -53,6 +54,8 @@ function App() {
               <Route path="" element={<Private allowedRoles={["user"]} />}>
                 <Route path="/profile-user" element={<ProfileUser />} />
                 <Route path="/posts" element={<Posts />} />
+                <Route path="/savedEvents" element={<SavedEvents />} />
+
                 <Route path="/profile/:id" element={<SinglePagePublic />} />
                 <Route
                   path="/updatePasswordUser"
