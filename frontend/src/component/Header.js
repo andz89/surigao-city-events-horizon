@@ -29,7 +29,7 @@ const Header = () => {
           <ul className="flex items-end gap-3 justify-center">
             <li>
               <Link to={"/dashboard"} className=" text-2xl font-semibold">
-                Surigao City Event Horizons
+                Event Horizons
               </Link>
             </li>
           </ul>
@@ -37,7 +37,7 @@ const Header = () => {
         <ul className="flex  sm:text-base    gap-4 mx-3 items-center font-semibold">
           {userInfo ? (
             <>
-              {userInfo.data?.user.roles[0] === "user" ? (
+              {userInfo.data?.user.roles[0] === "user" && (
                 <>
                   <li className="hover:underline">
                     <Link to={"/posts"}>Post</Link>
@@ -57,15 +57,9 @@ const Header = () => {
                     </button>
                   </li>
                 </>
-              ) : (
+              )}
+              {userInfo.data?.user.roles[0] === "organizer" && (
                 <>
-                  {/* <li>
-                    <Link to={"/postsOrganizer"}>Public Posts</Link>
-                  </li> */}
-                  {/* <li>
-                    <Link to={"/profile-organizer"}>Profile</Link>
-                  </li> */}
-
                   <li>
                     <Link
                       to={`/home/${userInfo.data.user.userId}`}
@@ -81,6 +75,26 @@ const Header = () => {
                     <Link to={"/dashboard"} className="font-semibold">
                       Settings
                     </Link>
+                  </li>
+                </>
+              )}
+              {userInfo.data?.user.roles[0] === "admin" && (
+                <>
+                  <li>
+                    <Link
+                      to={`/home/${userInfo.data.user.userId}`}
+                      className="font-semibold"
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      className="flex items-center text-[16px] hover:bg-slate-100 p-1 rounded"
+                      onClick={logoutHanler}
+                    >
+                      Logout
+                    </button>
                   </li>
                 </>
               )}

@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import Organizer from "../models/organizerModel.js";
+import Admin from "../models/adminModel.js";
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -20,7 +21,9 @@ const protect = asyncHandler(async (req, res, next) => {
           "-password"
         );
       }
-
+      if (decoded.userId.roles[0] === "admin") {
+        req.user = await Admin.findById(decoded.userId._id).select("-password");
+      }
       next();
     } catch (error) {
       res.status(401);

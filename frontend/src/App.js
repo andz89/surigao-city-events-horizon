@@ -24,7 +24,8 @@ import Main from "./component/HeaderAndsidebar/Main";
 import SinglePage from "./pages/organizersView/SinglePage";
 import SinglePagePublic from "./pages/usersView/SinglePage";
 import SavedEvents from "./pages/usersView/SavedEvents";
-
+import AdminLogin from "./pages/admin/Login";
+import Admin_dashboard from "./pages/admin/Dashboard";
 function App() {
   return (
     <>
@@ -34,6 +35,7 @@ function App() {
             <Route element={<PersistLogin />}>
               <Route path="" element={<PublicRoute />}>
                 <Route path="/" element={<LandingPage />}></Route>
+                <Route path="/admin-login" element={<AdminLogin />}></Route>
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/register" element={<Register />}></Route>
                 <Route
@@ -48,7 +50,13 @@ function App() {
                   element={<RegisterOrganizer />}
                 ></Route>
               </Route>
-
+              {/* admin view */}
+              <Route path="" element={<Private allowedRoles={["admin"]} />}>
+                <Route
+                  path="/admin-dashboard"
+                  element={<Admin_dashboard />}
+                ></Route>
+              </Route>
               {/*users view */}
 
               <Route path="" element={<Private allowedRoles={["user"]} />}>

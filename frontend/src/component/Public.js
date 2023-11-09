@@ -14,8 +14,13 @@ const PublicRoute = () => {
       console.log("running organizer");
       return <Navigate to="/dashboard" state={{ from: location }} replace />;
     }
+    if (userInfo?.data?.user.roles[0] === "admin") {
+      console.log("running admin");
+      return (
+        <Navigate to="/admin-dashboard" state={{ from: location }} replace />
+      );
+    }
   } else {
-    console.log("running outler");
     return <Outlet />;
   }
 };

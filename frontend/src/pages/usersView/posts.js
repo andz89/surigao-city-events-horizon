@@ -15,9 +15,10 @@ import { postsFetched } from "../../features/posts/postsSlice";
 
 import MiniLoading from "../../component/MiniLoading";
 import { FaExternalLinkAlt, FaStar, FaBookmark } from "react-icons/fa";
-import { Error } from "mongoose";
+import UseSearchPosts from "../../hooks/useSearchPost";
 import LoadingSpinner from "../../component/LoadingSpinner";
 const Posts = ({ userInfo, postOwnerId }) => {
+  const [results, setResults] = useState([]);
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const [getPosts, { isLoading: getPostsLoading }] = useGetPublicPostMutation();
@@ -30,7 +31,7 @@ const Posts = ({ userInfo, postOwnerId }) => {
     const fetchData = async () => {
       try {
         const res = await getPosts().unwrap();
-
+        setResults(res);
         dispatch(postsFetched(res));
       } catch (error) {
         console.error(error);
@@ -39,7 +40,7 @@ const Posts = ({ userInfo, postOwnerId }) => {
     const postsByOwner = async () => {
       try {
         const res = await getPostsByOwner({ postOwnerId }).unwrap();
-
+        setResults(res);
         dispatch(postsFetched(res));
       } catch (error) {
         console.error(error);
@@ -120,7 +121,7 @@ const Posts = ({ userInfo, postOwnerId }) => {
   };
 
   document.body.style.overflow = renderImage ? "hidden" : "";
-  const orderedPosts = posts
+  const orderedPosts = results
     .slice()
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
@@ -197,6 +198,8 @@ const Posts = ({ userInfo, postOwnerId }) => {
       ) : (
         <section className="w-full mx-auto max-w-2xl my-6">
           <div className="flex justify-center flex-col items-center gap-4 ">
+            <UseSearchPosts posts={posts} setResults={setResults} />
+
             {renderedPosts}
           </div>
         </section>

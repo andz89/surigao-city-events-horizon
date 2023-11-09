@@ -19,8 +19,9 @@ import {
 import MiniLoading from "../../component/MiniLoading";
 import { FaExternalLinkAlt, FaBookmark } from "react-icons/fa";
 import LoadingSpinner from "../../component/LoadingSpinner";
-
+import UseSearchPosts from "../../hooks/useSearchPost";
 const Posts = ({ postOwnerId }) => {
+  const [results, setResults] = useState([]);
   const { userInfo } = useSelector((state) => state.auth);
   // const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const Posts = ({ postOwnerId }) => {
   const [savedPostId, setSavedPostId] = useState([]);
   let user_id = userInfo.data.user.userId;
   const [postsData, setPostsData] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,8 +45,8 @@ const Posts = ({ postOwnerId }) => {
         const res = await getPosts().unwrap();
         const bookmarkPosts = await getBookmarksByOwner({ user_id }).unwrap();
         setSavedPostId(bookmarkPosts);
-        // dispatch(postsFetched(res));
-        setPostsData(res);
+        setResults(res);
+        setPosts(res);
       } catch (error) {
         console.error(error);
       }
@@ -107,7 +109,7 @@ const Posts = ({ postOwnerId }) => {
     try {
       let res = await removeBookmark({ postId }).unwrap();
 
-      var newPosts = postsData.filter((post) => {
+      var newPosts = results.filter((post) => {
         return post._id !== res.post_id;
       });
       setPostsData(newPosts);
@@ -136,7 +138,7 @@ const Posts = ({ postOwnerId }) => {
   };
   document.body.style.overflow = renderImage ? "hidden" : "";
 
-  const savedPost = postsData.filter((post) =>
+  const savedPost = results.filter((post) =>
     savedPostId.some((element) => post._id === element.post_id)
   );
 
@@ -217,6 +219,7 @@ const Posts = ({ postOwnerId }) => {
       ) : (
         <section className="w-full mx-auto max-w-2xl my-6">
           <div className="flex justify-center flex-col items-center gap-4 ">
+            <UseSearchPosts posts={posts} setResults={setResults} />
             {renderedPosts}
           </div>
         </section>

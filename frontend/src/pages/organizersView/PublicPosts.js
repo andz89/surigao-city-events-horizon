@@ -15,14 +15,17 @@ import EditPostForm from "../../component/posts/EditPostForm";
 import MiniLoading from "../../component/MiniLoading";
 import ConfirmDiaglog from "../../component/ConfirmDialog";
 import { FaExternalLinkAlt } from "react-icons/fa";
-
+import UseSearchPosts from "../../hooks/useSearchPost";
 const Posts = () => {
+  const [results, setResults] = useState([]);
+
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const [getPosts, { isLoading: getPostsLoading }] = useGetPublicPostMutation();
   const [renderImage, setRenderImage] = useState(false);
 
   useEffect(() => {
+    setResults(posts);
     const fetchData = async () => {
       try {
         const res = await getPosts().unwrap();
@@ -76,7 +79,7 @@ const Posts = () => {
   };
 
   document.body.style.overflow = renderImage ? "hidden" : "";
-  const orderedPosts = posts
+  const orderedPosts = results
     .slice()
     .sort((a, b) => b.dateCreated.localeCompare(a.dateCreated));
 
@@ -140,6 +143,7 @@ const Posts = () => {
 
       <section className=" my-5">
         <div className="flex justify-center flex-col items-center gap-4">
+          <UseSearchPosts posts={posts} setResults={setResults} />
           {getPostsLoading ? <MiniLoading /> : renderedPosts}
         </div>
       </section>

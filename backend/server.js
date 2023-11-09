@@ -10,6 +10,7 @@ import organizerRoutes from "./routes/organizerRoutes.js";
 import tokenRoutes from "./routes/tokenRoutes.js";
 import postsRoutes from "./routes/postsRoutes.js";
 import bookmarksRoutes from "./routes/bookmarksRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 const port = process.env.PORT || 5000;
 
@@ -25,6 +26,7 @@ app.use("/api/organizers", organizerRoutes);
 app.use("/api/token", tokenRoutes);
 app.use("/api/posts", postsRoutes);
 app.use("/api/bookmark", bookmarksRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.use(express.static("backend/public/images"));
 if (process.env.NODE_ENV === "production") {

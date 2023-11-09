@@ -1,6 +1,7 @@
 import { apiSlice } from "../api/apiSlice";
 const USERS_URL = "/api/users";
 const ORGANIZER_URL = "/api/organizers";
+const ADMIN = "/api/admin";
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
@@ -94,9 +95,19 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    //admin ------------------
+    adminLogin: builder.mutation({
+      query: (data) => ({
+        url: `${ADMIN}/auth`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 export const {
+  useAdminLoginMutation,
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
