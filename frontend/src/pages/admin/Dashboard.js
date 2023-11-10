@@ -3,7 +3,7 @@ import Header from "../../component/Header";
 import { postsFetched } from "../../features/posts/postsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { useGetPostMutation } from "../../features/posts/postsApiSlice";
+import { useGetOrganizerPostMutation } from "../../features/posts/postsApiSlice";
 import EditPostForm from "../../component/posts/EditPostForm";
 import ViewPost from "../../component/posts/ViewPost";
 import { parseISO, formatDistanceToNow, format } from "date-fns";
@@ -38,14 +38,15 @@ const Dashboard = () => {
     setViewPostId(e);
   };
 
-  const [getPosts, { isLoading: getPostsLoading }] = useGetPostMutation();
+  const [getOrganizerPost, { isLoading: getOrganizerPostLoading }] =
+    useGetOrganizerPostMutation();
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getPosts().unwrap();
+        const res = await getOrganizerPost().unwrap();
         setResults(res);
         dispatch(postsFetched(res));
       } catch (error) {

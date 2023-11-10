@@ -40,7 +40,7 @@ const useSearchPost = ({ posts, setResults }) => {
   return (
     <>
       <div
-        class="fixed z-50 flex flex-col  shadow-md   rounded
+        className="fixed z-50 flex flex-col  shadow-md   rounded
                  right-3   shadow-sm top-[53px] cursor-pointer   "
       >
         {" "}

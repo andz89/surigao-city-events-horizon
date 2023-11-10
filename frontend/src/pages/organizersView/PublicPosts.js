@@ -3,17 +3,14 @@ import { Link } from "react-router-dom";
 import TimeAgo from "../../component/posts/TimeAgo";
 import { useEffect, useState } from "react";
 import Comments from "../../component/posts/Comments";
-import AddComments from "../../component/posts/AddComments";
+
 import Header from "../../component/Header";
-import AddPostForm from "../../component/posts/AddPostForm";
-import { removePost } from "../../features/posts/postsSlice";
+
 import { useGetPublicPostMutation } from "../../features/posts/postsApiSlice";
 import { postsFetched } from "../../features/posts/postsSlice";
-import { toast } from "react-toastify";
-import LoadingSpinner from "../../component/LoadingSpinner";
-import EditPostForm from "../../component/posts/EditPostForm";
+
 import MiniLoading from "../../component/MiniLoading";
-import ConfirmDiaglog from "../../component/ConfirmDialog";
+
 import { FaExternalLinkAlt } from "react-icons/fa";
 import UseSearchPosts from "../../hooks/useSearchPost";
 const Posts = () => {
@@ -25,11 +22,10 @@ const Posts = () => {
   const [renderImage, setRenderImage] = useState(false);
 
   useEffect(() => {
-    setResults(posts);
     const fetchData = async () => {
       try {
         const res = await getPosts().unwrap();
-
+        setResults(res);
         dispatch(postsFetched(res));
       } catch (error) {
         console.error(error);
@@ -53,7 +49,7 @@ const Posts = () => {
           <div>
             <div className=" flex items-center m-auto bg-slate-200 h-screen max-h-full p-2 justify-center overflow-y-auto">
               <img
-                class="sm:w-[600px]  my-auto  max-w-2xl "
+                className="sm:w-[600px]  my-auto  max-w-2xl "
                 src={"/" + img}
                 alt="image description"
               />
@@ -67,13 +63,12 @@ const Posts = () => {
     const arrayImg = [image.image_one, image.image_two];
 
     const images = arrayImg.map((img) => (
-      <>
-        <img
-          onClick={() => setRenderImage(img)}
-          src={"/" + img}
-          className="object-cover h-[200px] w-full"
-        />
-      </>
+      <img
+        key={img}
+        onClick={() => setRenderImage(img)}
+        src={"/" + img}
+        className="object-cover h-[200px] w-full"
+      />
     ));
     return <>{images}</>;
   };

@@ -6,19 +6,20 @@ import { setCredentials } from "../../features/authUser/authSlice";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import NavBar from "../../component/HeaderAndsidebar/NavBar";
 import Header from "../../component/Header";
-import UseSearchPosts from "../../hooks/useSearchPost";
+
 const SinglePage = () => {
   const { posts } = useSelector((state) => state.posts);
-  const [results, setResults] = useState([]);
+
   const dispatch = useDispatch();
   const [getOrganizerProfile, { isLoading }] = useGetProfileMutation();
   const { userInfo } = useSelector((state) => state.auth);
   const [viewInfo, setViewInfo] = useState(false);
+
   useEffect(() => {
-    setResults(posts);
     const fetchData = async () => {
       try {
         const res = await getOrganizerProfile().unwrap();
+
         const data = {
           ...userInfo.data,
           user: {
@@ -26,7 +27,7 @@ const SinglePage = () => {
             email: res.email,
             number: res.number,
             agency: res.agency,
-            userId: res.userId,
+
             address: res.address,
             agency: res.agency,
             userId: res._id,
@@ -128,12 +129,7 @@ const SinglePage = () => {
         )}
       </div>
       <div className="mt-5">
-        <UseSearchPosts posts={posts} setResults={setResults} />
-        <PostsOrganizer
-          displayLabel={false}
-          posts={results}
-          userInfo={userInfo}
-        />
+        <PostsOrganizer displayLabel={false} userInfo={userInfo} />
       </div>
     </div>
   );

@@ -11,7 +11,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: data, // Ensure data is properly included in the request body
       }),
     }),
-    getPost: builder.mutation({
+    getOrganizerPost: builder.mutation({
+      //it will get only the organizer post
       //get organizer post
       query: () => ({
         url: `${POST_URL}`,
@@ -19,12 +20,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    getOrganizerPost: builder.mutation({
-      query: () => ({
-        url: `${POST_URL}`,
-        method: "GET",
-      }),
-    }),
+    // getOrganizerPost: builder.mutation({
+    //   query: () => ({
+    //     url: `${POST_URL}`,
+    //     method: "GET",
+    //   }),
+    // }),
     addComment: builder.mutation({
       query: (data) => ({
         url: `${POST_URL}/addComment`,
@@ -72,7 +73,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useAddPostMutation,
-  useGetPostMutation,
+  useGetOrganizerPostMutation,
   useAddCommentMutation,
   useDeletePostMutation,
   useDeleteCommentMutation,
