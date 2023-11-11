@@ -45,7 +45,7 @@ const SinglePage = () => {
   return (
     <div>
       <Header />
-      <section className="bg-black bg-blend-multiply relative h-[300px] ">
+      <section className="bg-black bg-blend-multiply relative h-[210px] ">
         <img
           src={"/" + imageBg}
           alt="Conference"
@@ -66,13 +66,6 @@ const SinglePage = () => {
           Agency Information
         </div>
         <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg ml-5 leading-6 font-medium text-gray-900">
-            {agency}
-          </h3>
-          <p className="mt-1 max-w-2xl flex items-center gap-2   text-sm text-gray-500">
-            <FaLocationArrow />
-            {address}
-          </p>
           <div
             onClick={() => setViewInfo((prev) => !prev)}
             className="mt-2 text-slate-600 gap-1 cursor-pointer flex items-center w-[80px]"

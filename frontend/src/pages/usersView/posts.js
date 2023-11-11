@@ -18,6 +18,8 @@ import { FaExternalLinkAlt, FaStar, FaBookmark } from "react-icons/fa";
 import UseSearchPosts from "../../hooks/useSearchPost";
 import LoadingSpinner from "../../component/LoadingSpinner";
 const Posts = ({ userInfo, postOwnerId }) => {
+  const [refetch, setRefetch] = useState(false);
+
   const [results, setResults] = useState([]);
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
@@ -27,6 +29,7 @@ const Posts = ({ userInfo, postOwnerId }) => {
   const [addBookmark, { isLoading: addBookmarkLoading }] =
     useAddBookmarkMutation();
   const [renderImage, setRenderImage] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,6 +40,7 @@ const Posts = ({ userInfo, postOwnerId }) => {
         console.error(error);
       }
     };
+
     const postsByOwner = async () => {
       try {
         const res = await getPostsByOwner({ postOwnerId }).unwrap();
@@ -53,7 +57,11 @@ const Posts = ({ userInfo, postOwnerId }) => {
       fetchData();
     }
   }, []);
-
+  useEffect(() => {
+    // Do something with the updated results here
+    setResults(posts);
+    setRefetch(false);
+  }, [refetch]);
   const handleBookmarkPost = async (postId) => {
     try {
       const res = await addBookmark({ postId }).unwrap();
@@ -178,9 +186,10 @@ const Posts = ({ userInfo, postOwnerId }) => {
             postId={post._id}
             postOwnerId={post.user}
             userInfo={userInfo}
+            setRefetch={setRefetch}
           />
 
-          <AddComments post={post} />
+          <AddComments post={post} setRefetch={setRefetch} />
         </div>
       </div>
     </article>

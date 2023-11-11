@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import TimeAgo from "../../component/posts/TimeAgo";
 import { useEffect, useState } from "react";
 import Comments from "../../component/posts/Comments";
+import AddComments from "../../component/posts/AddComments";
 
 import Header from "../../component/Header";
 
@@ -15,12 +16,13 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import UseSearchPosts from "../../hooks/useSearchPost";
 const Posts = () => {
   const [results, setResults] = useState([]);
+  const [refetch, setRefetch] = useState(false);
 
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const [getPosts, { isLoading: getPostsLoading }] = useGetPublicPostMutation();
   const [renderImage, setRenderImage] = useState(false);
-
+  const { userInfo } = useSelector((state) => state.auth);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,6 +36,11 @@ const Posts = () => {
 
     fetchData();
   }, []);
+  useEffect(() => {
+    // Do something with the updated results here
+    setResults(posts);
+    setRefetch(false);
+  }, [refetch]);
   const ViewImg = ({ img }) => {
     return (
       <>
@@ -122,8 +129,11 @@ const Posts = () => {
             comments={post?.comments}
             postId={post._id}
             postOwnerId={post.user}
-            readOnly={true}
+            userInfo={userInfo}
+            setRefetch={setRefetch}
           />
+
+          <AddComments post={post} setRefetch={setRefetch} />
         </div>
       </div>
     </article>

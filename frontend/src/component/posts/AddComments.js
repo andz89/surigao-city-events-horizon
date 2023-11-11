@@ -5,7 +5,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useAddCommentMutation } from "../../features/posts/postsApiSlice";
 import { toast } from "react-toastify";
 import LoadingSpinner from "../LoadingSpinner";
-const AddComment = ({ post }) => {
+const AddComment = ({ post, setRefetch }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const name = userInfo.data.user.name;
   const userId = userInfo.data.user.userId;
@@ -35,7 +35,7 @@ const AddComment = ({ post }) => {
           createdAt: res.comment.date,
           userId,
         };
-        console.log(data);
+
         dispatch(commentAdded(data));
 
         toast.success("Publish Successfuly", {
@@ -48,7 +48,7 @@ const AddComment = ({ post }) => {
           progress: undefined,
           theme: "light",
         });
-
+        setRefetch(true);
         setComment("");
       } catch (error) {
         toast.error(error?.data?.message, {

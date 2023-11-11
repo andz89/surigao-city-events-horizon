@@ -7,7 +7,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 
-const AddPostForm = () => {
+const AddPostForm = ({ setRefetch }) => {
   const { userInfo } = useSelector((state) => state.auth);
   const name = userInfo.data.user.name;
   const agency = userInfo.data.user.agency;
@@ -41,7 +41,7 @@ const AddPostForm = () => {
       formData.append("dateUpdated", dataStamp);
       try {
         const res = await addPost(formData).unwrap();
-        console.log(res);
+
         const data = {
           title,
           content,
@@ -55,6 +55,7 @@ const AddPostForm = () => {
         };
 
         dispatch(postAdded(data));
+        setRefetch(true);
         setForm(false);
         toast.success("Publish Successfuly", {
           position: "top-left",

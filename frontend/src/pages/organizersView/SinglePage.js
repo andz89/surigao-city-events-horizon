@@ -52,7 +52,7 @@ const SinglePage = () => {
   return (
     <div>
       <Header />
-      <section className="bg-black bg-blend-multiply relative h-[350px]   ">
+      <section className="bg-black bg-blend-multiply relative h-[210px]   ">
         <img
           src={"/" + userInfo.data.user.imageBg}
           alt="Conference"
@@ -69,37 +69,36 @@ const SinglePage = () => {
       </section>
 
       <div className="bg-white overflow-hidden shadow rounded-lg border mx-auto max-w-2xl">
-        <div className="  bg-teal-600 text-white p-2 font-semibold ">
-          Agency Information
-        </div>
-        <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
-            {userInfo.data.user.agency}
-          </h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            {userInfo.data.user.address}
-          </p>
+        <div className="  bg-teal-600 text-white p-2 font-semibold flex justify-between">
+          <div>Agency Information </div>
           <div
             onClick={() => setViewInfo((prev) => !prev)}
             className="mt-2 text-slate-600 gap-1 cursor-pointer flex items-center w-[80px]"
           >
             {!viewInfo && (
               <>
-                {" "}
-                <IoIosArrowUp size={"1.1rem"} /> <small> See more</small>{" "}
+                <IoIosArrowUp className="text-white" size={"1.1rem"} />{" "}
+                <small className="text-white"> See more</small>{" "}
               </>
             )}
             {viewInfo && (
               <>
-                {" "}
-                <IoIosArrowDown size={"1.1rem"} /> <small> See less</small>
+                <IoIosArrowDown className="text-white" size={"1.1rem"} />{" "}
+                <small className="text-white"> See less</small>
               </>
             )}
           </div>
         </div>
+
         {viewInfo && (
           <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
             <dl className="sm:divide-y sm:divide-gray-200">
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Agency</dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  {userInfo.data.user.agency}
+                </dd>
+              </div>
               <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">
                   Event Organizer
@@ -117,6 +116,12 @@ const SinglePage = () => {
                 </dd>
               </div>
               <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Address</dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  {userInfo.data.user.address}
+                </dd>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt className="text-sm font-medium text-gray-500">
                   Phone number
                 </dt>
@@ -128,7 +133,7 @@ const SinglePage = () => {
           </div>
         )}
       </div>
-      <div className="mt-5">
+      <div className="mt-2">
         <PostsOrganizer displayLabel={false} userInfo={userInfo} />
       </div>
     </div>

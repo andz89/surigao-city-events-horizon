@@ -41,6 +41,7 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
+
   const orderedPosts = posts
     .slice()
     .sort((a, b) => b.dateCreated.localeCompare(a.dateCreated));
@@ -76,7 +77,7 @@ const Dashboard = () => {
           editPostId={editPostId}
         />
       )}
-      {viewPostId && (
+      {viewPostId && ( // ipakia ang post sa dashboard
         <ViewPost
           handleHideViewPost={handleHideViewPost}
           viewPostId={viewPostId}

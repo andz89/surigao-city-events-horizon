@@ -14,7 +14,7 @@ import RegisterOrganizer from "./pages/organizersView/RegisterOrganizer";
 import Unauthorized from "./component/Unauthorized";
 import PublicRoute from "./component/Public";
 import ProfileOrganizer from "./pages/organizersView/Profile";
-import Posts from "./pages/usersView/Posts";
+import UserPublicPost from "./pages/usersView/PublicPost";
 import UpdatePasswordUser from "./pages/usersView/UpdatePassword";
 import UpdatePasswordOrganizer from "./pages/organizersView/UpdatePassword";
 
@@ -61,7 +61,7 @@ function App() {
 
               <Route path="" element={<Private allowedRoles={["user"]} />}>
                 <Route path="/profile-user" element={<ProfileUser />} />
-                <Route path="/posts" element={<Posts />} />
+                <Route path="/posts" element={<UserPublicPost />} />
                 <Route path="/savedEvents" element={<SavedEvents />} />
 
                 <Route path="/profile/:id" element={<SinglePagePublic />} />

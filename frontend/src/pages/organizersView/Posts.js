@@ -27,6 +27,7 @@ const Posts = ({ displayLabel, userInfo }) => {
     useGetOrganizerPostMutation();
   const [deletePost, { isLoading: deleteLoading }] = useDeletePostMutation();
   const [results, setResults] = useState([]);
+  const [refetch, setRefetch] = useState(false);
 
   const [editPostId, setEditPostId] = useState("");
   const [deletePostId, setDeletePostId] = useState(false);
@@ -50,6 +51,7 @@ const Posts = ({ displayLabel, userInfo }) => {
       });
 
       dispatch(removePost({ postId }));
+      setRefetch(true);
       setDeletePostId("");
     } catch (error) {
       toast.error(error?.data?.message, {
@@ -90,6 +92,11 @@ const Posts = ({ displayLabel, userInfo }) => {
 
     fetchData();
   }, []);
+  useEffect(() => {
+    // Do something with the updated results here
+    setResults(posts);
+    setRefetch(false);
+  }, [refetch]);
 
   const ViewImg = ({ img }) => {
     return (
@@ -121,6 +128,7 @@ const Posts = ({ displayLabel, userInfo }) => {
 
     const images = arrayImg.map((img) => (
       <img
+        key={img}
         onClick={() => setRenderImage(img)}
         src={"/" + img}
         className="object-cover h-[200px] w-full"
@@ -189,9 +197,10 @@ const Posts = ({ displayLabel, userInfo }) => {
             postId={post._id}
             postOwnerId={post.user}
             userInfo={userInfo}
+            setRefetch={setRefetch}
           />
 
-          <AddComments post={post} />
+          <AddComments post={post} setRefetch={setRefetch} />
         </div>
       </div>
     </article>
@@ -209,6 +218,7 @@ const Posts = ({ displayLabel, userInfo }) => {
         <EditPostForm
           handleHideEditForm={handleHideEditForm}
           editPostId={editPostId}
+          setRefetch={setRefetch}
         />
       )}
       {displayLabel && (
@@ -222,7 +232,7 @@ const Posts = ({ displayLabel, userInfo }) => {
       ) : (
         <section className="">
           <div className="flex justify-center flex-col   gap-4 w-full mx-auto max-w-2xl  ">
-            <AddPostForm />
+            <AddPostForm setRefetch={setRefetch} />
 
             {renderedPosts}
           </div>

@@ -7,7 +7,7 @@ import LoadingSpinner from "../LoadingSpinner";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 
-const EditPostForm = ({ handleHideEditForm, editPostId }) => {
+const EditPostForm = ({ handleHideEditForm, editPostId, setRefetch }) => {
   const { posts } = useSelector((state) => state.posts);
   const postToEdit = posts.filter((post) => post._id === editPostId);
 
@@ -50,6 +50,7 @@ const EditPostForm = ({ handleHideEditForm, editPostId }) => {
 
         dispatch(postEditted(data));
         handleHideEditForm();
+        setRefetch(true);
         toast.success("Edited Successfuly", {
           position: "top-left",
           autoClose: 5000,

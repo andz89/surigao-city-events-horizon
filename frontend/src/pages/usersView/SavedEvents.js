@@ -21,6 +21,9 @@ import { FaExternalLinkAlt, FaBookmark } from "react-icons/fa";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import UseSearchPosts from "../../hooks/useSearchPost";
 const Posts = ({ postOwnerId }) => {
+  const [refetch, setRefetch] = useState(false);
+  const { posts } = useSelector((state) => state.posts);
+
   const [results, setResults] = useState([]);
   const { userInfo } = useSelector((state) => state.auth);
   // const { posts } = useSelector((state) => state.posts);
@@ -37,8 +40,12 @@ const Posts = ({ postOwnerId }) => {
   const [savedPostId, setSavedPostId] = useState([]);
   let user_id = userInfo.data.user.userId;
   const [postsData, setPostsData] = useState([]);
-  const [posts, setPosts] = useState([]);
 
+  useEffect(() => {
+    // Do something with the updated results here
+    setResults(posts);
+    setRefetch(false);
+  }, [refetch]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,7 +53,7 @@ const Posts = ({ postOwnerId }) => {
         const bookmarkPosts = await getBookmarksByOwner({ user_id }).unwrap();
         setSavedPostId(bookmarkPosts);
         setResults(res);
-        setPosts(res);
+        dispatch(postsFetched(res));
       } catch (error) {
         console.error(error);
       }
@@ -112,7 +119,7 @@ const Posts = ({ postOwnerId }) => {
       var newPosts = results.filter((post) => {
         return post._id !== res.post_id;
       });
-      setPostsData(newPosts);
+      setResults(newPosts);
       toast.success("Removed Succesfully", {
         position: "top-left",
         autoClose: 3000,
@@ -199,9 +206,10 @@ const Posts = ({ postOwnerId }) => {
             postId={post._id}
             postOwnerId={post.user}
             userInfo={userInfo}
+            setRefetch={setRefetch}
           />
 
-          <AddComments post={post} />
+          <AddComments post={post} setRefetch={setRefetch} />
         </div>
       </div>
     </article>
