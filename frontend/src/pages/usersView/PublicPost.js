@@ -6,23 +6,55 @@ import Comments from "../../component/posts/Comments";
 import AddComments from "../../component/posts/AddComments";
 
 import Header from "../../component/Header";
+import { toast } from "react-toastify";
 
 import { useGetPublicPostMutation } from "../../features/posts/postsApiSlice";
 import { postsFetched } from "../../features/posts/postsSlice";
 
 import MiniLoading from "../../component/MiniLoading";
+import { useAddBookmarkMutation } from "../../features/bookmark/bookmarksApiSlice";
 
-import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaExternalLinkAlt, FaBookmark } from "react-icons/fa";
 import UseSearchPosts from "../../hooks/useSearchPost";
+import LoadingSpinner from "../../component/LoadingSpinner";
+
 const Posts = () => {
   const [results, setResults] = useState([]);
   const [refetch, setRefetch] = useState(false);
-
+  const [addBookmark, { isLoading: addBookmarkLoading }] =
+    useAddBookmarkMutation();
   const { posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const [getPosts, { isLoading: getPostsLoading }] = useGetPublicPostMutation();
   const [renderImage, setRenderImage] = useState(false);
   const { userInfo } = useSelector((state) => state.auth);
+  const handleBookmarkPost = async (postId) => {
+    try {
+      const res = await addBookmark({ postId }).unwrap();
+
+      toast.success(res.message, {
+        position: "top-left",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (err) {
+      toast.error("Someting went wrong", {
+        position: "top-left",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -89,7 +121,14 @@ const Posts = () => {
     <article key={post._id}>
       <div className=" sm:w-[600px] p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="flex flex-col ">
-          <div className="flex items-center w-full justify-end">
+          <div className="flex items-center w-full justify-between">
+            <div
+              onClick={() => handleBookmarkPost(post._id)}
+              className="flex justify-center items-center gap-2 hover:bg-slate-200 py-1 px-2 rounded cursor-pointer"
+            >
+              <FaBookmark className="text-blue-800" />{" "}
+              <span className="font-semibold">Save Post</span>
+            </div>
             <Link to={`${"/publicPost/" + post.user}`} target="_blank">
               <div className="flex items-center justify-center gap-2 font-semibold text-[14px] bg-slate-300 py-1 px-2 rounded hover:bg-slate-200 cursor-pointer">
                 <span>Visit Page</span>
@@ -141,6 +180,7 @@ const Posts = () => {
 
   return (
     <>
+      {addBookmarkLoading && <LoadingSpinner />}
       {renderImage && <ViewImg img={renderImage} />}
       <div className="sticky top-0">
         <Header />
