@@ -29,7 +29,7 @@ const Header = () => {
           <ul className="flex items-end gap-3 justify-center">
             <li>
               <Link to={"/dashboard"} className=" text-2xl font-semibold">
-                Surigao City Events
+                Surigao City Events Surigao
               </Link>
             </li>
           </ul>
