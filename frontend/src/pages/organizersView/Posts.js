@@ -146,7 +146,22 @@ const Posts = ({ displayLabel, userInfo }) => {
   const renderedPosts = orderedPosts?.map((post) => (
     <article key={post._id}>
       <div className="  p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        {post.status === false && (
+          <div className="bg-yellow-200 m-2 p-2 rounded">
+            <p>
+              This post has been hidden by the admin due to a violation of
+              community standards. If you believe this action is in error or
+              have any questions, please contact the admin at{" "}
+              <span className="italic text-cyan-800">
+                {" "}
+                surigaoEvent@gmail.com.
+              </span>
+              Thank you for your understanding.
+            </p>
+          </div>
+        )}
         <div className="flex justify-end gap-2">
+          {post.status}
           <div
             className="bg-rose-500 p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1"
             onClick={() => showConfirm(post._id)}

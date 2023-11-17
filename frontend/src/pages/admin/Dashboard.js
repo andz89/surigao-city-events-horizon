@@ -4,7 +4,7 @@ import { postsFetched } from "../../features/posts/postsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useGetOrganizerPostMutation } from "../../features/posts/postsApiSlice";
-import EditPostForm from "../../component/posts/EditPostForm";
+
 import ViewPost from "../../component/posts/ViewPost";
 import { parseISO, formatDistanceToNow, format } from "date-fns";
 import UseSearchPost from "../../hooks/useSearchPost";
@@ -18,28 +18,24 @@ const Dashboard = () => {
 
     return data;
   };
+  const [getOrganizerPost, { isLoading: getOrganizerPostLoading }] =
+    useGetOrganizerPostMutation();
   const { posts } = useSelector((state) => state.posts);
 
   const [results, setResults] = useState([]);
 
-  const [editPostId, setEditPostId] = useState("");
   const [viewPostId, setViewPostId] = useState("");
   const { userInfo } = useSelector((state) => state.auth);
-  const handleHideEditForm = async () => {
-    setEditPostId("");
-  };
-  const handleShowEditForm = (e) => {
-    setEditPostId(e);
-  };
+
   const handleHideViewPost = async () => {
+    const res = await getOrganizerPost().unwrap();
+    setResults(res);
+    dispatch(postsFetched(res));
     setViewPostId("");
   };
   const handleShowViewPost = (e) => {
     setViewPostId(e);
   };
-
-  const [getOrganizerPost, { isLoading: getOrganizerPostLoading }] =
-    useGetOrganizerPostMutation();
 
   const dispatch = useDispatch();
 
@@ -68,14 +64,8 @@ const Dashboard = () => {
 
       <td className=" py-2">{timeAgo(post.dateCreated)}</td>
       <td className=" py-2">{post.comments.length}</td>
-
+      <td className=" py-2"> {post.status === true ? "Live" : "hidden"}</td>
       <td className=" py-2 flex items-center gap-3">
-        <div
-          onClick={() => handleShowEditForm(post._id)}
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
-        >
-          Edit
-        </div>
         <div
           onClick={() => handleShowViewPost(post._id)}
           className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
@@ -88,16 +78,13 @@ const Dashboard = () => {
   return (
     <>
       <Header />
-      <div className="bg-dark rounded p-2 m-1 flex  gap-2 justify-between items-center">
-        <h4 className="font-normal text-2xl  text-white  ">Dashboard</h4>
+      <div className="bg-dark w-[200px]   rounded p-2 m-5 flex  gap-2 justify-between items-center">
+        <h4 className="font-normal text-2xl  text-white mx-auto  ">
+          Post Dashboard
+        </h4>
         <UseSearchPost posts={posts} setResults={setResults} />
       </div>
-      {editPostId && (
-        <EditPostForm
-          handleHideEditForm={handleHideEditForm}
-          editPostId={editPostId}
-        />
-      )}
+
       {viewPostId && (
         <ViewPost
           handleHideViewPost={handleHideViewPost}
@@ -105,7 +92,7 @@ const Dashboard = () => {
           userInfo={userInfo}
         />
       )}
-      <div className="px-2 relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+      <div className="px-2 sm:w-[95%] w-full mx-auto relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
         <table className="w-full  text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs   text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -121,7 +108,9 @@ const Dashboard = () => {
               <th scope="col" className="py-3">
                 Comments
               </th>
-
+              <th scope="col" className="py-3">
+                Status
+              </th>
               <th scope="col" className="  py-3 ">
                 <span className="text-dark">Action</span>
               </th>

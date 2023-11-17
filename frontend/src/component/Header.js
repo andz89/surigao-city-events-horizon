@@ -28,7 +28,7 @@ const Header = () => {
         <div className="text-center sm:text-left ">
           <ul className="flex items-end gap-3 justify-center">
             <li>
-              <Link to={"/dashboard"} className=" text-2xl font-semibold">
+              <Link className=" text-2xl font-semibold">
                 Surigao City Events Surigao
               </Link>
             </li>
@@ -112,9 +112,14 @@ const Header = () => {
                   Register
                 </Link>
               </li>
-              <li className="bg-teal-700 p-2 rounded text-white">
+              <li className="  p-2 rounded  ">
                 <Link to={"/login-organizer"} className="font-semibold">
                   Organizer
+                </Link>
+              </li>
+              <li className="bg-teal-700 p-2 rounded text-white">
+                <Link to={"/admin-login"} className="font-semibold">
+                  Admin
                 </Link>
               </li>
             </>

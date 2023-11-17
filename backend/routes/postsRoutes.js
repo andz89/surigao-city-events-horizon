@@ -61,6 +61,6 @@ router.put(
 
 router.route("/").get(protect, getOrganizerPosts);
 router.route("/publicPosts").get(protect, getPublicPosts);
-router.route("/postsByOwner").get(getPostsByOwner);
+router.route("/postsByOwner").get(protect, getPostsByOwner);
 
 export default router;

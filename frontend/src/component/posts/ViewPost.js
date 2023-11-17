@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "../Header";
 import { FaTrash, FaRegEdit } from "react-icons/fa";
-import { postEditted } from "../../features/posts/postsSlice";
-import { useEditPostMutation } from "../../features/posts/postsApiSlice";
+import { BiHide } from "react-icons/bi";
 import LoadingSpinner from "../LoadingSpinner";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,6 +11,8 @@ import AddComments from "../../component/posts/AddComments";
 import { useDeletePostMutation } from "../../features/posts/postsApiSlice";
 import { removePost } from "../../features/posts/postsSlice";
 import ConfirmDiaglog from "../../component/ConfirmDialog";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+
 const EditPostForm = ({ handleHideViewPost, viewPostId, userInfo }) => {
   const [deletePostId, setDeletePostId] = useState(false);
   const { posts } = useSelector((state) => state.posts);
@@ -26,20 +27,37 @@ const EditPostForm = ({ handleHideViewPost, viewPostId, userInfo }) => {
   const handleDelete = async (postId) => {
     try {
       await deletePost({ postId }).unwrap();
+      if (userInfo.data.user.roles[0] === "admin") {
+        toast.success("Changes saved!", {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
 
-      toast.success("Delete Successfully", {
-        position: "top-left",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      handleHideViewPost(viewPost[0]._id);
-      dispatch(removePost({ postId }));
-      setDeletePostId("");
+        handleHideViewPost(viewPost[0]._id);
+
+        setDeletePostId("");
+      } else {
+        toast.success("Delete Successfully", {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        dispatch(removePost({ postId }));
+        handleHideViewPost(viewPost[0]._id);
+
+        setDeletePostId("");
+      }
     } catch (error) {
       toast.error(error?.data?.message, {
         position: "top-left",
@@ -67,18 +85,34 @@ const EditPostForm = ({ handleHideViewPost, viewPostId, userInfo }) => {
           <article key={viewPost[0]?._id}>
             <div className="sm:w-[600px] p-4 bg-white border border-gray-200   shadow dark:bg-gray-800 dark:border-gray-700">
               <div className="flex justify-between gap-2">
+                {userInfo.data.user.roles[0] === "admin" && (
+                  <div
+                    className={`${
+                      viewPost[0]?.status === true
+                        ? "bg-rose-500"
+                        : "bg-blue-500"
+                    } p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1`}
+                    onClick={() => showConfirm(viewPost[0]?._id)}
+                  >
+                    <BiHide size={"1.2em"} />
+
+                    {viewPost[0]?.status === true ? "Hide Post" : "Unhide Post"}
+                  </div>
+                )}
+                {userInfo.data.user.roles === "user" && (
+                  <div
+                    className="bg-rose-500 p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1"
+                    onClick={() => showConfirm(viewPost[0]?._id)}
+                  >
+                    <FaTrash className="text-slate-100" />
+                    Delete Post
+                  </div>
+                )}
                 <div
-                  className="bg-rose-500 p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1"
-                  onClick={() => showConfirm(viewPost[0]?._id)}
-                >
-                  <FaTrash className="text-slate-100" />
-                  Delete Post
-                </div>
-                <div
-                  className="bg-slate-500 p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1"
+                  className="   rounded    cursor-pointer text-sm flex items-center gap-1"
                   onClick={() => handleHideViewPost(viewPost[0]?._id)}
                 >
-                  Close
+                  <IoIosCloseCircleOutline className="text-4xl text-slate-500 hover:text-slate-600" />
                 </div>
               </div>
               <div className="flex flex-col">
@@ -125,14 +159,19 @@ const EditPostForm = ({ handleHideViewPost, viewPostId, userInfo }) => {
                   />
                 )}
 
-                <AddComments post={viewPost} />
+                {userInfo.data.user.roles[0] !== "admin" && (
+                  <AddComments post={viewPost} />
+                )}
               </div>
             </div>
           </article>
         </div>
       </section>
       {deletePostId && (
-        <ConfirmDiaglog toggleConfirmDelete={toggleConfirmDelete} />
+        <ConfirmDiaglog
+          userInfo={userInfo}
+          toggleConfirmDelete={toggleConfirmDelete}
+        />
       )}
       {deleteLoading && <LoadingSpinner />}
     </>

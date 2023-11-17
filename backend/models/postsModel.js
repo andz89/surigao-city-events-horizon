@@ -42,6 +42,11 @@ const postsSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: Boolean,
+      default: true,
+      required: false,
+    },
     content: {
       type: String,
       required: true,

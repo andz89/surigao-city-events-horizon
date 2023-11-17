@@ -57,15 +57,17 @@ const getOrganizerPosts = asyncHandler(async (req, res) => {
   }
 });
 const getPublicPosts = asyncHandler(async (req, res) => {
+  console.log("render");
   const posts = await Post.find();
-  res.json(posts);
+  const filtered = posts.filter((post) => post.status === true);
+  res.json(filtered);
 });
 const getPostsByOwner = asyncHandler(async (req, res) => {
   const ownerId = req.query.postOwnerId;
 
   const posts = await Post.find({ user: ownerId }); //find all post that has this owner id
-
-  res.json(posts);
+  const filtered = posts.filter((post) => post.status === true);
+  res.json(filtered);
 });
 const addComment = asyncHandler(async (req, res) => {
   const post = await Post.findById(req.body.postId);
@@ -95,25 +97,33 @@ const addComment = asyncHandler(async (req, res) => {
 const removePost = asyncHandler(async (req, res) => {
   const postId = req.body.postId;
 
-  try {
-    // Use async/await with findByIdAndRemove to ensure proper handling of asynchronous code.
-    const result = await Post.findById(postId);
+  if (req.user.roles[0] === "organizer") {
+    try {
+      // Use async/await with findByIdAndRemove to ensure proper handling of asynchronous code.
+      const result = await Post.findById(postId);
 
-    if (result.user.toString() === req.user._id.toString()) {
-      let arrayImgs = [result.image_one, result.image_two];
+      if (result.user.toString() === req.user._id.toString()) {
+        let arrayImgs = [result.image_one, result.image_two];
 
-      await deleteImage(arrayImgs);
-      const removedPost = await Post.findByIdAndRemove(postId);
-      // Check if the post was found and removed successfully.
-      if (!removedPost) {
-        return res.status(404).json({ message: "Post not found" });
+        await deleteImage(arrayImgs);
+        const removedPost = await Post.findByIdAndRemove(postId);
+        // Check if the post was found and removed successfully.
+        if (!removedPost) {
+          return res.status(404).json({ message: "Post not found" });
+        }
+        res.json({ message: "Post removed successfully" });
+      } else {
+        res.json({ message: "You are not the owner of this post!" });
       }
-      res.json({ message: "Post removed successfully" });
-    } else {
-      res.json({ message: "You are not the owner of this post!" });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  }
+  if (req.user.roles[0] === "admin") {
+    const post = await Post.findById(postId);
+    post.status = !post.status;
+    await post.save();
+    res.json(post);
   }
 });
 
@@ -131,7 +141,6 @@ const removeComment = asyncHandler(async (req, res) => {
 
     //if the owner use delete function
     if (post.user.toString() === req.user._id.toString()) {
-      console.log("nathc");
       const new_comment = post.comments.filter((comment) => {
         return comment.commentId !== commentId;
       });
