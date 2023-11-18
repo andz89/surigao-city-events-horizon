@@ -57,7 +57,6 @@ const getOrganizerPosts = asyncHandler(async (req, res) => {
   }
 });
 const getPublicPosts = asyncHandler(async (req, res) => {
-  console.log("render");
   const posts = await Post.find();
   const filtered = posts.filter((post) => post.status === true);
   res.json(filtered);
@@ -123,7 +122,11 @@ const removePost = asyncHandler(async (req, res) => {
     const post = await Post.findById(postId);
     post.status = !post.status;
     await post.save();
-    res.json(post);
+    const data = {
+      postId: post._id,
+      status: post.status,
+    };
+    res.json(data);
   }
 });
 

@@ -114,18 +114,24 @@ const logoutUser = (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 const getOrganizerProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+  if (req.user.roles[0] === "admin") {
+    const users = await User.find();
+    res.json(users);
+  }
 
-  if (user) {
-    res.json(user);
-  } else {
-    res.status(404);
-    throw new Error("User not found");
+  if (req.user.roles[0] === "organizer") {
+    const user = await User.findById(req.user._id);
+    console.log(user);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
   }
 });
 
 const publicProfile = asyncHandler(async (req, res) => {
-  console.log(req.query.ownerId);
   const user = await User.findById(req.query.ownerId);
 
   if (user) {

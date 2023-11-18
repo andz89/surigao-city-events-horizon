@@ -39,7 +39,7 @@ const Login = () => {
         token: res.accessToken,
         user: res.data,
       };
-      navigate("/admin-dashboard");
+      navigate("/post-dashboard");
       dispatch(setCredentials({ data }));
       // Set the token in cookies
       toast.success(`Hello   ${res.data.name}  Welcome back!`, {

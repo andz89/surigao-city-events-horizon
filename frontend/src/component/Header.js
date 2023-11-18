@@ -29,7 +29,7 @@ const Header = () => {
           <ul className="flex items-end gap-3 justify-center">
             <li>
               <Link className=" text-2xl font-semibold">
-                Surigao City Events Surigao
+                Surigao City Events Horizons
               </Link>
             </li>
           </ul>
@@ -81,11 +81,13 @@ const Header = () => {
               {userInfo.data?.user.roles[0] === "admin" && (
                 <>
                   <li>
-                    <Link
-                      to={`/home/${userInfo.data.user.userId}`}
-                      className="font-semibold"
-                    >
-                      Home
+                    <Link to={`/agency-dashboard`} className="font-semibold">
+                      Agency
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={`/post-dashboard`} className="font-semibold">
+                      Post
                     </Link>
                   </li>
                   <li>

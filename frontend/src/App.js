@@ -23,9 +23,13 @@ import PublicPosts from "./pages/organizersView/PublicPosts";
 import Main from "./component/HeaderAndsidebar/Main";
 import SinglePage from "./pages/organizersView/SinglePage";
 import SinglePagePublic from "./pages/usersView/SinglePage";
+import SinglePageAdmin from "./pages/admin/SinglePage";
+
 import SavedEvents from "./pages/usersView/SavedEvents";
 import AdminLogin from "./pages/admin/Login";
-import Admin_dashboard from "./pages/admin/Dashboard";
+import Post_dashboard from "./pages/admin/PostDashboard";
+import Agency_dashboard from "./pages/admin/AgencyDashboard";
+
 function App() {
   return (
     <>
@@ -53,9 +57,14 @@ function App() {
               {/* admin view */}
               <Route path="" element={<Private allowedRoles={["admin"]} />}>
                 <Route
-                  path="/admin-dashboard"
-                  element={<Admin_dashboard />}
+                  path="/post-dashboard"
+                  element={<Post_dashboard />}
                 ></Route>
+                <Route
+                  path="/agency-dashboard"
+                  element={<Agency_dashboard />}
+                ></Route>
+                <Route path="/:id" element={<SinglePageAdmin />} />
               </Route>
               {/*users view */}
 

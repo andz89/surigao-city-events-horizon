@@ -9,7 +9,7 @@ import TimeAgo from "../../component/posts/TimeAgo";
 import Comments from "../../component/posts/Comments";
 import AddComments from "../../component/posts/AddComments";
 import { useDeletePostMutation } from "../../features/posts/postsApiSlice";
-import { removePost } from "../../features/posts/postsSlice";
+import { removePost, postStatus } from "../../features/posts/postsSlice";
 import ConfirmDiaglog from "../../component/ConfirmDialog";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 
@@ -26,11 +26,11 @@ const EditPostForm = ({ handleHideViewPost, viewPostId, userInfo }) => {
 
   const handleDelete = async (postId) => {
     try {
-      await deletePost({ postId }).unwrap();
+      let res = await deletePost({ postId }).unwrap();
       if (userInfo.data.user.roles[0] === "admin") {
         toast.success("Changes saved!", {
           position: "top-left",
-          autoClose: 5000,
+          autoClose: 2000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: false,
@@ -39,8 +39,8 @@ const EditPostForm = ({ handleHideViewPost, viewPostId, userInfo }) => {
           theme: "light",
         });
 
-        handleHideViewPost(viewPost[0]._id);
-
+        handleHideViewPost();
+        dispatch(postStatus(res));
         setDeletePostId("");
       } else {
         toast.success("Delete Successfully", {
@@ -99,7 +99,7 @@ const EditPostForm = ({ handleHideViewPost, viewPostId, userInfo }) => {
                     {viewPost[0]?.status === true ? "Hide Post" : "Unhide Post"}
                   </div>
                 )}
-                {userInfo.data.user.roles === "user" && (
+                {userInfo.data.user.roles[0] === "organizer" && (
                   <div
                     className="bg-rose-500 p-1 rounded text-white font-semibold cursor-pointer text-sm flex items-center gap-1"
                     onClick={() => showConfirm(viewPost[0]?._id)}

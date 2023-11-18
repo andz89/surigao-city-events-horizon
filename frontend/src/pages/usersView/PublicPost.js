@@ -129,9 +129,10 @@ const Posts = () => {
               <FaBookmark className="text-blue-800" />{" "}
               <span className="font-semibold">Save Post</span>
             </div>
-            <Link to={`${"/profile/" + post.user}`} target="_blank">
+            <Link to={`${"/profile/" + post.user}`}>
               <div className="flex items-center justify-center gap-2 font-semibold text-[14px] bg-slate-300 py-1 px-2 rounded hover:bg-slate-200 cursor-pointer">
                 <span>Visit Page</span>
+
                 <FaExternalLinkAlt />
               </div>
             </Link>

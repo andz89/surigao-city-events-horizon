@@ -20,7 +20,7 @@ const postsSlice = createSlice({
         agency,
         _id,
         dateUpdated,
-
+        status,
         dateCreated,
         image_one,
         image_two,
@@ -36,6 +36,7 @@ const postsSlice = createSlice({
             dateUpdated,
             image_one,
             image_two,
+            status,
             reactions: {
               thumbsUp: 0,
               wow: 0,
@@ -81,6 +82,17 @@ const postsSlice = createSlice({
         existingPost.image_two = image_two;
       }
     },
+    postStatus: (state, action) => {
+      const { postId, status } = action.payload;
+
+      const existingPost = state.posts.find((post) => {
+        return post._id === postId;
+      });
+
+      if (existingPost) {
+        existingPost.status = status;
+      }
+    },
     removePost: (state, action) => {
       const { postId } = action.payload;
       const posts = state.posts.filter((post) => post._id !== postId);
@@ -110,6 +122,7 @@ export const {
   removePost,
   removeComment,
   postEditted,
+  postStatus,
 } = postsSlice.actions;
 
 export default postsSlice.reducer;

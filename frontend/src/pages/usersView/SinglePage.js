@@ -9,6 +9,7 @@ import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { FaLocationArrow } from "react-icons/fa";
 import Header from "../../component/Header";
 const SinglePage = () => {
+  console.log("----------");
   const paramsId = useParams();
   const userId = paramsId.id;
   const [publicProfile, { isLoading }] = usePublicProfileMutation();
