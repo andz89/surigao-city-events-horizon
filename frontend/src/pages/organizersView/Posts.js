@@ -226,7 +226,10 @@ const Posts = ({ displayLabel, userInfo }) => {
       <UseSearchPosts posts={posts} setResults={setResults} />
       {renderImage && <ViewImg img={renderImage} />}
       {deletePostId && (
-        <ConfirmDiaglog toggleConfirmDelete={toggleConfirmDelete} />
+        <ConfirmDiaglog
+          toggleConfirmDelete={toggleConfirmDelete}
+          userInfo={userInfo}
+        />
       )}
       {deleteLoading && <LoadingSpinner />}
       {editPostId && (

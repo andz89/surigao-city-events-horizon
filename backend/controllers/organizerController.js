@@ -34,30 +34,59 @@ const authUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid email or password");
   }
 });
+// const updateImageBg = asyncHandler(async (req, res) => {
+//   const user = await User.findById(req.user._id);
+//   console.log(user.imageBg);
+//   if (user) {
+//     req.files.imageBg.forEach(async (e) => {
+//       let arrayImgs = [user.imageBg];
+
+//       if (user.imageBg !== undefined) {
+//         await deleteImage(arrayImgs);
+//       }
+
+//       user.imageBg = e.filename;
+//     });
+
+//     const bgName = await user.save();
+
+//     res.json(bgName);
+//   } else {
+//     res.status(404);
+//     throw new Error("User not found");
+//   }
+// });
 const updateImageBg = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-  console.log(user.imageBg);
-  if (user) {
-    req.files.imageBg.forEach(async (e) => {
-      let arrayImgs = [user.imageBg];
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User not found");
+    }
+
+    console.log(user.imageBg);
+
+    if (req.files.imageBg && req.files.imageBg.length > 0) {
+      const arrayImgs = [user.imageBg];
+
       if (user.imageBg !== undefined) {
         await deleteImage(arrayImgs);
       }
 
-      user.imageBg = e.filename;
-    });
+      user.imageBg = req.files.imageBg[0].filename;
 
-    const bgName = await user.save();
-
-    res.json(bgName);
-  } else {
-    res.status(404);
-    throw new Error("User not found");
+      const bgName = await user.save();
+      res.json(bgName);
+    } else {
+      res.status(400);
+      throw new Error("No image file provided");
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
-// @desc    Register a new user
-// @route   POST /api/users
-// @access  Public
+
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, number, agency, password } = req.body;
 
