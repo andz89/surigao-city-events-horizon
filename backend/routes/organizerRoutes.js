@@ -15,14 +15,28 @@ import path from "path";
 import { getString } from "../middleware/randomString.js";
 import { v4 as uuidv4 } from "uuid";
 
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "backend/backend/public/images");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, getString() + "-" + uuidv4() + path.extname(file.originalname));
+//   },
+// });
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "backend/backend/public/images");
+    try {
+      cb(null, "backend/public/images");
+    } catch (error) {
+      console.error("Error finding the destination path:", error);
+      cb(error, null);
+    }
   },
   filename: (req, file, cb) => {
     cb(null, getString() + "-" + uuidv4() + path.extname(file.originalname));
   },
 });
+
 const upload = multer({ storage: storage });
 const router = express.Router();
 
