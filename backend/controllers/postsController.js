@@ -9,13 +9,15 @@ const addPost = asyncHandler(async (req, res) => {
   let image_one;
   let image_two;
 
-  req.files.image_one.forEach((e) => {
-    image_one = e.filename;
-  });
+  if (req.files.image_one) {
+    req.files.image_one.forEach((e) => {
+      image_one = e.filename;
+    });
 
-  req.files.image_two.forEach((e) => {
-    image_two = e.filename;
-  });
+    req.files.image_two.forEach((e) => {
+      image_two = e.filename;
+    });
+  }
 
   req.body.image_two = image_two;
   req.body.image_one = image_one;
