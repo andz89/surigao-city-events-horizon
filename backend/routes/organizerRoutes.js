@@ -14,7 +14,7 @@ import multer from "multer";
 import path from "path";
 import { getString } from "../middleware/randomString.js";
 import { v4 as uuidv4 } from "uuid";
-
+const router = express.Router();
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "backend/public/images");
@@ -24,7 +24,6 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-const router = express.Router();
 
 router.post("/", registerUser);
 router.post("/auth", authUser);
