@@ -26,7 +26,7 @@ import { v4 as uuidv4 } from "uuid";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     try {
-      cb(null, "public/images");
+      cb(null, "public");
     } catch (error) {
       console.error("Error finding the destination path:", error);
       cb(error, null);
