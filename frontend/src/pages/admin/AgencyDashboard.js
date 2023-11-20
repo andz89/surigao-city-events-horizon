@@ -42,14 +42,17 @@ const AgencyDashboard = () => {
 
   const renderedAgency = ordered?.map((agency) => (
     <tr key={agency._id}>
-      <td className="px-2 py-2">
-        <Link to={`${"/" + agency._id}`}> {agency.agency}</Link>{" "}
-      </td>
+      <td className="px-2 py-2">{agency.agency}</td>
       <td className="px-2 py-2">{agency.name}</td>
       <td className="px-2 py-2">{agency.address}</td>
       <td className=" py-2">{timeAgo(agency.createdAt)}</td>
       <td className="px-2 py-2">{agency.number}</td>
       <td className="px-2 py-2">{agency.email}</td>
+      <td className="px-2 py-2">
+        <Link to={`${"/" + agency._id}`} className="text-blue-500">
+          Visit Page{" "}
+        </Link>{" "}
+      </td>
     </tr>
   ));
   return (
