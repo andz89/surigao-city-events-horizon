@@ -14,6 +14,7 @@ import MiniLoading from "../../component/MiniLoading";
 
 import { FaExternalLinkAlt } from "react-icons/fa";
 import UseSearchPosts from "../../hooks/useSearchPost";
+import Ads from "../../component/Ads";
 const Posts = () => {
   const [results, setResults] = useState([]);
   const [refetch, setRefetch] = useState(false);
@@ -145,7 +146,7 @@ const Posts = () => {
       <div className="sticky top-0">
         <Header />
       </div>
-
+      {!getPostsLoading && <Ads />}
       <section className=" my-5">
         <div className="flex justify-center flex-col items-center gap-4">
           <UseSearchPosts posts={posts} setResults={setResults} />
