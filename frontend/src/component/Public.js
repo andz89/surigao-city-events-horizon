@@ -17,7 +17,7 @@ const PublicRoute = () => {
     if (userInfo?.data?.user.roles[0] === "admin") {
       console.log("running admin");
       return (
-        <Navigate to="/admin-dashboard" state={{ from: location }} replace />
+        <Navigate to="/agency-dashboard" state={{ from: location }} replace />
       );
     }
   } else {
