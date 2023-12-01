@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../features/authUser/usersApiSlice";
 import { logout } from "../features/authUser/authSlice";
 import LoadingSpinner from "./LoadingSpinner";
-
+import Logo from "../images/logo.png";
 const Header = () => {
   const navigage = useNavigate();
   const dispatch = useDispatch();
@@ -27,7 +27,8 @@ const Header = () => {
       <header className="bg-slate-300 sticky top-0 flex flex-col z-50 sm:flex-row justify-between items-center p-2">
         <div className="text-center sm:text-left ">
           <ul className="flex items-end gap-3 justify-center">
-            <li>
+            <li className="flex items-center gap-2">
+              <img src={Logo} width={50} />
               <Link className=" text-2xl font-semibold">
                 Surigao City Events Horizon
               </Link>
@@ -119,7 +120,7 @@ const Header = () => {
                   Organizer
                 </Link>
               </li>
-              <li className="bg-teal-700 p-2 rounded text-white">
+              <li className="bg-amber-600 p-2 rounded text-white">
                 <Link to={"/admin-login"} className="font-semibold">
                   Admin
                 </Link>

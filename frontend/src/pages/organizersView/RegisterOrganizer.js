@@ -60,7 +60,7 @@ const Register = () => {
       <Header />
       <form
         onSubmit={onSubmit}
-        className="w-[400px] mx-auto mt-12 text-white bg-teal-700 p-5 px-10 rounded"
+        className="w-[400px] mx-auto mt-12 text-white bg-amber-600 p-5 px-10 rounded"
       >
         <div className="flex items-center gap-2 my-5 justify-center">
           <FaUser size={"2em"} />{" "}
@@ -160,7 +160,7 @@ const Register = () => {
 
         <button
           type="submit"
-          className="text-white bg-teal-900 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+          className="text-white bg-amber-900 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-amber-800"
         >
           {isLoading ? "sending......" : "Register new account"}
         </button>

@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useLoginMutation } from "../../features/authUser/usersApiSlice";
 import { setCredentials } from "../../features/authUser/authSlice";
 import LoadingSpinner from "../../component/LoadingSpinner";
-
+import Logo from "../../images/logo.png";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -71,6 +71,7 @@ const Login = () => {
         onSubmit={onSubmit}
         className="w-[400px] mx-auto mt-12 text-dark border-[1px] border-gray-300 rounded p-5"
       >
+        <img src={Logo} width={50} className="mx-auto" />
         <div className="flex items-center gap-2 my-5 justify-center">
           <FaSignInAlt size={"2em"} />{" "}
           <span className="font-semibold text-2xl">Login </span>
@@ -111,7 +112,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="w-full text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+          className="w-full text-white bg-amber-500 hover:bg-amber-600 focus:ring-4 focus:outline-none focus:ring-amber-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-amber-800"
         >
           Login account
         </button>
