@@ -32,6 +32,7 @@ const Profile = () => {
     useOrganizerImageBgMutation();
   useEffect(() => {
     // Set name and email in the formData state
+    console.log(userInfo);
     setFormData((prevState) => ({
       ...prevState,
       name: userInfo.data.user.name,
@@ -84,6 +85,7 @@ const Profile = () => {
           roles: res.roles,
         },
       };
+      console.log(data);
       dispatch(
         setCredentials({
           data,
@@ -267,7 +269,7 @@ const Profile = () => {
           </div>
           <div className="relative z-0 w-full mb-6 group ">
             <input
-              value={description}
+              value={description ? description : ""}
               type="description"
               name="description"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -303,7 +305,7 @@ const Profile = () => {
           </div>
           <div className="relative z-0 w-full mb-6 group">
             <input
-              value={address}
+              value={address ? address : ""}
               type="text"
               name="address"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"

@@ -23,6 +23,7 @@ const authUser = asyncHandler(async (req, res) => {
       address: user.address,
       description: user.description,
       imageBg: user.imageBg,
+      agency: user.agency,
     };
     // create JWTs
     const accessToken = generateAccessToken(res, user.name, user.roles);
