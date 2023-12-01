@@ -144,14 +144,15 @@ const Posts = ({ userInfo, postOwnerId }) => {
                 <FaExternalLinkAlt />
               </div>
             </Link>
-
-            <div
-              onClick={() => handleBookmarkPost(post._id)}
-              className="flex justify-center items-center gap-2 hover:bg-slate-200 py-1 px-2 rounded cursor-pointer"
-            >
-              <FaBookmark className="text-blue-800" />{" "}
-              <span className="font-semibold">Save Post</span>
-            </div>
+            {userInfo.data.user.roles[0] === "user" && (
+              <div
+                onClick={() => handleBookmarkPost(post._id)}
+                className="flex justify-center items-center gap-2 hover:bg-slate-200 py-1 px-2 rounded cursor-pointer"
+              >
+                <FaBookmark className="text-blue-800" />{" "}
+                <span className="font-semibold">Save Post</span>
+              </div>
+            )}
           </div>
           <h5 className=" font-bold  text-gray-900 dark:text-white   sm:text-2xl ">
             {post.title}
