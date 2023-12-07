@@ -30,7 +30,7 @@ const Header = () => {
             <li className="flex items-center gap-2">
               <img src={Logo} width={50} />
               <Link className=" text-2xl font-semibold">
-                Surigao City Events Horizon
+                Surigao City Tourism Events Agenda
               </Link>
             </li>
           </ul>

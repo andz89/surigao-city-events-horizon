@@ -9,7 +9,7 @@ const LandingPage = () => {
           <img src={Logo} width={100} />
           <p className="lead mx-auto w-[380px] mt-3 text-center  mb-[20px]">
             {" "}
-            Introducing <strong>Surigao City Events Horizon,</strong> the
+            Introducing <strong>Surigao City Tourism Events Agenda,</strong> the
             ultimate platform for event organizers to showcase their experiences
             and engage with their audience like never before! 🎉
           </p>
