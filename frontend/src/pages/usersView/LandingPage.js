@@ -8,7 +8,6 @@ const LandingPage = () => {
         <div className="  p-10 rounded  flex flex-col items-center">
           <img src={Logo} width={100} />
           <p className="lead mx-auto w-[380px] mt-3 text-center  mb-[20px]">
-            {" "}
             Introducing <strong>Surigao City Tourism Events Agenda,</strong> the
             ultimate platform for event organizers to showcase their experiences
             and engage with their audience like never before! 🎉
@@ -34,9 +33,9 @@ const LandingPage = () => {
               </li>
               <li>
                 <strong>Elevate Your Events:</strong> Whether you're hosting a
-                conference, concert, or community gathering, Surigao City Events
-                Horizon is the go-to platform for organizers who want to elevate
-                their events to new heights.
+                conference, concert, or community gathering, Surigao City
+                Tourism Events Agenda is the go-to platform for organizers who
+                want to elevate their events to new heights.
               </li>
               <li>
                 <strong>Privacy and Security:</strong> Rest easy knowing that
@@ -46,7 +45,7 @@ const LandingPage = () => {
               </li>
             </ul>
             <p>
-              Join the Surigao City Events Horizon community today and
+              Join the Surigao City Tourism Events Agenda community today and
               revolutionize the way you share, connect, and celebrate your
               events! 🎊
             </p>
